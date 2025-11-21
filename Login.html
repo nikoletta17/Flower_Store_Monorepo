@@ -3,47 +3,59 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@6.7.0/css/flag-icons.min.css">
    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
    <link rel="stylesheet" href="css/Login-Register.css">
-   <title>Увійти</title>
+   <title data-i18n="logTitle">Увійти</title>
 </head>
 <body>
+      <div class="lang-menu">
+         <div class="selected-lang" data-lang="ua">
+            <span class="fi fi-ua"></span> UA
+         </div>
+         <ul>
+            <li><a href="#" data-lang="en"><span class="fi fi-us"></span> EN</a></li>
+            <li><a href="#" data-lang="ua"><span class="fi fi-ua"></span> UA</a></li>
+         </ul>
+      </div>
    <form>
       <div class="container">
          <div class="logging-box">
             <div class="logging-header">
-               <span>Увійти</span>
+               <span data-i18n="authLogin">Увійти</span>
             </div>
 
             <!-- Email -->
              <div class="input-box">
                   <input type="email" id="user" class="input-field" placeholder=" " required>
-                  <label for="user" class="label">Ел.пошта:</label>
+                  <label for="user" class="label" data-i18n="loginEmail">Ел.пошта:</label>
                   <i class='bx bx-user'></i>
             </div>
 
              <!-- Password -->
              <div class="input-box">
                   <input type="password" id="password" class="input-field" placeholder=" " required>
-                  <label for="password" class="label">Пароль:</label>
+                  <label for="password" class="label" data-i18n="loginPassword">Пароль:</label>
                   <i class='bx bx-lock'></i>
             </div>
 
               <!-- Remember/Forgot -->
                   <div class="remember-me">
-                     <label for="remember">Запам'ятати мене</label>
+                     <label for="remember" data-i18n="loginRemember">Запам'ятати мене</label>
                      <input type="checkbox" id="remember">
                   </div>
 
                <div class="input-box">
-                  <input type="submit" class="input-submit" value="Увійти">
+                  <input type="submit" class="input-submit" value="Увійти" data-i18n="loginBtn">
                </div>
 
                <div class="register">
-                  <span>Не маєте аккаунту? <a href="Register.html">Зареєструватися</a></span>
+                  <span data-i18n="loginNoAccount">Не маєте аккаунту? <a href="Register.html">Зареєструватися</a></span>
                </div>
          </div>
       </div>
    </form>
+   <script src="js/translations.js"></script>
 </body>
 </html>

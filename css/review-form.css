@@ -122,3 +122,57 @@
     ::-webkit-scrollbar-track {
       background: var(--bg-color); 
     }
+
+
+.lang-menu {
+   position: absolute; 
+   top: 25px;           
+   right: 35px;          
+   z-index: 1000;       
+}
+
+.selected-lang {
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   padding: 5px 12px;
+   border: 1px solid #ccc;
+   border-radius: 6px;
+   background: #fff;
+   font-size: 0.9rem;
+}
+
+.lang-menu ul {
+   display: none;
+   position: absolute;
+   top: 35px;  
+   left: 0;    
+   margin: 0;
+   padding: 0;
+   background: #fff;
+   border: 1px solid #ddd;
+   border-radius: 6px;
+   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+   list-style-type: none;
+  
+}
+
+.lang-menu.show ul {
+   display: block;
+}
+
+.lang-menu ul li a {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   padding: 6px 12px;
+   text-decoration: none;
+   color: #333;
+   width: auto;
+}
+
+.lang-menu ul li a:hover {
+   background: #f2f2f2;
+   transition: 0.2s;
+}

@@ -3,24 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@6.7.0/css/flag-icons.min.css">
   <link rel="stylesheet" href="css/review-form.css">
-  <title>Залишити відгук</title>
+  <title data-i18n="reviewTitle">Залишити відгук</title>
 </head>
 <body>
+   <div class="lang-menu">
+         <div class="selected-lang" data-lang="ua">
+            <span class="fi fi-ua"></span> UA
+         </div>
+         <ul>
+            <li><a href="#" data-lang="en"><span class="fi fi-us"></span> EN</a></li>
+            <li><a href="#" data-lang="ua"><span class="fi fi-ua"></span> UA</a></li>
+         </ul>
+    </div>
   <div class="review-form-container">
-    <h2>Залишити відгук</h2>
+    <h2 data-i18n="reviewBtn">Залишити відгук</h2>
     <form>
-      <label for="name">Ваше ім’я:</label>
-      <input type="text" id="name" name="name" placeholder="Введіть ваше ім’я" required>
+      <label for="name" data-i18n="reviewNameLabel">Ваше ім’я:</label>
+      <input type="text" id="name" name="name" placeholder="Введіть ваше ім’я" data-i18n="reviewNamePlaceholder" required>
 
-      <label for="email">Електронна пошта:</label>
+      <label for="email" data-i18n="reviewEmailLabel">Електронна пошта:</label>
       <input type="email" id="email" name="email" placeholder="whisperofflower@gmail.com" required>
 
-      <label for="message">Ваш відгук:</label>
-      <textarea id="message" name="message" rows="5" placeholder="Поділіться вашими враженнями..." required></textarea>
+      <label for="message" data-i18n="reviewMessageLabel">Ваш відгук:</label>
+      <textarea id="message" name="message" rows="5" placeholder="Поділіться вашими враженнями..." data-i18n="reviewMessagePlaceholder" required></textarea>
 
-      <button type="submit" class="submit-btn">Надіслати</button>
+      <button type="submit" class="submit-btn" data-i18n="reviewSubmitBtn">Надіслати</button>
     </form>
   </div>
+  <script src="js/translations.js"></script>
 </body>
 </html>

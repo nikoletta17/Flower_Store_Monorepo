@@ -1,6 +1,8 @@
+
 const langMenu = document.querySelector('.lang-menu');
 const selected = document.querySelector('.selected-lang');
 const options = document.querySelectorAll('.lang-menu ul li a');
+
 // Translations
 const translations = {
   en: {
@@ -105,8 +107,37 @@ const translations = {
     footerPhone: "Телефон: ",
     footerPhoneNumber1: "+38 050 345 67 89",
     footerPhoneNumber2: "+38 098 345 67 89",
-    footerPhoneNumber3: "+38 099 345 67 89"
-  },
+   footerPhoneNumber3: "+38 099 345 67 89",
+   //Login-page
+    authLogin: "Login",
+    loginEmail: "Email:",
+    loginPassword: "Password:",
+    loginRemember: "Remember me",
+    loginNoAccount: "Don't have an account? <a href=\"Register.html\">Register</a>",
+    loginBtn: "Login",
+    //Register-page
+    authRegister: "Registration", 
+    registerEmail: "Email:",
+    registerPassword: "Password:",
+    registerRepeatPass: "Repeat:",
+    registerGenderMale: "Male",
+    registerGenderFemale: "Female",
+    registerBtn: "Register",
+   //Review-page
+    reviewBtn: "Leave a review", 
+    reviewNameLabel: "Your Name:",
+    reviewNamePlaceholder: "Enter your name",
+    reviewEmailLabel: "Email:",
+    reviewMessageLabel: "Your Review:",
+    reviewMessagePlaceholder: "Share your experience...",
+   reviewSubmitBtn: "Submit",
+   // titles
+   indexTitle: "Flower Shop - Whisper of Flower",
+   logTitle: "Login", 
+   regTitle: "Register", 
+   reviewTitle: "Leave a Review"
+ },
+   
   ua: {
     // Навігація
     navHome: "Головна",
@@ -210,31 +241,71 @@ const translations = {
     footerPhone: "Телефон: ",
     footerPhoneNumber1: "+38 050 345 67 89",
     footerPhoneNumber2: "+38 098 345 67 89",
-    footerPhoneNumber3: "+38 099 345 67 89"
-
+     footerPhoneNumber3: "+38 099 345 67 89",
+     //Login-page
+    authLogin: "Увійти",
+    loginEmail: "Ел.пошта:",
+    loginPassword: "Пароль:",
+    loginRemember: "Запам'ятати мене",
+    loginNoAccount: "Не маєте аккаунту? <a href=\"Register.html\">Зареєструватися</a>",
+    loginBtn: "Увійти",
+   //Register-page
+    authRegister: "Реєстрація",
+    registerEmail: "Ел.пошта:",
+    registerPassword: "Пароль:",
+    registerRepeatPass: "Повторити:",
+    registerGenderMale: "Чоловік",
+    registerGenderFemale: "Жінка",
+     registerBtn: "Зареєструватися",
+   //Review-page
+    reviewBtn: "Залишити відгук",
+    reviewNameLabel: "Ваше ім’я:",
+    reviewNamePlaceholder: "Введіть ваше ім’я",
+    reviewEmailLabel: "Електронна пошта:",
+    reviewMessageLabel: "Ваш відгук:",
+    reviewMessagePlaceholder: "Поділіться вашими враженнями...",
+    reviewSubmitBtn: "Надіслати",
+   //titles
+     indexTitle: "Квіткова лавка - Whisper of Flower",
+     logTitle: "Увійти",
+     regTitle: "Зареєструватися",
+     reviewTitle: "Залишити відгук"
   }
 };
 
 function applyTranslation(lang) {
-   document.querySelectorAll("[data-i18n]").forEach(el => {
-      const key = el.getAttribute("data-i18n");
-      if (translations[lang] && translations[lang][key]) {
-         el.innerText = translations[lang][key];
-      }
-   });
-}
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (translations[lang] && translations[lang][key]) {
+            // ДЛЯ КНОПОК SUBMIT ТА INPUT TYPE=BUTTON
+            if (el.tagName === 'INPUT' && (el.type === 'submit' || el.type === 'button')) {
+                el.setAttribute('value', translations[lang][key]);
+            } 
+            // ДЛЯ span, h, p, a, div 
+            else {
+                el.innerHTML = translations[lang][key]; 
+            }
+        }
+    });
 
-// =======================
+    //ДЛЯ PLACEHOLDE
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+        const key = el.getAttribute("data-i18n-placeholder");
+        if (translations[lang] && translations[lang][key]) {
+            el.setAttribute('placeholder', translations[lang][key]);
+        }
+    });
+}
 // ЗАВАНТАЖЕННЯ МОВИ З LOCALSTORAGE
-// =======================
 window.addEventListener("DOMContentLoaded", () => {
-   const savedLang = localStorage.getItem("selectedLang") || "en";
+   // Беремо мову з атрибута lang="ua" у HTML, якщо в сховищі нічого немає
+   const defaultLang = document.documentElement.getAttribute('lang') || 'ua';
+   const savedLang = localStorage.getItem("selectedLang") || defaultLang;
    setLanguage(savedLang);
 });
 
-// =======================
+
 // ВСТАНОВИТИ МОВУ
-// =======================
 function setLanguage(lang) {
    // знайти відповідний елемент у меню
    const option = document.querySelector(`a[data-lang="${lang}"]`);
@@ -251,17 +322,15 @@ function setLanguage(lang) {
    localStorage.setItem("selectedLang", lang);
 }
 
-// =======================
+
 // КЛІК ПО МЕНЮ ВИБОРУ МОВИ
-// =======================
 selected.addEventListener('click', (e) => {
    e.stopPropagation();
    langMenu.classList.toggle('show');
 });
 
-// =======================
+
 // ВИБІР МОВИ
-// =======================
 options.forEach(option => {
    option.addEventListener('click', (e) => {
       e.preventDefault();
@@ -275,9 +344,8 @@ options.forEach(option => {
    });
 });
 
-// =======================
-// ЗАКРИТТЯ МЕНЮ ПРИ КЛІКУ ЗЗОВНІ
-// =======================
+
+// ЗАКРИТТЯ МЕНЮ ПРИ КЛІКУ 
 document.addEventListener('click', (e) => {
    if (!langMenu.contains(e.target) && !selected.contains(e.target)) {
       langMenu.classList.remove('show');
