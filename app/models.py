@@ -7,7 +7,7 @@ class Bouquet(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
     description = Column(String)
-    price = Column(String)
+    price = Column(Integer)
     # Шлях до зображення (відносно папки 'img/')
     image_url = Column(String)
     # HTML-якоря, наприклад '#bouquet1'
