@@ -1,10 +1,13 @@
 Clean the cash:
-
 taskkill /f /im python.exe
 
 Reloading:
-
 uvicorn app.main:app --reload
+
+Migrations:
+alembic revision --autogenerate -m "Опис зміни"
+alembic upgrade head                              #закріпити зміну
+
 
 
 !!!!Підсумок порядку написання
