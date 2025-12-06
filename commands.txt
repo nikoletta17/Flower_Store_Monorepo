@@ -9,6 +9,9 @@ alembic revision --autogenerate -m "Опис зміни"
 alembic upgrade head                              #закріпити зміну
 
 
+Requirements
+pip freeze > requirements.txt
+
 
 !!!!Підсумок порядку написання
 

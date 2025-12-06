@@ -9,6 +9,8 @@ import os
 # from .routers import bouquet, reviews
 from .routers import bouquet as bouquet_router
 from .routers import reviews as reviews_router
+from .routers import ai_assistant as ai_assistant_router
+
 from .database import get_db
 from . import models, schemas, initial_data
 from .repositories import bouquet
@@ -20,6 +22,7 @@ app = FastAPI(
     title="Whisper of Flower",
     description="Квіткова лавка - Whisper of Flower"
 )
+
 
 # CORS Middleware
 origins = [
@@ -34,6 +37,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 #Static files
 app.mount(
     "/static",
@@ -45,6 +49,7 @@ app.mount(
 #Routers
 app.include_router(bouquet_router.router)
 app.include_router(reviews_router.router)
+app.include_router(ai_assistant_router.router)
 
 
 # Seed Data

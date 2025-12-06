@@ -9,7 +9,7 @@ from .. import models
 
 
 router = APIRouter(
-    prefix="/review",
+    prefix="/review",  #for frontend!!!
     tags=["Review"]
 )
 
