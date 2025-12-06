@@ -2,7 +2,6 @@ from fastapi import HTTPException, status, Response
 from sqlalchemy.orm import Session
 from typing import List
 
-from models import Bouquet
 from .. import models
 from ..schemas.bouquet import BouquetCreate, BouquetUpdate
 
@@ -11,7 +10,7 @@ def get_all(db: Session) -> List[models.Bouquet]:
     bouquets = db.query(models.Bouquet).all()
     return bouquets
 
-def get_bouquet_by_id(db: Session, id: int) -> models.Bouquet:
+def get_bouquet_by_id(id: int, db: Session) -> models.Bouquet:
     bouquet = db.query(models.Bouquet).filter(models.Bouquet.id == id).first()
     if not bouquet:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Bouquet by id {id} not found")
@@ -35,7 +34,7 @@ def create_bouquet(db:Session, request: BouquetCreate) -> models.Bouquet:
     return new_bouquet
 
 
-def update_bouquet(db: Session, request: BouquetUpdate, id:int) -> models.Bouquet:
+def update_bouquet(id: int, db: Session, request: BouquetUpdate) -> models.Bouquet:
     bouquet = db.query(models.Bouquet).filter(models.Bouquet.id == id)
     if not bouquet.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Bouquet not found")
@@ -50,7 +49,7 @@ def update_bouquet(db: Session, request: BouquetUpdate, id:int) -> models.Bouque
     return bouquet.first()
 
 
-def delete_bouquet(db:Session, id:int) -> dict:
+def delete_bouquet(id:int, db:Session) -> dict:
     bouquet = db.query(models.Bouquet).filter(models.Bouquet.id == id)
 
     if not bouquet.first():
