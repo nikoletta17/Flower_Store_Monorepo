@@ -12,11 +12,6 @@ class Bouquet(Base):
     image_url = Column(String)
     # HTML-якоря, наприклад '#bouquet1'
     anchor_id = Column(String)
-    rating = Column(Integer, default=5)
-
-    __table_args__ = (
-        CheckConstraint('rating >= 1 AND rating <= 5', name='rating_check'),
-    )
 
     def __repr__(self):
         return f"<Bouquet(title='{self.title}', price='{self.price}')>"
@@ -27,6 +22,11 @@ class Review(Base):
     id = Column(Integer, primary_key=True, index=True)
     text = Column(String)
     author = Column(String)
+    rating = Column(Integer, default=5)
+
+    __table_args__ = (
+        CheckConstraint('rating >= 1 AND rating <= 5', name='rating_check'),
+    )
 
     def __repr__(self):
         return f"<Review(author='{self.author}')>"
