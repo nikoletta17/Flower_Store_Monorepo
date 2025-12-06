@@ -6,11 +6,14 @@ from typing import List
 import os
 
 # Імпорт Компонентів
-from .routers import bouquets, reviews
+# from .routers import bouquet, reviews
+from .routers import bouquet as bouquet_router
+from .routers import reviews as reviews_router
 from .database import get_db
 from . import models, schemas, initial_data
-from .repositories.bouquet import BouquetRepository
-from .repositories.review import ReviewRepository
+from .repositories import bouquet
+from .repositories import reviews
+
 
 
 app = FastAPI(
@@ -34,14 +37,14 @@ app.add_middleware(
 #Static files
 app.mount(
     "/static",
-    StaticFiles(directory="static"),
+    StaticFiles(directory="app/static"),
     name="static"
 )
 
 
 #Routers
-app.include_router(bouquets.router)
-app.include_router(reviews.router)
+app.include_router(bouquet_router.router)
+app.include_router(reviews_router.router)
 
 
 # Seed Data
@@ -52,28 +55,22 @@ def startup_event():
 
     db = next(get_db())
 
-    # Ініціалізація репозиторіїв
-    bouquet_repo = BouquetRepository(db)
-    review_repo = ReviewRepository(db)
-
     # Заповнення букетами
-    if not bouquet_repo.get_all(limit=1):  # Перевірка, чи таблиця пуста
+    if not bouquet.get_all(db, limit=1):  # Перевірка, чи таблиця пуста
         print("База даних букетів заповнюється...")
         for data in initial_data.initial_bouquets_data:
-            # Схема для вхідних даних
             bouquet_schema = schemas.BouquetCreate(**data)
-            bouquet_repo.create(bouquet=bouquet_schema)
+            # ⬅️ ВИКЛИК ФУНКЦІЇ З МОДУЛЯ
+            bouquet.create_bouquet(db, request=bouquet_schema)
 
      # Заповнення відгуками
-    if not review_repo.get_all(limit=1):  # Перевірка, чи таблиця пуста
+    if not reviews.get_all(db, limit=1):  # Перевірка, чи таблиця пуста
         print("База даних відгуків заповнюється...")
         for data in initial_data.initial_reviews_data:
             review_schema = schemas.ReviewCreate(**data)
-            review_repo.create(review=review_schema)
+            reviews.create_review(db, request=review_schema)
 
     db.close()
-
-
 
 
 

@@ -3,12 +3,12 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from .. import models
-from ..schemas.review import ReviewCreate, ReviewUpdate
+from ..schemas.review import ReviewCreate
 
 
 
-def get_all(db: Session) -> List[models.Review]:
-    reviews = db.query(models.Review).all()
+def get_all(db: Session, skip: int = 0, limit: int = 100) -> List[models.Review]:
+    reviews = db.query(models.Review).offset(skip).limit(limit).all()
     return reviews
 
 

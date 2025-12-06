@@ -4,6 +4,7 @@ from typing import List
 class ReviewBase(BaseModel):
     text: str
     author: str
+    rating: int
 
     class Config:
         from_attributes = True

@@ -7,9 +7,11 @@ from ..schemas.bouquet import BouquetCreate, BouquetUpdate
 
 
 
-def get_all(db: Session) -> List[models.Bouquet]:
-    bouquets = db.query(models.Bouquet).all()
+def get_all(db: Session, skip: int = 0, limit: int = 100) -> List[models.Bouquet]:
+    bouquets = db.query(models.Bouquet).offset(skip).limit(limit).all()
     return bouquets
+
+
 
 def get_bouquet_by_id(id: int, db: Session) -> models.Bouquet:
     bouquet = db.query(models.Bouquet).filter(models.Bouquet.id == id).first()
