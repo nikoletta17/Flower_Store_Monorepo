@@ -6,6 +6,7 @@ from .. import models
 from ..schemas.bouquet import BouquetCreate, BouquetUpdate
 
 
+
 def get_all(db: Session) -> List[models.Bouquet]:
     bouquets = db.query(models.Bouquet).all()
     return bouquets
@@ -15,6 +16,7 @@ def get_bouquet_by_id(id: int, db: Session) -> models.Bouquet:
     if not bouquet:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Bouquet by id {id} not found")
     return bouquet
+
 
 
 def create_bouquet(db:Session, request: BouquetCreate) -> models.Bouquet:
@@ -34,6 +36,7 @@ def create_bouquet(db:Session, request: BouquetCreate) -> models.Bouquet:
     return new_bouquet
 
 
+
 def update_bouquet(id: int, db: Session, request: BouquetUpdate) -> models.Bouquet:
     bouquet = db.query(models.Bouquet).filter(models.Bouquet.id == id)
     if not bouquet.first():
@@ -49,11 +52,12 @@ def update_bouquet(id: int, db: Session, request: BouquetUpdate) -> models.Bouqu
     return bouquet.first()
 
 
+
 def delete_bouquet(id:int, db:Session) -> dict:
     bouquet = db.query(models.Bouquet).filter(models.Bouquet.id == id)
 
     if not bouquet.first():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Bouquet not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Bouquet by id {id} not found")
 
     bouquet.delete(synchronize_session=False)
     db.commit()
