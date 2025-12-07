@@ -7,11 +7,9 @@ from ..schemas.user import UserCreate, UserUpdate
 from ..utils.hashing import Hash
 
 
-
 def get_user_by_email(db: Session, email: str) -> Optional[models.User]:
     user_by_email = db.query(models.User).filter(models.User.email == email).first()
     return user_by_email
-
 
 
 def get_user(db: Session, user_id: int) -> Optional[models.User]:
@@ -19,9 +17,8 @@ def get_user(db: Session, user_id: int) -> Optional[models.User]:
     return user
 
 
-
 def create_user(db: Session, user: UserCreate) -> models.User:
-    #Перевірка наявності користувача з очікуваним email
+    # Перевірка наявності користувача з очікуваним email
     existing_user = db.query(models.User).filter(models.User.email == user.email).first()
     if existing_user:
         raise HTTPException(
@@ -44,10 +41,9 @@ def create_user(db: Session, user: UserCreate) -> models.User:
     return db_user
 
 
-
-def update_user(id: int, db: Session, user_update: UserUpdate) -> models.User:
-
-    db_user = get_user(db, id)
+def update_user(user_id: int, db: Session, user_update: UserUpdate) -> models.User: # ⬅️ user_id замість id
+    # ⬅️ ЗМІНЕНО: Використовуємо get_user
+    db_user = get_user(db, user_id)
     if not db_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found.")
 
@@ -71,7 +67,7 @@ def update_user(id: int, db: Session, user_update: UserUpdate) -> models.User:
                 detail=f"Email '{update_data['email']}' is already taken by another user"
             )
 
-    # 3. Заборона оновлення решти полів
+    # Заборона оновлення решти полів
     for key, value in update_data.items():
         if hasattr(db_user, key) and key not in ['id', 'role']:
             setattr(db_user, key, value)
@@ -81,14 +77,11 @@ def update_user(id: int, db: Session, user_update: UserUpdate) -> models.User:
     return db_user
 
 
-def delete_user(db: Session, id: int) -> dict:
-    db_user = get_user(db, id)
+def delete_user(db: Session, user_id: int) -> dict: # ⬅️ user_id замість id
+    db_user = get_user(db, user_id)
     if not db_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found.")
 
     db.delete(db_user)
     db.commit()
-
     return {"message": f"User ID {user_id} successfully deleted."}
-
-

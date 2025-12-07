@@ -10,6 +10,7 @@ import os
 from .routers import bouquet as bouquet_router
 from .routers import reviews as reviews_router
 from .routers import ai_assistant as ai_assistant_router
+from .routers import auth_router as auth_router
 
 from .database import Base, engine, get_db
 from . import models, schemas, initial_data
@@ -51,6 +52,7 @@ app.mount(
 app.include_router(bouquet_router.router)
 app.include_router(reviews_router.router)
 app.include_router(ai_assistant_router.router)
+app.include_router(auth_router.router)
 
 
 # Seed Data
