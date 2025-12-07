@@ -23,30 +23,30 @@ class UserCreate(UserBase):
 
 
 
-    class UserUpdate(BaseModel):
-        name: str | None
-        email: Optional[EmailStr] = None
-        password: str | None = Field(default=None, min_length=4)
-        confirm_password: str | None = Field(default=None, min_length=4)
+class UserUpdate(BaseModel):
+    name: str | None
+    email: Optional[EmailStr] = None
+    password: str | None = Field(default=None, min_length=4)
+    confirm_password: str | None = Field(default=None, min_length=4)
 
-        model_validator(mode="after")
-        def validate_password_update(self):
-            if self.password is None and self.confirm_password is None:
-                return self
-
-            if (self.password is None) != (self.confirm_password is None):
-                raise ValueError("Both password and confirm_password are required to update password")
-
-            if self.password != self.confirm_password:
-                raise ValueError("Passwords don't match")
-
+    model_validator(mode="after")
+    def validate_password_update(self):
+        if self.password is None and self.confirm_password is None:
             return self
 
+        if (self.password is None) != (self.confirm_password is None):
+            raise ValueError("Both password and confirm_password are required to update password")
+
+        if self.password != self.confirm_password:
+            raise ValueError("Passwords don't match")
+
+        return self
 
 
-    class UserRead(UserBase):
-        id: int = Field(default=None, min_length=1)
-        role: str
 
-        class Config:
-            from_attributes = True
+class UserRead(UserBase):
+    id: int = Field(default=None, min_length=1)
+    role: str
+
+    class Config:
+        from_attributes = True
