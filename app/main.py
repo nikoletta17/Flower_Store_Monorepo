@@ -11,7 +11,7 @@ from .routers import bouquet as bouquet_router
 from .routers import reviews as reviews_router
 from .routers import ai_assistant as ai_assistant_router
 
-from .database import get_db
+from .database import Base, engine, get_db
 from . import models, schemas, initial_data
 from .repositories import bouquet
 from .repositories import reviews
@@ -56,27 +56,31 @@ app.include_router(ai_assistant_router.router)
 # Seed Data
 @app.on_event("startup")
 def startup_event():
-    if not os.path.exists("flower.db"):
-        print("Попередження: Файл 'flower.db' відсутній. Виконайте 'alembic upgrade head'!")
+    Base.metadata.create_all(bind=engine)
 
     db = next(get_db())
 
-    # Заповнення букетами
-    if not bouquet.get_all(db, limit=1):  # Перевірка, чи таблиця пуста
-        print("База даних букетів заповнюється...")
-        for data in initial_data.initial_bouquets_data:
-            bouquet_schema = schemas.BouquetCreate(**data)
-            # ⬅️ ВИКЛИК ФУНКЦІЇ З МОДУЛЯ
-            bouquet.create_bouquet(db, request=bouquet_schema)
 
-     # Заповнення відгуками
-    if not reviews.get_all(db, limit=1):  # Перевірка, чи таблиця пуста
-        print("База даних відгуків заповнюється...")
-        for data in initial_data.initial_reviews_data:
-            review_schema = schemas.ReviewCreate(**data)
-            reviews.create_review(db, request=review_schema)
+    try:
+        # Заповнення букетами
+        if not bouquet.get_all(db, limit=1):  # Перевірка, чи таблиця пуста
+            print("База даних букетів заповнюється...")
+            for data in initial_data.initial_bouquets_data:
+                bouquet_schema = schemas.BouquetCreate(**data)
+                bouquet.create_bouquet(db, request=bouquet_schema)
 
-    db.close()
+        # Заповнення відгуками
+        if not reviews.get_all(db, limit=1):  # Перевірка, чи таблиця пуста
+            print("База даних відгуків заповнюється...")
+            for data in initial_data.initial_reviews_data:
+                review_schema = schemas.ReviewCreate(**data)
+                reviews.create_review(db, request=review_schema)
+
+    except Exception as e:
+        print(f"Помилка заповнення БД: {e}")
+
+    finally:
+        db.close()
 
 
 

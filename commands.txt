@@ -6,10 +6,11 @@ Reloading:
 uvicorn app.main:app --reload
 
 Migrations:
-alembic revision --autogenerate -m "Опис зміни"
+alembic revision --autogenerate -m "опис зміни" (маленькі літери)
 alembic upgrade head                              #закріпити зміну
 
 
 Requirements
 pip freeze > requirements.txt
+
 
