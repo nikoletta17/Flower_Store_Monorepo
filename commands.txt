@@ -1,3 +1,4 @@
+
 Clean the cash:
 taskkill /f /im python.exe
 
@@ -12,17 +13,3 @@ alembic upgrade head                              #закріпити зміну
 Requirements
 pip freeze > requirements.txt
 
-
-!!!!Підсумок порядку написання
-
-database.py → engine, SessionLocal, get_db
-
-models.py → опис таблиць
-
-schemas.py → Pydantic-схеми для валідації
-
-repository/ → функції для роботи з БД
-
-routers/ → ендпоінти, які викликають репозиторій і отримують db: Session = Depends(get_db)
-
-main.py → підключаємо роутери
