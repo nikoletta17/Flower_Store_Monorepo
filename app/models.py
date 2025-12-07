@@ -32,8 +32,8 @@ class Review(Base):
         return f"<Review(author='{self.author}')>"
 
 
-    class User(Base):
-        __tablename__ = 'users'
+class User(Base):
+    __tablename__ = 'users'
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     email = Column(String, unique=True)
