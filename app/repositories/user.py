@@ -41,7 +41,7 @@ def create_user(db: Session, user: UserCreate) -> models.User:
     return db_user
 
 
-def update_user(user_id: int, db: Session, user_update: UserUpdate) -> models.User: # ⬅️ user_id замість id
+def update_user(db: Session, user_id: int, user_update: UserUpdate) -> models.User:
     # ⬅️ ЗМІНЕНО: Використовуємо get_user
     db_user = get_user(db, user_id)
     if not db_user:

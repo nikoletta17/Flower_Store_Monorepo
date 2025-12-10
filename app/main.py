@@ -11,6 +11,8 @@ from .routers import bouquet as bouquet_router
 from .routers import reviews as reviews_router
 from .routers import ai_assistant as ai_assistant_router
 from .routers import auth_router as auth_router
+from .routers import user as user_router
+
 
 from .database import Base, engine, get_db
 from . import models, schemas, initial_data
@@ -31,6 +33,7 @@ origins = [
     "http://127.0.0.1:5500", "http://localhost:5500",
     "http://127.0.0.1:8000", "http://localhost:8000",
 ]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -53,6 +56,7 @@ app.include_router(bouquet_router.router)
 app.include_router(reviews_router.router)
 app.include_router(ai_assistant_router.router)
 app.include_router(auth_router.router)
+app.include_router(user_router.router)
 
 
 # Seed Data

@@ -45,7 +45,7 @@ class UserUpdate(BaseModel):
 
 
 class UserRead(UserBase):
-    id: int = Field(default=None, min_length=1)
+    id: int = Field(default=None)
     role: str
 
     class Config:
