@@ -1,0 +1,192 @@
+/* AiChatBot/chat/chat.css (ПОВНА ВЕРСІЯ З ВАШОЮ ТЕМОЮ) */
+
+:root{
+  --accent-1: 233 135 175; /* Рожевий */
+  --accent-2: 143 198 169; /* Пастельно-зелений */
+  --text: 28 18 20;
+}
+
+/* Reset & base */
+* {
+    box-sizing: border-box;
+}
+
+body, html {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: #f8f9fa; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Використовуємо 100% для iframe */
+    margin: 0;
+    padding: 0; 
+    color: #1c1e21;
+}
+
+.container {
+    background: white;
+    width: 100%; 
+    max-width: 100%;
+    border-radius: 0; 
+    box-shadow: none; 
+    display: flex;
+    flex-direction: column;
+    height: 100%; 
+    overflow: hidden;
+}
+
+/* Header */
+.chat-header {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    background: #f8f9fa;
+}
+
+/* Styling for the logo in the chat header */
+.bot-header-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%; 
+}
+.message.bot .bot-chat-logo {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%; 
+    align-self: flex-end;
+    flex-shrink: 0;
+    margin-right: 8px;
+}
+.bot-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.bot-info i {
+    /* ⬅️ ВИПРАВЛЕНО: Використовуємо ваш рожевий акцент */
+    font-size: 32px;
+    color: rgb(var(--accent-1)); 
+}
+
+.bot-info h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Chatbox */
+.chatbox {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f0f2f5; 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Messages */
+.message {
+    display: flex;
+    align-items: flex-end;
+    max-width: 80%;
+}
+
+.message.user {
+    align-self: flex-end;
+}
+
+.message.bot {
+    align-self: flex-start;
+}
+
+.message .icon {
+    font-size: 28px;
+    align-self: flex-end;
+    flex-shrink: 0;
+    margin-right: 8px; 
+    color: #888; 
+}
+
+.message.user .icon {
+    display: none; 
+}
+
+.message .text-bubble {
+    background: #ffffff;
+    padding: 12px 16px;
+    border-radius: 20px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+
+/* ⬅️ ВИПРАВЛЕНО: Колір бульбашки користувача на ваш акцентний */
+.message.user .text-bubble {
+    background: rgb(var(--accent-1)); 
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.message.bot .text-bubble {
+    background: #e5e5ea; 
+    color: #1c1e21;
+    border-bottom-left-radius: 4px;
+}
+
+
+/* Input area */
+.input-area {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background: #ffffff;
+    border-top: 1px solid #e5e5e5;
+}
+
+input[type="text"] {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 25px;
+    font-size: 15px;
+    background: #f0f2f5;
+    outline: none;
+    transition: background-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+    background: #e5e7eb;
+}
+
+button {
+    background: transparent;
+    /* ⬅️ ВИПРАВЛЕНО: Колір кнопки відправки на акцентний */
+    color: rgb(var(--accent-1)); 
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button:disabled {
+    color: #c0c0c0;
+    cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+    /* ⬅️ ВИПРАВЛЕНО: Колір ховера */
+    color: rgb(var(--accent-1), 0.7); 
+}

@@ -1,0 +1,107 @@
+/* AiChatBot/sidebar.css (ФІНАЛЬНА ВЕРСІЯ: КНОПКА СПРАВА ВНИЗУ + ПЛАВНИЙ ЗСУВ) */
+
+:root{
+  --accent-1: 233 135 175; /* Рожевий */
+  --accent-2: 143 198 169; /* Пастельно-зелений */
+  --text: 28 18 20;
+  --sidebar-width: 560px; /* Можна зменшити, якщо 560px забагато для чату */
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, sans-serif; 
+}
+
+/* APP - Основний контейнер для Sidebar */
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR - БІЧНА ПАНЕЛЬ */
+.sidebar {
+  width: 0; 
+  overflow: hidden;
+
+  /* Кольори та Градієнт */
+  background: linear-gradient(180deg, 
+              rgba(var(--accent-2), 0.3), 
+              rgba(var(--accent-1), 0.2)
+             ); 
+  position: fixed;
+  top: 0;
+  /* 🛑 КРИТИЧНО: Відкриваємо СПРАВА */
+  right: auto; 
+  left: 0; 
+  height: 100%;
+  padding: 25px 0; 
+  box-sizing: border-box;
+  box-shadow: 3px 0 15px rgba(0,0,0,0.15);
+  border-radius: 0; /* Немає заокруглення, бо прилипає до краю */
+  color: rgb(var(--text)); 
+  font-weight: 600;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(-100%);
+  z-index: 999; 
+}
+
+/* Відкритий стан */
+.sidebar.open {
+  width: var(--sidebar-width); 
+  padding: 25px; 
+  overflow: hidden;
+  transform: translateX(0);
+}
+
+/* MAIN CONTENT WRAPPER */
+.main {
+  flex: 1;
+  margin: 0;
+  padding: 0; 
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1); /* Змінено на transform */
+}
+
+.main.shift {
+ transform: translateX(var(--sidebar-width));
+}
+
+
+/* Hamburger button (Кнопка відкриття чату) */
+.hambtn {
+  position: fixed;
+  /* ⬅️ НОВЕ ПОЗИЦІОНУВАННЯ: ЛІВИЙ НИЖНІЙ КУТ */
+  left: 30px; 
+  bottom: 30px; 
+  right: auto; /* Запобігаємо конфлікту */
+  top: auto; 
+  
+  z-index: 1000;
+  /* Розміри та стилі */
+  width: 55px; 
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%; /* Кругла кнопка */
+  font-size: 24px;
+  
+  background: rgba(var(--accent-1), 0.95); 
+  color: white; 
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.hambtn:hover {
+  background: rgb(var(--accent-1));
+  transform: scale(1.1);
+}
+
+/* iframe всередині sidebar */
+.chat-frame {
+  width: 100%;
+  height: calc(100vh - 50px); 
+  border: none;
+  overflow: hidden;
+}
