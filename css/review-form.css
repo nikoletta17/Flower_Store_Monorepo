@@ -176,3 +176,17 @@
    background: #f2f2f2;
    transition: 0.2s;
 }
+
+/* Стилізація тексту-підказки */
+input::placeholder,
+textarea::placeholder {
+    /* Використовуємо прозорий сірий колір, щоб зробити його напівпрозорим */
+    color: rgba(var(--text), 0.5); /* ⬅️ Напівпрозорий сірий */
+    opacity: 1; /* Важливо: Firefox іноді потребує, щоб opacity був 1 */
+}
+
+/* Приклад, як можна зробити стилізацію більш м'якою при фокусі */
+input:focus::placeholder,
+textarea:focus::placeholder {
+    color: rgba(var(--accent-1), 0.6); /* Змінюємо колір при фокусі */
+}

@@ -1,6 +1,7 @@
-// js/review.js
+// js/review.js (ПОВНА ВЕРСІЯ З ЛОГІКОЮ ПІДКАЗКИ)
 
 const BASE_URL = 'http://127.0.0.1:8000'; 
+const DEFAULT_MESSAGE = "Поділіться вашими враженнями..."; // ⬅️ Константа для тексту підказки
 
 document.addEventListener('DOMContentLoaded', () => {
     // Важливо: переконайтеся, що reviewForm має id="reviewForm"
@@ -10,10 +11,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+
+// ----------------------------------------------------
+// A. ФУНКЦІЇ ДЛЯ ОБРОБКИ ФІЗИЧНОГО ТЕКСТУ-ПІДКАЗКИ
+// ----------------------------------------------------
+
+// 1. ВИДАЛЕННЯ ТЕКСТУ ПРИ ФОКУСІ (натисканні)
+window.handleTextareaFocus = function(element) {
+    if (element.value === DEFAULT_MESSAGE) {
+        element.value = ''; // Очищуємо поле
+    }
+}
+
+// 2. ПОВЕРНЕННЯ ТЕКСТУ ПРИ ВТРАТІ ФОКУСУ
+window.handleTextareaBlur = function(element) {
+    if (element.value.trim() === '') {
+        element.value = DEFAULT_MESSAGE; // Повертаємо текст підказки
+    }
+}
+
+
+// ----------------------------------------------------
+// B. ЛОГІКА ВІДПРАВКИ ВІДГУКУ (ОНОВЛЕНО)
+// ----------------------------------------------------
 async function handleReviewSubmit(e) {
     e.preventDefault();
 
-    // 1. Отримання токена
+    const reviewForm = document.getElementById('reviewForm');
     const token = localStorage.getItem('access_token');
 
     if (!token) {
@@ -21,24 +45,23 @@ async function handleReviewSubmit(e) {
         window.location.href = 'Login.html'; 
         return;
     }
-
-    // 2. Збір даних
+    
     const ratingElement = document.getElementById('rating');
     const messageElement = document.getElementById('message');
-
-    // Проста валідація
-    if (!ratingElement.value || !messageElement.value.trim()) {
-        alert('Будь ласка, заповніть усі поля.');
+    
+    // 🛑 КРИТИЧНО: Перевірка та очищення тексту перед відправкою
+    let messageText = messageElement.value.trim();
+    if (messageText === DEFAULT_MESSAGE || messageText === '') {
+        alert('Будь ласка, введіть текст відгуку перед відправкою.');
         return;
     }
 
     const reviewData = {
         // Назва поля 'text' має збігатися зі схемою FastAPI
-        text: messageElement.value.trim(), 
+        text: messageText, 
         rating: parseInt(ratingElement.value), 
     };
     
-    // 3. Відправка запиту з токеном
     try {
         const response = await fetch(`${BASE_URL}/review/`, {
             method: 'POST',
@@ -51,19 +74,20 @@ async function handleReviewSubmit(e) {
 
         // 🛑 КРИТИЧНИЙ БЛОК: ОБРОБКА УСПІШНОЇ ВІДПОВІДІ 
         if (response.status === 201) {
-            // ⬅️ ЧИТАЄМО ТІЛО ВІДПОВІДІ ВІД FASTAPI
             const newReview = await response.json(); 
             
-            // Тепер newReview містить: { id: 1, text: "...", author: "User2", rating: 5 }
-            
-            // ВИВОДИМО ПОВНІ ДАНІ ДЛЯ ПЕРЕВІРКИ
             alert(`Ваш відгук успішно надіслано!
 Текст: "${newReview.text}"
 Автор: ${newReview.author} ⭐ Рейтинг: ${newReview.rating}`);
             
             reviewForm.reset(); 
+            // ⬅️ ВАЖЛИВО: ВІДНОВЛЕННЯ ПІДКАЗКИ після очищення форми
+            document.getElementById('message').value = DEFAULT_MESSAGE; 
             
-            updateReviewList(newReview); // - функція, яка додасть відгук до DOM
+            // Якщо у вас є функція відображення відгуків
+            // if (typeof updateReviewList === 'function') {
+            //     updateReviewList(newReview); 
+            // }
 
         } else if (response.status === 401 || response.status === 403) {
             alert('Помилка: Необхідна авторизація. Будь ласка, увійдіть знову.');
