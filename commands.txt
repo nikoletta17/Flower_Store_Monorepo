@@ -13,4 +13,8 @@ alembic upgrade head                              #закріпити зміну
 Requirements
 pip freeze > requirements.txt
 
+QR-CODE                                    #to generate
+python app/QR-code/generate_qr.py
+
+
 
