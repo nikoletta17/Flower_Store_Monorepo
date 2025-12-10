@@ -6,6 +6,8 @@ from ..database import get_db
 from ..repositories import bouquet as bouquet_repo
 from ..schemas.bouquet import BouquetCreate, BouquetUpdate, BouquetRead
 from .. import models
+from ..utils.jwt_handler import is_admin
+from ..models import User as UserModel
 
 
 router = APIRouter(
@@ -42,8 +44,8 @@ async def get_single_bouquet(id: int, db: Session = Depends(get_db)):
 @router.post("/", response_model=BouquetRead, status_code=status.HTTP_201_CREATED)
 async def create_new_bouquet(
         request: BouquetCreate,
-        db: Session = Depends(get_db)
-        # add admin later!!!!
+        db: Session = Depends(get_db),
+        current_user: UserModel = Depends(is_admin)
 ):
     new_bouquet = bouquet_repo.create_bouquet(db, request)
     return convert_to_uah(new_bouquet)
@@ -54,8 +56,8 @@ async def create_new_bouquet(
 async def update_existing_bouquet(
         id: int,
         request: BouquetUpdate,
-        db: Session = Depends(get_db)
-        # add admin later!!!!
+        db: Session = Depends(get_db),
+        current_user: UserModel = Depends(is_admin)
 ):
     updated_bouquet = bouquet_repo.update_bouquet(id, db, request)
     return convert_to_uah(updated_bouquet)
@@ -65,8 +67,8 @@ async def update_existing_bouquet(
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_bouquet_by_id(
         id: int,
-        db: Session = Depends(get_db)
-        # add admin later!!!!
+        db: Session = Depends(get_db),
+        current_user: UserModel = Depends(is_admin)
 ):
     bouquet_repo.delete_bouquet(id, db)
     return

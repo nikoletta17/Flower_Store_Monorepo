@@ -4,6 +4,7 @@ from typing import List
 
 from .. import models
 from ..schemas.review import ReviewCreate
+from ..models import User as UserModel
 
 
 
@@ -21,10 +22,11 @@ def get_review_by_id(id: int, db: Session) -> models.Review:
 
 
 
-def create_review(db: Session, request: ReviewCreate) -> models.Review:
+def create_review(db: Session, request: ReviewCreate, current_user: UserModel) -> models.Review:
+    author_name = current_user.name
     new_review = models.Review(
         text=request.text,
-        author=request.author,
+        author=author_name,
         rating=request.rating
     )
     db.add(new_review)

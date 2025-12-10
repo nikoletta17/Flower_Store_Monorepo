@@ -6,6 +6,8 @@ from ..database import get_db
 from ..repositories import reviews as reviews_repo
 from ..schemas.review import ReviewCreate, ReviewRead
 from .. import models
+from ..utils.jwt_handler import get_current_user, is_admin
+from ..models import User as UserModel
 
 
 router = APIRouter(
@@ -28,18 +30,18 @@ async def get_single_review(id: int, db: Session = Depends(get_db)):
 @router.post("/", response_model=ReviewRead, status_code=status.HTTP_201_CREATED)
 async def create_new_review(
         request: ReviewCreate,
-        db: Session = Depends(get_db)
-        # add admin later!!!!
+        db: Session = Depends(get_db),
+        current_user: UserModel = Depends(get_current_user)
 ):
-    return reviews_repo.create_review(db, request)
+    return reviews_repo.create_review(db, request, current_user)
 
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_review_by_id(
         id: int,
-        db: Session = Depends(get_db)
-        # add admin later!!!!
+        db: Session = Depends(get_db),
+        current_user: UserModel = Depends(is_admin)
 ):
     reviews_repo.delete_review(id, db)
     return

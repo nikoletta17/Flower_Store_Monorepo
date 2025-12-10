@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..utils.jwt_handler import get_current_user
+from ..utils.jwt_handler import get_current_user, is_admin
 from ..repositories import user as user_repo
 from ..schemas.user import UserCreate, UserUpdate, UserRead
 from ..models import User as UserModel                        # Для type hinting current_user
@@ -41,13 +41,14 @@ async def update_user_data(
         db: Session = Depends(get_db),
         current_user: UserModel = Depends(get_current_user)
 ):
-    if id != current_user.id:
+    if user_id != current_user.id and current_user.role != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized to update this users's data"
+            detail="Не дозволено оновлювати дані іншого користувача."
         )
 
-    user_repo.update_user(db, user_id, request)
+    updated_user = user_repo.update_user(db, user_id, request)
+    return updated_user
 
 
 # ВИДАЛЕННЯ ДАНИХ (DELETE /students/{id})
@@ -57,11 +58,11 @@ async def delete_user_data(
         db: Session = Depends(get_db),
         current_user: UserModel = Depends(get_current_user)
 ):
-    if id != current_user.id:
+    if user_id != current_user.id and current_user.role != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not authorized to delete this student"
+            detail="Не дозволено видаляти профіль іншого користувача."
         )
 
     user_repo.delete_user(db, user_id)
-    return
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
