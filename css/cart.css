@@ -1,0 +1,177 @@
+:root{
+  --bg-color: #f1e6eb; /* ніжно-рожевий фон */
+  --accent-1: 233 135 175;  /* рожевий */
+  --accent-2: 143 198 169;  /* пастельно-зелений */
+  --text: 28 18 20;
+  --gr-color-pink: 202, 95, 113;
+  --gr-color-green: 10, 95, 48;
+}
+
+.cart-section {
+    max-width: 900px;
+    margin: 150px auto 3rem; /* 100px відступ зверху для хедера */
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.cart-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.cart-items-list {
+    border-top: 2px solid rgba(var(--accent-2), 0.3);
+    padding-top: 20px;
+}
+
+/* Стилі для окремого елемента кошика */
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--bg-color);
+}
+
+.item-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.item-details {
+    flex-grow: 1;
+    min-width: 200px;
+}
+
+.item-title {
+    margin: 0 0 5px;
+    font-size: 1.1rem;
+    color: rgb(var(--text));
+    font-family: 'Playfair Display', serif;
+}
+
+.item-price {
+    margin: 0;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.item-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.item-subtotal {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: rgb(var(--accent-1));
+    margin-left: 20px;
+    white-space: nowrap;
+}
+
+/* Кнопка "Видалити" (іконка кошика) */
+.remove-btn {
+    background: none;
+    color: rgb(var(--gr-color-pink)); 
+    border: none;
+    padding: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: 0.2s;
+}
+
+.remove-btn:hover {
+    color: rgb(var(--gr-color-green));
+    transform: scale(1.1);
+}
+
+/* Підсумок */
+.cart-summary-wrapper {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 15px;
+}
+
+.cart-summary {
+    padding-top: 20px;
+    border-top: 2px solid rgb(var(--accent-1));
+    width: 100%;
+    max-width: 300px; 
+    display: flex;
+    justify-content: space-between;
+}
+
+.summary-total-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: rgb(var(--text));
+    margin: 0;
+}
+
+.summary-total-price {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: rgb(var(--accent-1));
+    margin: 0;
+}
+
+.primary-cta {
+    font-size: 1.1rem;
+    padding: 10px 25px;
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+}
+
+.empty-cart-message, .loading-message, .error-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #888;
+    padding: 40px 0;
+}
+.continue-shopping {
+    color: rgb(var(--accent-2));
+    text-decoration: none;
+    font-size: 1rem;
+    transition: 0.2s;
+    margin-right: 10px;
+}
+.continue-shopping:hover {
+    text-decoration: underline;
+}
+
+/* Адаптивність */
+@media (max-width: 600px) {
+    .cart-item {
+        flex-wrap: wrap;
+        padding-bottom: 20px;
+    }
+    .item-image {
+        width: 60px;
+        height: 60px;
+    }
+    .item-subtotal {
+        width: 100%;
+        text-align: right;
+        margin-top: 10px;
+        font-size: 1.1rem;
+    }
+    .item-details {
+        flex-grow: 0;
+        width: calc(100% - 80px);
+    }
+    .cart-summary {
+        max-width: 100%;
+    }
+}
