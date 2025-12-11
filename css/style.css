@@ -1419,3 +1419,44 @@ header{
    background: #f2f2f2;
    transition: 0.2s;
 }
+
+
+/* style.css (КОРЕКЦІЯ ДЛЯ ГАРАНТОВАНОГО ВІДОБРАЖЕННЯ) */
+
+/* Стилі для динамічних елементів у .auth-links */
+.auth-links li {
+    display: list-item; /* Гарантуємо, що li відображається */
+    margin: 0;
+    padding: 0;
+}
+
+/* Гарантуємо, що контейнер відображається, коли він містить елементи */
+.auth-links:not(:empty) {
+    display: flex; 
+    /* Додайте margin-left, якщо він був втрачений, щоб посунути його вправо */
+    margin-left: auto; 
+    gap: 1.25rem;
+}
+
+/* Додатковий стиль, якщо ви використовуєте клас .nav-item у JS */
+.auth-links .nav-item a {
+    /* Використовуємо існуючі стилі для посилань */
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 500;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.auth-links .nav-item a:hover {
+    background: rgba(var(--accent-1)/0.2);
+    color: rgb(var(--accent-1));
+}
+
+/* Якщо ви хочете, щоб "Привіт, [Ім'я]!" також виглядало як посилання */
+.auth-links .user-greeting span {
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    /* Це імітує відступи посилання, щоб не ламати верстку */
+}
