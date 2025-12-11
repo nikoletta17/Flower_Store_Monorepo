@@ -2,7 +2,6 @@ from fastapi import FastAPI, Depends, status
 from fastapi.staticfiles import StaticFiles  #for static
 from fastapi.middleware.cors import CORSMiddleware #for frontend
 from sqlalchemy.orm import Session
-from typing import List
 import os
 from dotenv import load_dotenv
 
@@ -13,6 +12,7 @@ from .routers import reviews as reviews_router
 from .routers import ai_assistant as ai_assistant_router
 from .routers import auth_router as auth_router
 from .routers import user as user_router
+from .routers import cart as cart_router
 
 
 from .database import Base, engine, get_db
@@ -56,7 +56,7 @@ def create_superuser(db: Session):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    print(f"✅ Суперкористувач '{admin_email}' успішно створений.")
+    print(f"Суперкористувач '{admin_email}' успішно створений.")
 
 
 app = FastAPI(
@@ -94,6 +94,7 @@ app.include_router(reviews_router.router)
 app.include_router(ai_assistant_router.router)
 app.include_router(auth_router.router)
 app.include_router(user_router.router)
+app.include_router(cart_router.router)
 
 
 # Seed Data

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import relationship
 from .database import Base
-from sqlalchemy import Column, Integer, String, CheckConstraint
+from sqlalchemy import Column, Integer, String, CheckConstraint, ForeignKey, Float
 
 class Bouquet(Base):
     __tablename__ = 'bouquets'
@@ -40,3 +40,32 @@ class User(Base):
     password = Column(String)
     role = Column(String, default="user")
 
+    cart = relationship("Cart", back_populates="user", uselist=False)
+
+
+class Cart(Base):
+    __tablename__ = 'carts'
+    id = Column(Integer, primary_key=True, index=True)
+
+    user = relationship("User", back_populates="cart")
+    user_id = Column(Integer, ForeignKey("users.id"), unique=True, nullable=False)
+    items = relationship("CartItem", back_populates="cart", cascade="all, delete-orphan")
+
+
+class CartItem(Base):
+    __tablename__ = "cart_items"
+
+    id = Column(Integer, primary_key=True, index=True)
+    quantity = Column(Integer, default=1, nullable=False)
+    price_on_add = Column(Float, nullable=False)
+
+    cart_id = Column(Integer, ForeignKey("carts.id"), nullable=False)
+    bouquet_id = Column(Integer, ForeignKey("bouquets.id"), nullable=False)
+
+    cart = relationship("Cart", back_populates="items")
+    bouquet = relationship("Bouquet")
+
+    @property
+    def subtotal(self) -> float:
+        """Обчислює загальну вартість цієї позиції у гривнях."""
+        return round(self.quantity * self.price_on_add, 2)

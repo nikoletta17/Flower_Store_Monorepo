@@ -27,6 +27,14 @@ class BouquetUpdate(BaseModel):
 class BouquetRead(BouquetBase):
     id: int
 
+    @property
+    def price_uah(self) -> float:
+        """Ціна, конвертована в гривні для відображення клієнту."""
+        if self.price is not None:
+            return round(self.price / 100.0, 2)
+        return 0.0
+
     class Config:
         from_attributes = True
+        property_model_by_alias = True
 

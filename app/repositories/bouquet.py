@@ -20,16 +20,17 @@ def get_bouquet_by_id(id: int, db: Session) -> models.Bouquet:
     return bouquet
 
 
+# app/repositories/bouquet.py
 
-def create_bouquet(db:Session, request: BouquetCreate) -> models.Bouquet:
+def create_bouquet(db: Session, request: BouquetCreate) -> models.Bouquet:
     price_in_cents = int(request.price * 100)
 
     new_bouquet = models.Bouquet(
-        title = request.title,
-        description = request.description,
-        price = price_in_cents,
-        image_url = request.image_url,
-        anchor_id = request.anchor_id
+        title=request.title,
+        description=request.description,
+        price=price_in_cents,
+        image_url=request.image_url,
+        anchor_id=request.anchor_id
     )
 
     db.add(new_bouquet)
