@@ -108,34 +108,35 @@ async function handleLogin(e) {
         alert('Помилка мережі. Спробуйте пізніше.');
     }
 } 
+*/
 
- */
+// app/js/auth.js (ПОВНИЙ, ФІНАЛЬНИЙ КОД)
 
-// app/js/auth.js (ПОВНИЙ КОД ДЛЯ АВТЕНТИФІКАЦІЇ ТА ДИНАМІЧНОЇ НАВІГАЦІЇ)
-
+// 🛑 ГЛОБАЛЬНА ЗМІННА: Визначена на верхньому рівні для доступу з усіх функцій
 const BASE_URL = 'http://127.0.0.1:8000'; 
 
 // ----------------------------------------------------
-// A. ФУНКЦІЇ ДЛЯ ОТРИМАННЯ ДАНИХ ТА LOGOUT
+// A. ФУНКЦІЇ ДЛЯ LOGOUT, ОТРИМАННЯ ДАНИХ ТА ОНОВЛЕННЯ UI
 // ----------------------------------------------------
 
 /**
  * Отримує дані про поточного користувача через JWT.
- * @param {string} token - JWT токен доступу.
- * @returns {Promise<Object|null>} Об'єкт користувача або null.
  */
 async function fetchCurrentUser(token) {
     try {
         const response = await fetch(`${BASE_URL}/users/me`, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`, // Передача токена
+                'Authorization': `Bearer ${token}`, 
                 'Content-Type': 'application/json',
             },
         });
 
         if (response.ok) {
-            return await response.json(); // Повертає об'єкт UserRead (з іменем)
+            const user = await response.json();
+            // Зберігаємо ім'я користувача для подальшого використання
+            localStorage.setItem('user_name', user.name); 
+            return user;
         }
     } catch (error) {
         console.error("Помилка отримання даних користувача:", error);
@@ -145,14 +146,13 @@ async function fetchCurrentUser(token) {
 
 /**
  * Виконує вихід користувача: видаляє токен та оновлює UI.
- * @param {Event} e - Подія кліку.
- * @param {boolean} shouldRedirect - Чи потрібно перенаправляти на іншу сторінку.
  */
 const logoutUser = (e, shouldRedirect = true) => {
     if (e) e.preventDefault();
     
-    // 1. Видаляємо токен доступу
+    // 1. Видаляємо токен та ім'я
     localStorage.removeItem('access_token');
+    localStorage.removeItem('user_name'); 
 
     // 2. Оновлюємо інтерфейс
     updateAuthLinks(); 
@@ -175,53 +175,76 @@ const updateAuthLinks = async () => {
     authLinksContainer.innerHTML = ''; 
 
     if (token) {
-        const user = await fetchCurrentUser(token);
+        // Отримуємо ім'я, викликаючи fetchCurrentUser (він також оновить localStorage)
+        let userName = localStorage.getItem('user_name');
+        
+        if (!userName) {
+            // Якщо імені немає (перший вхід), робимо запит
+            const user = await fetchCurrentUser(token);
+            userName = user ? user.name : null;
+        }
 
-        if (user && user.name) {
-            // КОРИСТУВАЧ АВТОРИЗОВАНИЙ (Привіт, [Ім'я] | Кошик | Замовлення | Вихід)
-            authLinksContainer.innerHTML = `
-                <li class="nav-item user-greeting">
-                    <span class="nav-link" style="font-weight: 600; color: rgb(var(--accent-1));">Привіт, ${user.name}!</span>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/order.html" data-i18n="navOrders">Замовлення</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/cart.html" data-i18n="navCart">Кошик</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" id="logout-link" data-i18n="authLogout">Вихід</a>
-                </li>
+        if (userName) {
+            // ===============================================
+            // КОРИСТУВАЧ АВТОРИЗОВАНИЙ (Компактний вигляд)
+            // ===============================================
+            
+            // 1. Привіт, [Ім'я]! та Замовлення (Dropdown)
+            const userDropdown = document.createElement('li');
+            userDropdown.className = 'user-dropdown-container';
+            
+            userDropdown.innerHTML = `
+                <span class="user-greeting">Привіт, ${userName}! <i class="fas fa-caret-down"></i></span>
+                <ul class="dropdown-menu">
+                    <li><a href="order.html">Замовлення</a></li> 
+                </ul>
             `;
-            // Підключаємо обробник подій для кнопки "Вихід"
-            document.getElementById('logout-link')?.addEventListener('click', logoutUser);
+            authLinksContainer.appendChild(userDropdown);
+
+            // 2. Кошик (Іконка)
+            const cartLink = document.createElement('li');
+            cartLink.innerHTML = `<a href="cart.html" title="Кошик" class="cart-icon-link">
+                                    <i class="fas fa-shopping-cart"></i>
+                                  </a>`;
+            authLinksContainer.appendChild(cartLink);
+
+            // 3. Вихід
+            const logoutLink = document.createElement('li');
+            logoutLink.innerHTML = '<a href="#" id="logout-link">Вихід</a>';
+            authLinksContainer.appendChild(logoutLink);
+            
+            // Підключаємо обробник для "Вихід"
+            document.getElementById('logout-link').addEventListener('click', logoutUser);
+
         } else {
-            // Токен є, але невалідний або закінчився — скидаємо
+            // Токен невалідний — скидаємо
             logoutUser(null, false); 
         }
 
     } else {
-        // КОРИСТУВАЧ НЕ АВТОРИЗОВАНИЙ (Увійти | Зареєструватися)
-        authLinksContainer.innerHTML = `
-            <li class="nav-item">
-                <a class="nav-link" href="Login.html" data-i18n="authLogin">Увійти</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="Register.html" data-i18n="authRegister">Зареєструватися</a>
-            </li>
-        `;
+        // ===============================================
+        // КОРИСТУВАЧ НЕ АВТОРИЗОВАНИЙ
+        // ===============================================
+        
+        const loginLink = document.createElement('li');
+        loginLink.innerHTML = '<a href="Login.html" data-i18n="navLogin">Увійти</a>'; 
+        authLinksContainer.appendChild(loginLink);
+
+        const registerLink = document.createElement('li');
+        registerLink.innerHTML = '<a href="Register.html" data-i18n="navRegister">Зареєструватися</a>';
+        authLinksContainer.appendChild(registerLink);
     }
 };
 
 // ----------------------------------------------------
-// B. ЛОГІКА РЕЄСТРАЦІЇ (POST /users/)
+// B. ЛОГІКА РЕЄСТРАЦІЇ (handleRegister)
 // ----------------------------------------------------
 async function handleRegister(e) {
     e.preventDefault(); 
 
     // 1. Збір даних
     const name = document.getElementById('name').value; 
-    const email = document.getElementById('user').value; // ID поля для email
+    const email = document.getElementById('user').value; 
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('conf-password').value;
     
@@ -260,7 +283,7 @@ async function handleRegister(e) {
 
 
 // ----------------------------------------------------
-// C. ЛОГІКА ЛОГІНУ (POST /auth/token)
+// C. ЛОГІКА ЛОГІНУ (handleLogin)
 // ----------------------------------------------------
 async function handleLogin(e) {
     e.preventDefault();
@@ -285,7 +308,7 @@ async function handleLogin(e) {
             // 1. ЗБЕРІГАННЯ ТОКЕНА
             localStorage.setItem('access_token', tokenData.access_token);
             
-            // 2. ОНОВЛЕННЯ ПОСИЛАНЬ ТА ПЕРЕНАПРАВЛЕННЯ
+            // 2. ОНОВЛЕННЯ ПОСИЛАНЬ (викликає /users/me та зберігає ім'я)
             await updateAuthLinks(); 
             
             alert('Вхід успішний!');
@@ -321,3 +344,4 @@ document.addEventListener('DOMContentLoaded', () => {
         form.addEventListener('submit', handleLogin);
     }
 });
+

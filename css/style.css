@@ -1460,3 +1460,88 @@ header{
     border-radius: 8px;
     /* Це імітує відступи посилання, щоб не ламати верстку */
 }
+
+/* ==================================== */
+/* === СТИЛІ ДЛЯ DROPDOWN ТА ІКОНОК === */
+/* ==================================== */
+
+/* 1. Стилі для іконки Кошика */
+.auth-links .cart-icon-link {
+    /* Перевизначаємо відступи для іконки, щоб вона була компактнішою */
+    padding: 0.6rem 0.6rem !important; 
+    font-size: 1.25rem; /* Збільшуємо розмір самої іконки */
+}
+.auth-links .cart-icon-link i {
+    color: var(--text);
+    transition: color 0.3s;
+}
+.auth-links .cart-icon-link:hover i {
+    color: rgb(var(--accent-1)); /* Колір при наведенні */
+}
+
+
+/* 2. Стилі для Dropdown (Привіт, [Ім'я]! + Замовлення) */
+
+.user-dropdown-container {
+    position: relative; 
+    cursor: pointer;
+    /* Стилізуємо видимий елемент "Привіт, [Ім'я]!" як кнопку */
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.user-dropdown-container:hover {
+    background-color: rgba(var(--text), 0.05); /* Легкий фон при наведенні */
+}
+
+/* Іконка-стрілка біля імені */
+.user-dropdown-container .fa-caret-down {
+    margin-left: 5px;
+    font-size: 0.8em;
+}
+
+/* Стилі для випадаючого меню */
+.dropdown-menu {
+    position: absolute;
+    top: 100%; /* Розміщуємо під елементом "Привіт" */
+    right: 0;
+    /* Зміна, щоб меню з'являлося трохи далі від хедеру, уникаючи кліпінгу */
+    margin-top: 5px; 
+    
+    background-color: #fff;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 5px 0;
+    list-style: none;
+    min-width: 150px;
+    z-index: 10; /* Забезпечуємо відображення поверх інших елементів */
+    
+    /* 🛑 ПРИХОВУЄМО ЗА ЗАМОВЧУВАННЯМ 🛑 */
+    visibility: hidden; 
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+}
+
+/* Відображаємо при наведенні курсору на весь li-контейнер */
+.user-dropdown-container:hover .dropdown-menu {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dropdown-menu li a {
+    /* Стиль посилань у випадаючому меню */
+    display: block;
+    padding: 8px 15px;
+    color: var(--text);
+    font-weight: 400;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.dropdown-menu li a:hover {
+    background-color: rgba(var(--accent-2), 0.05);
+}
