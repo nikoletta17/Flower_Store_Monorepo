@@ -1,22 +1,27 @@
-
 document.addEventListener("DOMContentLoaded", () => {
-  const hamburger = document.querySelector(".hamburger");
-  const navLinks = document.querySelector(".nav-links");
-  const authLinks = document.querySelector(".auth-links");
+  const sidebar = document.getElementById("sidebar");
+  const hambtn = document.getElementById("toggleBtn"); // Це твоя кнопка-кружечок
+  const main = document.querySelector(".main");
 
-  hamburger.addEventListener("click", () => {
-    const isOpen = navLinks.classList.contains("show");
+  hambtn.addEventListener("click", () => {
+    const isOpen = sidebar.classList.toggle("open");
+    main.classList.toggle("shift");
 
+    // ЯКЩО ЧАТ ВІДКРИТО — ХОВАЄМО КНОПКУ, ЩОБ НЕ ЗАВАЖАЛА
     if (isOpen) {
-      navLinks.classList.remove("show");
-      authLinks.classList.remove("show");
-      hamburger.classList.remove("active");
-    } 
-    
-    else {
-      navLinks.classList.add("show");
-      authLinks.classList.add("show");
-      hamburger.classList.add("active");
+      hambtn.style.opacity = "0";
+      hambtn.style.pointerEvents = "none";
+    }
+  });
+
+  // Закриття при кліку поза сайдбаром
+  document.addEventListener("click", (e) => {
+    if (!sidebar.contains(e.target) && !hambtn.contains(e.target) && sidebar.classList.contains("open")) {
+      sidebar.classList.remove("open");
+      main.classList.remove("shift");
+      // ПОВЕРТАЄМО КНОПКУ, КОЛИ ЗАКРИЛИ
+      hambtn.style.opacity = "1";
+      hambtn.style.pointerEvents = "auto";
     }
   });
 });

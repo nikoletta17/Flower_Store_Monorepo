@@ -1,68 +1,99 @@
+/* AiChatBot/chat/chat.js */
+
 const inputMessage = document.getElementById("inputMessage");
 const sendBtn = document.getElementById("sendBtn");
 const chatbox = document.getElementById("chatbox");
 
+/**
+ * Додає повідомлення в чат
+ * @param {string} text - Текст повідомлення
+ * @param {string} sender - 'user' або 'bot'
+ */
 function appendMessage(text, sender) {
-   const msgDiv = document.createElement("div");
-   msgDiv.classList.add("message", sender);
+    if (!text) return;
 
-   const textBubble = document.createElement("span");
-   textBubble.classList.add("text-bubble");
-   textBubble.textContent = text;
+    const msgDiv = document.createElement("div");
+    msgDiv.classList.add("message", sender);
 
-   if (sender == "bot") {
-      const iconImg = document.createElement("img");
-      iconImg.src = "logo.jpg";
-      iconImg.classList.add("bot-chat-logo");
-      iconImg.alt = alt = "Bot Logo";
-      msgDiv.appendChild(iconImg);
-   }
+    // Створення аватарки для бота
+    if (sender === "bot") {
+        const iconImg = document.createElement("img");
+        iconImg.src = "logo.jpg";
+        iconImg.classList.add("bot-chat-logo");
+        iconImg.alt = "Bot Logo";
+        msgDiv.appendChild(iconImg);
+    }
 
-   msgDiv.appendChild(textBubble);
-   chatbox.appendChild(msgDiv);
-   //Multiple messages scroll!
+    const textBubble = document.createElement("span");
+    textBubble.classList.add("text-bubble");
+    textBubble.textContent = text;
 
-   chatbox.scrollTop = chatbox.scrollHeight;
+    msgDiv.appendChild(textBubble);
+    chatbox.appendChild(msgDiv);
+
+    // Плавний скрол до останнього повідомлення
+    chatbox.scrollTo({
+        top: chatbox.scrollHeight,
+        behavior: 'smooth'
+    });
 }
 
+/**
+ * Відправка повідомлення на сервер
+ */
 async function sendMessage() {
-   const message = inputMessage.value.trim();
+    const message = inputMessage.value.trim();
 
-   if (!message) return;
-   appendMessage(message, "user");
-   inputMessage.value = "";
-   //wait for the reply of the bot!
-   sendBtn.disabled = true;
+    // Перевірка на порожнє повідомлення
+    if (!message) return;
 
-   try {
-      // 1. ВИПРАВЛЕНО: ЗМІНЕНО URL на коректний: /ai/chat/
-      const response = await fetch("http://127.0.0.1:8000/ai/chat/", { 
-         method: 'POST',
-         headers: { 'Content-type': 'application/json' },
-         // Вміст запиту (body) правильний: { "message": "..." }
-         body: JSON.stringify({ message })
-      })
+    // Відображаємо повідомлення користувача
+    appendMessage(message, "user");
+    inputMessage.value = "";
+    
+    // Блокуємо кнопку на час очікування відповіді
+    sendBtn.disabled = true;
 
-      if (!response.ok) throw new Error("Network response wasn't okay");
+    try {
+        const response = await fetch("http://127.0.0.1:8000/ai/chat/", { 
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify({ message: message })
+        });
 
-      const data = await response.json();
-      
-      // 2. ВИПРАВЛЕНО: ЗМІНЕНО data.reply на data.response
-      appendMessage(data.response, "bot"); 
+        if (!response.ok) {
+            throw new Error("Помилка мережі");
+        }
 
-   }
-   catch (error) {
-      appendMessage("Error: Couldn't reach the server!", "bot")
-   }
-   finally {
-      sendBtn.disabled = false;
-      inputMessage.focus();
-   }
+        const data = await response.json();
+        
+        // Використовуємо data.response, як ти вказала
+        if (data && data.response) {
+            appendMessage(data.response, "bot");
+        } else {
+            appendMessage("Бот отримав порожню відповідь.", "bot");
+        }
 
-
+    } catch (error) {
+        console.error("Chat Error:", error);
+        appendMessage("Помилка: Не вдалося зв'язатися з сервером!", "bot");
+    } finally {
+        // Розблоковуємо кнопку та повертаємо фокус на інпут
+        sendBtn.disabled = false;
+        inputMessage.focus();
+    }
 }
 
+// Слухачі подій
 sendBtn.addEventListener("click", sendMessage);
-inputMessage.addEventListener("keypress", e => {
-   if (e.key == "Enter") sendMessage();
-})
+
+inputMessage.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        sendMessage();
+    }
+});
+
+// Фокусуємося на полі вводу при завантаженні сторінки
+window.onload = () => inputMessage.focus();
