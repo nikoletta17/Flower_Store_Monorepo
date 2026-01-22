@@ -20,28 +20,34 @@ document.addEventListener('DOMContentLoaded', () => {
         
         currentIndex = index;
 
-        // Тайм-аут, щоб уникнути спаму кліків під час анімації
         setTimeout(() => {
             isTransitioning = false;
         }, 1000);
     }
 
-    nextBtn.addEventListener('click', () => {
+    // Додаємо e.stopPropagation(), щоб клік не "долітав" до document
+    nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); 
         let next = (currentIndex + 1) % slides.length;
         updateSlider(next);
     });
 
-    prevBtn.addEventListener('click', () => {
+    prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         let prev = (currentIndex - 1 + slides.length) % slides.length;
         updateSlider(prev);
     });
 
     dots.forEach((dot, i) => {
-        dot.addEventListener('click', () => updateSlider(i));
+        dot.addEventListener('click', (e) => {
+            e.stopPropagation();
+            updateSlider(i);
+        });
     });
 
-    // Автопрокрутка (вимкни, якщо не треба)
+    // Автопрокрутка: викликаємо функцію НАПРЯМУ, а не через імітацію кліку
     setInterval(() => {
-        nextBtn.click();
+        let next = (currentIndex + 1) % slides.length;
+        updateSlider(next);
     }, 6000);
 });
