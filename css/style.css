@@ -200,145 +200,210 @@ header {
 }
 
 /* INTRO SECTION */
-.intro{
-  position:relative;
-  min-height:100vh;
-  display:grid;
-  align-items:center;
+/* --- ОСНОВНА СЕКЦІЯ --- */
+.intro {
+  position: relative;
+  height: 100vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #fce4ec;
   padding-top: 7.5rem;
   padding-bottom: 5rem;
-  background-image: url('../img/bg/intro.jpg');
+}
+
+/* Прибираємо старий .intro::after, щоб не було блимання на всьому екрані */
+.intro::after { display: none; }
+
+/* --- КОНТЕЙНЕР СЛАЙДІВ --- */
+.intro-slides {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.intro-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  /* Плавний перехід лише для opacity, щоб уникнути сіпання */
+  transition: opacity 1s ease-in-out, visibility 1s;
+  z-index: 1;
+}
+
+.intro-slide.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+
+/* ✅ ФОН КАРТИНКИ */
+.intro__bg {
+  position: absolute;
+  inset: 0;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  z-index: -2; /* Найнижчий рівень */
 }
 
-.intro::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:rgba(255,230,238,0.6); 
+/* ✅ РОЖЕВЕ НАПИЛЕННЯ ТІЛЬКИ ДЛЯ КАРТИНКИ */
+.intro__overlay {
+  position: absolute;
+  inset: 0;
+  /* Ніжний рожевий фільтр */
+  background: rgba(255, 230, 238, 0.5); 
+  z-index: -1; /* Вище за картинку, але нижче за текст */
+  pointer-events: none;
 }
 
-.intro-grid{
-  position:relative;
-  z-index:2;
-  display:grid;
-  grid-template-columns: 1fr 3.75rem; 
-  gap:2.25rem;
-  align-items:center;
+/* --- КОНТЕНТ (ТЕКСТ) --- */
+.container-content {
+  position: relative;
+  z-index: 10; /* Завжди зверху */
+  width: min(1100px, 94%);
+  margin: 0 auto;
 }
 
-.intro-left h1{
+.intro-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.intro-left h1 {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 3.375rem;
+  font-size: clamp(2.5rem, 5.5vw, 3.375rem);
   margin: 0;
-  color: rgba(var(--text)/0.96);
-  line-height: 1.02;
+  color: #4a4448; /* Темно-сірий з фіолетовим відтінком */
+  line-height: 1.1;
 }
 
-.intro-left p{
+.intro-left p {
   font-size: 1.125rem;
   margin-top: 0.75rem;
-  color:#5c555b;
+  color: #5c555b;
 }
 
-/* intro BUTTON */
-.intro-btn{
-  margin-top: 1.25rem;
-  padding: 0.75rem 1.5rem;
-  font-family:'Playfair Display', serif;
+/* КНОПКА */
+.intro-btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.8rem 2rem;
+  font-family: 'Playfair Display', serif;
   font-size: 1rem;
   background: linear-gradient(135deg, rgb(var(--accent-1)), rgb(var(--accent-2)));
-  color:white;
-  border:none;
-  border-radius:12px;
-  cursor:pointer;
-  transition:0.3s;
+  color: white;
+  border-radius: 12px;
   text-decoration: none;
+  transition: 0.3s;
+  box-shadow: 0 4px 15px rgba(var(--accent-1)/0.2);
 }
-.intro-btn:hover{
+
+.intro-btn:hover {
   transform: translateY(-3px);
-  box-shadow:0 6px 12px rgba(0,0,0,0.1);
-}
-
-/* PETAL ANIMATION */
-.petal-layer{
-   position:absolute;
-   inset:0;
-   pointer-events:none;
-   z-index:1
-}
-.petal{
-  position:absolute;
-  width: 2.25rem;
-  height: 2.25rem;
-  background:radial-gradient(circle at 60% 40%, rgba(255,255,255,0.6), rgba(233,135,175,0.9));
-  border-radius:50%;
-  opacity:0.9;
-  filter:blur(1px);
-  animation:float 12s linear infinite;
-}
-
-.petal.p2{
-  width: 1.5rem;
-  height: 1.5rem;
-  left: 20%;
-  top: 10%;
-  animation-duration:16s;
-}
-
-.petal.p3{
-  width: 2.75rem;
-  height: 2.75rem;
-  right: 8%;
-  top: 22%;
-  animation-duration: 10s;
-  opacity: 0.75;
-  background: radial-gradient(circle at 60% 40%, rgba(255,255,255,0.6), rgba(143 198 169,0.9));
-}
-.petal.p4{
-  width: 1.75rem;
-  height: 1.75rem;
-  left: 60%;
-  top: 60%;
-  animation-duration:14s;
-}
-
-@keyframes float{
-  0% {
-    transform: translateY(0) rotate(0)
-  }
-  50% {
-    transform: translateY(40px) rotate(45deg)
-  }
-  100% {
-    transform: translateY(-20px) rotate(90deg)
-  }
+  box-shadow: 0 6px 15px rgba(var(--accent-1)/0.3);
 }
 
 
-/* для телефонів і планшетів */
+.intro-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  
+  /* Початковий вигляд */
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(5px);
+  border: none;
+  color: rgb(var(--accent-1)); 
+  
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  cursor: pointer;
+  
+  font-size: 1.5rem; /* розмір  стрілки всередині */
+  font-weight: bold;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease-in-out;
+}
+
+
+.intro-arrow:hover {
+  background: #E982A6; 
+  color: #ffffff;
+  transform: translateY(-50%) scale(1.075);
+  
+  box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3);
+}
+
+/* Відступи для стрілок */
+.intro-arrow--prev { left: 2rem; }
+.intro-arrow--next { right: 2rem; }
+
+.intro-dots {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  gap: 12px;
+}
+
+.intro-dot {
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgb(var(--accent-1));
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.intro-dot.active {
+  background: rgb(var(--accent-1));
+  transform: scale(1.3);
+}
+
+/* ПЕЛЮСТКИ */
+.petal-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* АНІМАЦІЯ FLOAT ТА ІНШЕ (без змін) */
+@keyframes float {
+  0% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(40px) rotate(45deg); }
+  100% { transform: translateY(-20px) rotate(90deg); }
+}
+
+/* АДАПТИВНІСТЬ */
 @media (max-width: 992px) {
-  .intro-grid {
-    grid-template-columns: 1fr; 
-    justify-items: center;
-    text-align: center;
-    gap: 1.5rem;
-  }
+  .intro-arrow { width: 45px; height: 45px; }
+  .intro-arrow--prev { left: 1rem; }
+  .intro-arrow--next { right: 1rem; }
+  .intro-left h1 { font-size: 2.8rem; }
+}
 
-  .intro-left h1 {
-    font-size: 2.7rem; 
-  }
-
-  .intro-left p {
-    font-size: 1rem;
-    max-width: 90%;
-  }
-
-  .intro-btn {
-    margin: 1rem auto 0;
-  }
+@media (max-width: 768px) {
+  .intro-arrow { display: none; }
+  .intro-dots { bottom: 2rem; }
+  .intro-left h1 { font-size: 2.4rem; }
 }
 
 /* ABOUT SECTION */

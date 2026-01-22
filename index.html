@@ -57,22 +57,98 @@
   </nav>
 </header>
 
-   <main>
-      <section class="intro" id="intro">
-         <div class="intro-grid">
-            <div class="preview-greeting intro-left">
-               <h1 class="gradient-header" data-i18n="introTitle">Whisper of Flower</h1>
-               <p data-i18n="introDesc">Кожен букет — як зізнання в коханні</p>
-               <a href="#bouquet-section" class="intro-btn" data-i18n="introBtn">Перейти в каталог</a>
-            </div>
-         </div>
-         <div class="petal-layer">
-            <div class="petal p1" style="left:10%;top:15%"></div>
-            <div class="petal p2"></div>
-            <div class="petal p3"></div>
-            <div class="petal p4"></div>
-         </div>
-      </section>
+<main>
+<section class="intro" id="intro">
+  <div class="intro-slides">
+    <div class="intro-slide active">
+      <div class="intro__bg" style="background-image: url('./img/bg/intro1.jpg')"></div>
+      <div class="intro__overlay"></div> 
+      <div class="container-content"> 
+        <div class="intro-grid">
+          <div class="preview-greeting intro-left">
+            <h1 class="gradient-header" data-i18n="introTitle">Whisper of Flower</h1>
+            <p data-i18n="introDesc">Кожен букет — як зізнання в коханні</p>
+            <a href="#bouquet-section" class="intro-btn" data-i18n="introBtn">Перейти в каталог</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="intro-slide">
+      <div class="intro__bg" style="background-image: url('./img/2.png')"></div>
+      <div class="intro__overlay"></div> 
+      <div class="container-content"> 
+        <div class="intro-grid">
+          <div class="preview-greeting intro-left">
+            <h1 class="gradient-header" data-i18n="introTitle">Whisper of Flower</h1>
+            <p data-i18n="introDesc">Кожен букет — як зізнання в коханні</p>
+            <a href="#bouquet-section" class="intro-btn" data-i18n="introBtn">Перейти в каталог</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="intro-slide">
+      <div class="intro__bg" style="background-image: url('./img/3.jpg')"></div>
+      <div class="intro__overlay"></div> 
+      <div class="container-content"> 
+        <div class="intro-grid">
+          <div class="preview-greeting intro-left">
+            <h1 class="gradient-header" data-i18n="introTitle">Whisper of Flower</h1>
+            <p data-i18n="introDesc">Кожен букет — як зізнання в коханні</p>
+            <a href="#bouquet-section" class="intro-btn" data-i18n="introBtn">Перейти в каталог</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="intro-slide">
+      <div class="intro__bg" style="background-image: url('./img/4.png')"></div>
+      <div class="intro__overlay"></div> 
+      <div class="container-content"> 
+        <div class="intro-grid">
+          <div class="preview-greeting intro-left">
+            <h1 class="gradient-header" data-i18n="introTitle">Whisper of Flower</h1>
+            <p data-i18n="introDesc">Кожен букет — як зізнання в коханні</p>
+            <a href="#bouquet-section" class="intro-btn" data-i18n="introBtn">Перейти в каталог</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="intro-slide">
+      <div class="intro__bg" style="background-image: url('./img/5.jpg')"></div>
+      <div class="intro__overlay"></div> 
+      <div class="container-content"> 
+        <div class="intro-grid">
+          <div class="preview-greeting intro-left">
+            <h1 class="gradient-header" data-i18n="introTitle">Whisper of Flower</h1>
+            <p data-i18n="introDesc">Кожен букет — як зізнання в коханні</p>
+            <a href="#bouquet-section" class="intro-btn" data-i18n="introBtn">Перейти в каталог</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="intro-arrow intro-arrow--prev">❮</button>
+  <button class="intro-arrow intro-arrow--next">❯</button>
+
+  <div class="intro-dots">
+    <span class="intro-dot active"></span>
+    <span class="intro-dot"></span>
+    <span class="intro-dot"></span>
+    <span class="intro-dot"></span>
+    <span class="intro-dot"></span>
+  </div>
+
+  <div class="petal-layer">
+    <div class="petal p1" style="left:10%;top:15%"></div>
+    <div class="petal p2"></div>
+    <div class="petal p3"></div>
+    <div class="petal p4"></div>
+  </div>
+</section>
       
       <section id="about-section" class="about-section">
         <div class="about-content">
@@ -223,6 +299,7 @@
 
  <!-- SCRIPTS -->
    <script src="js/navBar.js"></script>
+   <script src="./js/Slider_dots.js"></script>
    <script src="js/scrollBtn.js"></script>
    <!-- <script src="js/modalCards.js"></script> -->
    <script src="js/translations.js"></script>
