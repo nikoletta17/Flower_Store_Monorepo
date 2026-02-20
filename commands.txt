@@ -42,7 +42,7 @@ git branch //Перевірка гілки
 git add .
 
 # 2. Робимо коміт (опис того, що ти зробила)
-git commit -m "Перевела репозиторії на асинхронність та оновила ініціалізацію"
+git commit -m "Update: Made repositories asynchronous and updated data"
 
 # 3. Пушимо САМЕ в гілку db-features
 git push origin db-features

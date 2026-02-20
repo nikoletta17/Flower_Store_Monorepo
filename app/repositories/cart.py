@@ -35,16 +35,15 @@ async def get_or_create_cart(
 # 2. ДОДАВАННЯ/ОНОВЛЕННЯ ЕЛЕМЕНТА У КОШИКУ
 # ----------------------------------------------------
 async def add_item(
-        user_id: int,
-        item_data: CartItemCreate,
-        db: AsyncSession
+    user_id: int,
+    item_data: CartItemCreate,
+    db: AsyncSession
 ) -> models.CartItem:
-    cart = await get_or_create_cart(user_id, db)  # Передаємо db
 
-    # Отримуємо букет (ціна в КОПІЙКАХ)
+    cart = await get_or_create_cart(user_id, db)
+
     bouquet = await get_bouquet_repo(item_data.bouquet_id, db)
 
-    # Конвертуємо ціну в ГРИВНІ (FLOAT) для збереження у CartItem
     price_in_uah = round(bouquet.price / 100.0, 2)
 
     result = await db.execute(
@@ -53,8 +52,9 @@ async def add_item(
             models.CartItem.bouquet_id == item_data.bouquet_id
         )
     )
-
+    # Перевіряємо, чи такий товар вже є у кошику
     cart_item = result.scalar_one_or_none()
+
     if cart_item:
         # Оновлення кількості
         cart_item.quantity += item_data.quantity
@@ -68,30 +68,9 @@ async def add_item(
         )
         db.add(cart_item)
 
-
-    # Перевіряємо, чи такий товар вже є у кошику
-    cart_item = db.query(models.CartItem).filter(
-        models.CartItem.cart_id == cart.id,
-        models.CartItem.bouquet_id == item_data.bouquet_id
-    ).first()
-
-    if cart_item:
-        # Оновлення кількості
-        cart_item.quantity += item_data.quantity
-        db.commit()
-        db.refresh(cart_item)
-    else:
-        # Створення нового елемента кошика
-        cart_item = models.CartItem(
-            cart_id=cart.id,
-            bouquet_id=item_data.bouquet_id,
-            quantity=item_data.quantity,
-            price_on_add=price_in_uah  # ЗБЕРІГАЄМО У ГРИВНЯХ (FLOAT)
-        )
-        db.add(cart_item)
-
     await db.commit()
     await db.refresh(cart_item)
+
     return cart_item
 
 
