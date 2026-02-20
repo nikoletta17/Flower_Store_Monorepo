@@ -1,5 +1,8 @@
-from fastapi import FastAPI
+# app/main.py
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
+from contextlib import asynccontextmanager
 
 from .core.middleware import setup_middleware
 from .routers import (
@@ -10,13 +13,24 @@ from .routers import (
     user as user_router,
     cart as cart_router
 )
-from .database import Base, engine, get_db
+from .database import AsyncSessionLocal
 from .services import startup_service
 from .core.exceptions import FlowerAppException, NotFoundException, AlreadyExistsException
 
+
+#LIFESPAN
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    # Дії при запуску (аналог startup)
+    async with AsyncSessionLocal() as db:
+        await startup_service.run_startup(db)
+    yield
+
+
 app = FastAPI(
     title="Whisper of Flower",
-    description="Квіткова лавка - Whisper of Flower"
+    description="Квіткова лавка - Whisper of Flower",
+    lifespan=lifespan
 )
 
 # Middleware
@@ -26,20 +40,29 @@ setup_middleware(app)
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
-# Routers
+#Global Exceptions
+@app.exception_handler(FlowerAppException)
+async def flower_app_exception_handler(request: Request, exc: FlowerAppException):
+    # Визначаємо статус-код
+    status_code = 400
+    if isinstance(exc, NotFoundException):
+        status_code = 404
+    elif isinstance(exc, AlreadyExistsException):
+        status_code = 409
+
+    return JSONResponse(
+        status_code=status_code,
+        content={
+            "status": "error",
+            "message": exc.message,
+            "error_type": exc.__class__.__name__
+        }
+    )
+
+#Routers
 app.include_router(bouquet_router.router)
 app.include_router(reviews_router.router)
 app.include_router(ai_assistant_router.router)
 app.include_router(auth_router.router)
 app.include_router(user_router.router)
 app.include_router(cart_router.router)
-
-# Startup event
-@app.on_event("startup")
-def startup_event():
-    Base.metadata.create_all(bind=engine)
-    db = next(get_db())
-    try:
-        startup_service.run_startup(db)
-    finally:
-        db.close()
