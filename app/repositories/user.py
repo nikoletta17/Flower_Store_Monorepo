@@ -1,4 +1,4 @@
-from fastapi import HTTPException, status
+from fastapi import status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from typing import Optional
@@ -7,6 +7,7 @@ from typing import Optional
 from .. import models
 from ..schemas.user import UserCreate, UserUpdate
 from ..utils.hashing import Hash
+from ..core.exceptions import NotFoundException, AlreadyExistsException
 
 
 async def get_user_by_email(
@@ -19,15 +20,18 @@ async def get_user_by_email(
     return user_by_email.scalar_one_or_none()
 
 
-
 async def get_user(
         db: AsyncSession,
         user_id: int
-) -> Optional[models.User]:
+) -> models.User:
     user = await db.execute(
         select(models.User).where(models.User.id == user_id)
     )
-    return user.scalar_one_or_none()
+    db_user = user.scalar_one_or_none()
+
+    if not db_user:
+        raise NotFoundException("User", user_id)
+    return db_user
 
 
 
@@ -35,13 +39,10 @@ async def create_user(
         db: AsyncSession,
         user: UserCreate
 ) -> models.User:
-    # Перевірка наявності користувача з очікуваним email
+    # Використовуємо AlreadyExistsException
     existing_user = await get_user_by_email(db, user.email)
     if existing_user:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Користувач з email '{user.email}' вже існує."
-        )
+        raise AlreadyExistsException(f"Користувач з email '{user.email}' вже існує.")
 
     hashed_password = Hash.bcrypt(user.password)
 
@@ -58,6 +59,7 @@ async def create_user(
     return db_user
 
 
+
 async def update_user(
     db: AsyncSession,
     user_id: int,
@@ -65,51 +67,37 @@ async def update_user(
 ) -> models.User:
 
     db_user = await get_user(db, user_id)
-    if db_user is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found."
-        )
-
     update_data = user_update.model_dump(exclude_unset=True)
 
-    # Оновлення пароля
+# Оновлення пароля
     if 'password' in update_data:
         db_user.password = Hash.bcrypt(update_data['password'])
         update_data.pop('password', None)
         update_data.pop('confirm_password', None)
 
-    # Перевірка email
+# Перевірка на унікальність нового email
     if 'email' in update_data and update_data['email'] != db_user.email:
         existing_user = await get_user_by_email(db, update_data['email'])
         if existing_user:
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail=f"Email '{update_data['email']}' is already taken by another user"
-            )
+            raise AlreadyExistsException(f"Email '{update_data['email']}' вже зайнятий іншим користувачем")
 
-    # Заборонені поля
+# Оновлюємо поля
     for key, value in update_data.items():
         if hasattr(db_user, key) and key not in ['id', 'role']:
             setattr(db_user, key, value)
 
     await db.commit()
     await db.refresh(db_user)
-
     return db_user
+
 
 
 async def delete_user(
         db: AsyncSession,
         user_id: int
 ) -> dict:
-    db_user = await get_user(db, user_id)
-    if db_user is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found."
-        )
 
+    db_user = await get_user(db, user_id)
     await db.delete(db_user)
     await db.commit()
     return {"message": f"User ID {user_id} successfully deleted."}

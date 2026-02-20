@@ -1,4 +1,4 @@
-from fastapi import HTTPException, status
+from fastapi import status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from typing import List
@@ -6,6 +6,7 @@ from typing import List
 from .. import models
 from ..schemas.review import ReviewCreate
 from ..models import User as UserModel
+from ..core.exceptions import NotFoundException
 
 
 
@@ -31,7 +32,7 @@ async def get_review_by_id(
    review = result.scalar_one_or_none()
 
    if not review:
-       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Review by id {id} not found")
+       raise NotFoundException("Review", id)
    return review
 
 

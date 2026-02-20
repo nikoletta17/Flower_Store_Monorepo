@@ -1,11 +1,11 @@
-from fastapi import HTTPException, status
+from fastapi import status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from typing import List
 
 from .. import models
 from ..schemas.bouquet import BouquetCreate, BouquetUpdate
-
+from ..core.exceptions import NotFoundException
 
 
 async def get_all(
@@ -28,9 +28,8 @@ async def get_bouquet_by_id(
     )
     bouquet = result.scalar_one_or_none()
     if not bouquet:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Bouquet by id {id} not found")
+        raise NotFoundException("Bouquet", id)
     return bouquet
-
 
 
 
@@ -60,17 +59,10 @@ async def update_bouquet(
         db: AsyncSession,
         request: BouquetUpdate
 ) -> models.Bouquet:
-    result = await db.execute(
-        select(models.Bouquet).filter(models.Bouquet.id == id)
-    )
-    bouquet = result.scalar_one_or_none()
-    if bouquet is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Bouquet not found"
-        )
-    updated_data = request.model_dump(exclude_unset=True)
+    bouquet = await get_bouquet_by_id(id, db)
 
+    updated_data = request.model_dump(exclude_unset=True)
+    # Якщо ціна оновлюється — конвертуємо в копійки
     if 'price' in updated_data and updated_data['price'] is not None:
         updated_data['price'] = int(updated_data['price'] * 100)
 
@@ -87,9 +79,6 @@ async def delete_bouquet(
     id: int,
     db: AsyncSession
 ) -> dict:
-    result = await db.execute(
-        select(models.Bouquet).where(models.Bouquet.id == id)
-    )
     bouquet = await get_bouquet_by_id(id, db)
 
     await db.delete(bouquet)
