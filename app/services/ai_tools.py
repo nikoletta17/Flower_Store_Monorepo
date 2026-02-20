@@ -55,7 +55,7 @@ AI_TOOLS = [
                 "type": "object",
                 "properties": {
                     "max_price": {"type": "number", "description": "Максимальна ціна"},
-                    "min_price": {"type": "number", "description": "Мінімальна ціна (необов'язково)"}
+                    "min_price": {"type": "number", "description": "Мінімальна ціна"}
                 },
                 "required": ["max_price"]
             },

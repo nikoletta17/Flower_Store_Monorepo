@@ -1,5 +1,6 @@
-from fastapi import HTTPException, status, Response
-from sqlalchemy.orm import Session
+from fastapi import HTTPException, status
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 from typing import List
 
 from .. import models
@@ -8,21 +9,38 @@ from ..models import User as UserModel
 
 
 
-def get_all(db: Session, skip: int = 0, limit: int = 100) -> List[models.Review]:
-    reviews = db.query(models.Review).offset(skip).limit(limit).all()
-    return reviews
+async def get_all(
+        db: AsyncSession,
+        skip: int = 0,
+        limit: int = 100
+) -> List[models.Review]:
+    result = await db.execute(
+        select(models.Review).offset(skip).limit(limit)
+    )
+    return result.scalars().all()
 
 
 
-def get_review_by_id(id: int, db: Session) -> models.Review:
-    review = db.query(models.Review).filter(models.Review.id == id).first()
-    if not review:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Review by id {id} not found")
-    return review
+async def get_review_by_id(
+        id: int,
+        db: AsyncSession
+) -> models.Review:
+   result = await db.execute(
+       select(models.Review).where(models.Review.id == id)
+   )
+   review = result.scalar_one_or_none()
+
+   if not review:
+       raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Review by id {id} not found")
+   return review
 
 
 
-def create_review(db: Session, request: ReviewCreate, current_user: UserModel) -> models.Review:
+async def create_review(
+        db: AsyncSession,
+        request: ReviewCreate,
+        current_user: UserModel
+) -> models.Review:
     author_name = current_user.name
     new_review = models.Review(
         text=request.text,
@@ -30,21 +48,18 @@ def create_review(db: Session, request: ReviewCreate, current_user: UserModel) -
         rating=request.rating
     )
     db.add(new_review)
-    db.commit()
-    db.refresh(new_review)
+    await db.commit()
+    await db.refresh(new_review)
     return new_review
 
 
 
-def delete_review(id:int, db:Session) -> dict:
-    review = db.query(models.Review).filter(models.Review.id == id)
-
-    if not review.first():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Review by id {id} not found")
-
-    review.delete(synchronize_session=False)
-    db.commit()
+async def delete_review(
+        id:int,
+        db:AsyncSession
+) -> dict:
+    review = await get_review_by_id(id, db)
+    await db.delete(review)
+    await db.commit()
     return {"detail": "Review has been deleted"}
-
-
 

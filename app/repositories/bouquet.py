@@ -1,5 +1,6 @@
-from fastapi import HTTPException, status, Response
-from sqlalchemy.orm import Session
+from fastapi import HTTPException, status
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 from typing import List
 
 from .. import models
@@ -7,22 +8,36 @@ from ..schemas.bouquet import BouquetCreate, BouquetUpdate
 
 
 
-def get_all(db: Session, skip: int = 0, limit: int = 100) -> List[models.Bouquet]:
-    bouquets = db.query(models.Bouquet).offset(skip).limit(limit).all()
-    return bouquets
+async def get_all(
+        db: AsyncSession,
+        skip: int = 0,
+        limit: int = 100
+) -> List[models.Bouquet]:
+   query = select(models.Bouquet).offset(skip).limit(limit)
+   result = await db.execute(query)
+   return result.scalars().all()
 
 
 
-def get_bouquet_by_id(id: int, db: Session) -> models.Bouquet:
-    bouquet = db.query(models.Bouquet).filter(models.Bouquet.id == id).first()
+async def get_bouquet_by_id(
+        id: int,
+        db: AsyncSession
+) -> models.Bouquet:
+    result = await db.execute(
+        select(models.Bouquet).where(models.Bouquet.id == id)
+    )
+    bouquet = result.scalar_one_or_none()
     if not bouquet:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Bouquet by id {id} not found")
     return bouquet
 
 
-# app/repositories/bouquet.py
 
-def create_bouquet(db: Session, request: BouquetCreate) -> models.Bouquet:
+
+async def create_bouquet(
+        db: AsyncSession,
+        request: BouquetCreate
+) -> models.Bouquet:
     price_in_cents = int(request.price * 100)
 
     new_bouquet = models.Bouquet(
@@ -34,34 +49,50 @@ def create_bouquet(db: Session, request: BouquetCreate) -> models.Bouquet:
     )
 
     db.add(new_bouquet)
-    db.commit()
-    db.refresh(new_bouquet)
+    await db.commit()
+    await db.refresh(new_bouquet)
     return new_bouquet
 
 
 
-def update_bouquet(id: int, db: Session, request: BouquetUpdate) -> models.Bouquet:
-    bouquet = db.query(models.Bouquet).filter(models.Bouquet.id == id)
-    if not bouquet.first():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Bouquet not found")
-
+async def update_bouquet(
+        id: int,
+        db: AsyncSession,
+        request: BouquetUpdate
+) -> models.Bouquet:
+    result = await db.execute(
+        select(models.Bouquet).filter(models.Bouquet.id == id)
+    )
+    bouquet = result.scalar_one_or_none()
+    if bouquet is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Bouquet not found"
+        )
     updated_data = request.model_dump(exclude_unset=True)
 
     if 'price' in updated_data and updated_data['price'] is not None:
         updated_data['price'] = int(updated_data['price'] * 100)
 
-    bouquet.update(updated_data)
-    db.commit()
-    return bouquet.first()
+    for key, value in updated_data.items():
+        setattr(bouquet, key, value)
+
+    await db.commit()
+    await db.refresh(bouquet)
+    return bouquet
 
 
 
-def delete_bouquet(id:int, db:Session) -> dict:
-    bouquet = db.query(models.Bouquet).filter(models.Bouquet.id == id)
+async def delete_bouquet(
+    id: int,
+    db: AsyncSession
+) -> dict:
+    result = await db.execute(
+        select(models.Bouquet).where(models.Bouquet.id == id)
+    )
+    bouquet = await get_bouquet_by_id(id, db)
 
-    if not bouquet.first():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Bouquet by id {id} not found")
+    await db.delete(bouquet)
+    await db.commit()
 
-    bouquet.delete(synchronize_session=False)
-    db.commit()
     return {"detail": "Bouquet has been deleted"}

@@ -2,19 +2,54 @@
 Clean the cash:
 taskkill /f /im python.exe
 
+
+
+********************
 Reloading:
 uvicorn app.main:app --reload
+********************
 
+
+
+********************
 Migrations:
 alembic revision --autogenerate -m "опис зміни" (маленькі літери)
 alembic upgrade head                              #закріпити зміну
+********************
 
 
+
+********************
 Requirements
 pip freeze > requirements.txt
+********************
 
+
+
+********************
 QR-CODE                                    #to generate
 python app/QR-code/generate_qr.py
+****************************************
 
 
 
+********************
+GIT
+
+git branch //Перевірка гілки
+
+# 1. Додаємо всі змінені файли до списку збереження
+git add .
+
+# 2. Робимо коміт (опис того, що ти зробила)
+git commit -m "Перевела репозиторії на асинхронність та оновила ініціалізацію"
+
+# 3. Пушимо САМЕ в гілку db-features
+git push origin db-features
+
+Перейти на main
+git checkout main
+Повернутися на db-features
+git checkout db-features
+
+********************

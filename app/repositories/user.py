@@ -1,25 +1,42 @@
-from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
-from typing import List, Optional
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
+from typing import Optional
+
 
 from .. import models
 from ..schemas.user import UserCreate, UserUpdate
 from ..utils.hashing import Hash
 
 
-def get_user_by_email(db: Session, email: str) -> Optional[models.User]:
-    user_by_email = db.query(models.User).filter(models.User.email == email).first()
-    return user_by_email
+async def get_user_by_email(
+        db: AsyncSession,
+        email: str
+) -> Optional[models.User]:
+    user_by_email = await db.execute(
+        select(models.User).where(models.User.email == email)
+    )
+    return user_by_email.scalar_one_or_none()
 
 
-def get_user(db: Session, user_id: int) -> Optional[models.User]:
-    user = db.query(models.User).filter(models.User.id == user_id).first()
-    return user
+
+async def get_user(
+        db: AsyncSession,
+        user_id: int
+) -> Optional[models.User]:
+    user = await db.execute(
+        select(models.User).where(models.User.id == user_id)
+    )
+    return user.scalar_one_or_none()
 
 
-def create_user(db: Session, user: UserCreate) -> models.User:
+
+async def create_user(
+        db: AsyncSession,
+        user: UserCreate
+) -> models.User:
     # Перевірка наявності користувача з очікуваним email
-    existing_user = db.query(models.User).filter(models.User.email == user.email).first()
+    existing_user = await get_user_by_email(db, user.email)
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
@@ -36,52 +53,63 @@ def create_user(db: Session, user: UserCreate) -> models.User:
     )
 
     db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
+    await db.commit()
+    await db.refresh(db_user)
     return db_user
 
 
-def update_user(db: Session, user_id: int, user_update: UserUpdate) -> models.User:
-    # ⬅️ ЗМІНЕНО: Використовуємо get_user
-    db_user = get_user(db, user_id)
-    if not db_user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found.")
+async def update_user(
+    db: AsyncSession,
+    user_id: int,
+    user_update: UserUpdate
+) -> models.User:
+
+    db_user = await get_user(db, user_id)
+    if db_user is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found."
+        )
 
     update_data = user_update.model_dump(exclude_unset=True)
 
     # Оновлення пароля
     if 'password' in update_data:
-        hashed_password = Hash.bcrypt(update_data['password'])
-        db_user.password = hashed_password
+        db_user.password = Hash.bcrypt(update_data['password'])
+        update_data.pop('password', None)
+        update_data.pop('confirm_password', None)
 
-        del update_data['password']
-        if 'confirm_password' in update_data:
-            del update_data['confirm_password']
-
-    # Перевірка унікальності нового email
+    # Перевірка email
     if 'email' in update_data and update_data['email'] != db_user.email:
-        existing_user = get_user_by_email(db, update_data['email'])
+        existing_user = await get_user_by_email(db, update_data['email'])
         if existing_user:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail=f"Email '{update_data['email']}' is already taken by another user"
             )
 
-    # Заборона оновлення решти полів
+    # Заборонені поля
     for key, value in update_data.items():
         if hasattr(db_user, key) and key not in ['id', 'role']:
             setattr(db_user, key, value)
 
-    db.commit()
-    db.refresh(db_user)
+    await db.commit()
+    await db.refresh(db_user)
+
     return db_user
 
 
-def delete_user(db: Session, user_id: int) -> dict: # ⬅️ user_id замість id
-    db_user = get_user(db, user_id)
-    if not db_user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found.")
+async def delete_user(
+        db: AsyncSession,
+        user_id: int
+) -> dict:
+    db_user = await get_user(db, user_id)
+    if db_user is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found."
+        )
 
-    db.delete(db_user)
-    db.commit()
+    await db.delete(db_user)
+    await db.commit()
     return {"message": f"User ID {user_id} successfully deleted."}
