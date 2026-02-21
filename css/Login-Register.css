@@ -33,6 +33,7 @@ body {
 a {
    text-decoration: none;
    color: rgb(206, 92, 111);
+   font-weight: 600;
 }
 
 a:hover {
@@ -266,4 +267,40 @@ a:hover {
 .lang-menu ul li a:hover {
    background: #f2f2f2;
    transition: 0.2s;
+}
+
+.social-login {
+   margin-top: 15px;
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+   align-items: center;
+   justify-content: center;
+   
+}
+
+.social-login p {
+   color: rgb(206, 92, 111);
+   font-weight: 600;
+}
+
+.google-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    border: 1px solid rgb(206, 92, 111);
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.google-btn:hover {
+    background-color: rgba(var(--primary-color));
+    color: #333;
+}
+
+.google-btn img {
+    margin-right: 10px;
 }

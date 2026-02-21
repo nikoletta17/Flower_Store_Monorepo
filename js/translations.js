@@ -1,4 +1,3 @@
-
 const langMenu = document.querySelector('.lang-menu');
 const selected = document.querySelector('.selected-lang');
 const options = document.querySelectorAll('.lang-menu ul li a');

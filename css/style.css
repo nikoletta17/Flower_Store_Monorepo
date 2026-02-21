@@ -1518,20 +1518,22 @@ header {
 
 
 /* style.css (КОРЕКЦІЯ ДЛЯ ГАРАНТОВАНОГО ВІДОБРАЖЕННЯ) */
-
-/* Стилі для динамічних елементів у .auth-links */
 .auth-links li {
-    display: list-item; /* Гарантуємо, що li відображається */
+    display: list-item;
     margin: 0;
     padding: 0;
 }
 
-/* Гарантуємо, що контейнер відображається, коли він містить елементи */
 .auth-links:not(:empty) {
     display: flex; 
-    /* Додайте margin-left, якщо він був втрачений, щоб посунути його вправо */
+    align-items: center;
     margin-left: auto; 
     gap: 1.25rem;
+}
+
+  .user-greeting {
+    color: #c96885; 
+    font-weight: 600;
 }
 
 /* Додатковий стиль, якщо ви використовуєте клас .nav-item у JS */
