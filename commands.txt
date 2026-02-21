@@ -54,3 +54,5 @@ git checkout db-features
 
 ********************
 
+git checkout -b auth-features
+

@@ -1,8 +1,21 @@
-from dotenv import load_dotenv
-import os
+from pydantic_settings import BaseSettings
+from pydantic import Field
 
-load_dotenv()
 
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
+class Settings(BaseSettings):
+    SECRET_KEY: str
+    ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
+
+    GROQ_API_KEY: str
+
+    SUPERUSER_EMAIL: str
+    SUPERUSER_PASSWORD: str
+
+    OAUTH_GOOGLE_CLIENT_ID: str
+    OAUTH_GOOGLE_CLIENT_SECRET: str
+
+    class Config:
+        env_file = ".env"
+
+settings = Settings()

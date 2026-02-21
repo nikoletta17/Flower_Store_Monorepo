@@ -4,18 +4,22 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 
-from .core.middleware import setup_middleware
+
 from .routers import (
     bouquet as bouquet_router,
     reviews as reviews_router,
     ai_assistant as ai_assistant_router,
     auth_router as auth_router,
     user as user_router,
-    cart as cart_router
+    cart as cart_router,
+    google_auth as google_auth_router,
 )
+
 from .database import AsyncSessionLocal
 from .services import startup_service
 from .core.exceptions import FlowerAppException, NotFoundException, AlreadyExistsException
+from .core.middleware import setup_middleware
+
 
 
 #LIFESPAN
@@ -66,3 +70,4 @@ app.include_router(ai_assistant_router.router)
 app.include_router(auth_router.router)
 app.include_router(user_router.router)
 app.include_router(cart_router.router)
+app.include_router(google_auth_router.router)

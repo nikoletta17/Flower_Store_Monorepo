@@ -1,4 +1,7 @@
 from fastapi.middleware.cors import CORSMiddleware #for frontend
+from starlette.middleware.sessions import SessionMiddleware
+from app.core.config import settings
+
 
 def setup_middleware(app):
     origins = [
@@ -16,4 +19,9 @@ def setup_middleware(app):
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
+    )
+
+    app.add_middleware(
+        SessionMiddleware,
+        secret_key=settings.SECRET_KEY,
     )

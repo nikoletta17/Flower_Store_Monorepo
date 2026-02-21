@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from .. import repositories as repo
 from ..utils.hashing import Hash
 from ..core.security import create_access_token
-from ..core.config import ACCESS_TOKEN_EXPIRE_MINUTES
+from ..core.config import settings
 
 
 async def login(form_data, db: AsyncSession):
@@ -31,7 +31,7 @@ async def login(form_data, db: AsyncSession):
             "user_id": user.id,
             "role": user.role
         },
-        expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     )
 
     return {
