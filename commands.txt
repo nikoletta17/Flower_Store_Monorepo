@@ -36,16 +36,16 @@ python app/QR-code/generate_qr.py
 ********************
 GIT
 
-git branch //Перевірка гілки
+git branch                                 //Перевірка гілки
 
 # 1. Додаємо всі змінені файли до списку збереження
 git add .
 
 # 2. Робимо коміт (опис того, що ти зробила)
-git commit -m "Updated: Moved the loading logic from the main file to the startup service, and the middleware logic to core/middleware, added global exceptions"
+git commit -m "Implemented OAuth through Google"
 
 # 3. Пушимо САМЕ в гілку db-features
-git push origin db-features
+git push origin auth-features
 
 Перейти на main
 git checkout main

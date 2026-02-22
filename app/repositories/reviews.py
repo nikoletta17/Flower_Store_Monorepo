@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -8,6 +10,8 @@ from ..schemas.review import ReviewCreate
 from ..models import User as UserModel
 from ..core.exceptions import NotFoundException
 
+
+logger = logging.getLogger(__name__)
 
 
 async def get_all(

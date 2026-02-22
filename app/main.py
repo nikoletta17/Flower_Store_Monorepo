@@ -19,7 +19,7 @@ from .database import AsyncSessionLocal
 from .services import startup_service
 from .core.exceptions import FlowerAppException, NotFoundException, AlreadyExistsException
 from .core.middleware import setup_middleware
-
+from app.core.logger import setup_logging, logger
 
 
 #LIFESPAN
@@ -30,6 +30,7 @@ async def lifespan(_app: FastAPI):
         await startup_service.run_startup(db)
     yield
 
+setup_logging()
 
 app = FastAPI(
     title="Whisper of Flower",
