@@ -3,7 +3,7 @@ import logging
 from fastapi import Request
 from fastapi.middleware.cors import CORSMiddleware #for frontend
 from starlette.middleware.sessions import SessionMiddleware
-from app.core.config import settings
+from app.core.config import Config
 
 
 logger = logging.getLogger(__name__)
@@ -46,5 +46,5 @@ def setup_middleware(app):
 
     app.add_middleware(
         SessionMiddleware,
-        secret_key=settings.SECRET_KEY,
+        secret_key=Config.SECRET_KEY,
     )

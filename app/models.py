@@ -1,6 +1,7 @@
 from sqlalchemy.orm import relationship
 from .database import Base
-from sqlalchemy import Column, Integer, String, CheckConstraint, ForeignKey, Float
+from sqlalchemy import Column, Integer, String, CheckConstraint, ForeignKey, Float, Boolean, DateTime
+from datetime import datetime
 
 class Bouquet(Base):
     __tablename__ = 'bouquets'
@@ -39,6 +40,11 @@ class User(Base):
     email = Column(String, unique=True)
     password = Column(String)
     role = Column(String, default="user")
+
+    #security
+    # failed_login_attempts = Column(Integer, default=0)
+    # is_locked_until = Column(DateTime, nullable=True)
+    # is_email_verified = Column(Boolean, default=False)
 
     cart = relationship("Cart", back_populates="user", uselist=False)
 

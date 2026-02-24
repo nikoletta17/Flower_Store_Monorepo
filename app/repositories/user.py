@@ -39,7 +39,6 @@ async def create_user(
         db: AsyncSession,
         user: UserCreate
 ) -> models.User:
-    # Використовуємо AlreadyExistsException
     existing_user = await get_user_by_email(db, user.email)
     if existing_user:
         raise AlreadyExistsException(f"Користувач з email '{user.email}' вже існує.")
@@ -57,7 +56,6 @@ async def create_user(
     await db.commit()
     await db.refresh(db_user)
     return db_user
-
 
 
 async def update_user(

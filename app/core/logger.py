@@ -3,7 +3,14 @@ import sys
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
+logger = logging.getLogger("app")
+
 def setup_logging():
+    root_logger = logging.getLogger()
+    if root_logger.handlers:
+        return
+
+
     log_dir = Path("logs")
     log_dir.mkdir(exist_ok=True)
 
@@ -27,11 +34,9 @@ def setup_logging():
     )
 
     file_handler.setFormatter(formatter)
-    root_logger = logging.getLogger()
+
     root_logger.setLevel(logging.INFO)
-
-    if root_logger.handlers:
-        return
-
     root_logger.addHandler(stream_handler)
     root_logger.addHandler(file_handler)
+
+
