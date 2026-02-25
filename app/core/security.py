@@ -1,9 +1,11 @@
+import logging
 from datetime import datetime, timedelta, timezone
 from jose import jwt, JWTError
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Optional
+from itsdangerous import URLSafeTimedSerializer
 
 from .config import Config
 from ..database import get_db
@@ -77,7 +79,7 @@ async def get_current_user(
 
     return user
 
-
+# ---------------- ADMIN ----------------
 def is_admin(current_user: UserModel = Depends(get_current_user)):
 
     if current_user.role != "admin":
@@ -87,3 +89,30 @@ def is_admin(current_user: UserModel = Depends(get_current_user)):
         )
 
     return current_user
+
+
+# ---------------- EMAIL ----------------
+serializer = URLSafeTimedSerializer(
+        secret_key = Config.SECRET_KEY,
+        salt="email-configuration"
+    )
+
+
+def create_url_safe_token(
+        data: dict
+):
+    token = serializer.dumps(data, salt="email-configuration")
+    return token
+
+
+
+def decode_url_safe_token(token:str):
+    """Deserialize a URLSafe token to get data"""
+    try:
+        token_data = serializer.loads(token)
+        return token_data
+
+    except Exception as e:
+        logging.error(str(e))
+
+

@@ -28,7 +28,7 @@ async def login_for_access_token(
 async def send_email(emails: EmailCreate):
     email = emails.addresses
 
-    html = "<h1>Welcome to the app</h1>"
+    html = "<h1>Welcome to the Whisper of Flower</h1>"
 
     message = create_message(
         recipients=email,
@@ -39,4 +39,7 @@ async def send_email(emails: EmailCreate):
     await mail.send_message(message)
 
     return {"message" : "Email sent successfully"}
+
+
+
 
