@@ -15,4 +15,10 @@ class AlreadyExistsException(FlowerAppException):
         super().__init__(message)
 
 
+class AIException(FlowerAppException):
+    """Виняток для помилок AI-асистента."""
+    def __init__(self, message: str, detail: str = None):
+        super().__init__(message)
+        self.detail = detail
+
 # Коли ми почнемо робити Оплату або Замовлення, ми додамо, наприклад, InsufficientStockException (якщо квітів немає в наявності)
