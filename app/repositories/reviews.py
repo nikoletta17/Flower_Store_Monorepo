@@ -43,11 +43,10 @@ async def create_review(
 ) -> models.Review:
     new_review = models.Review(
         text=request.text,
-        author=current_user.name,
+        rating=request.rating,
         user_id=current_user.id,
-        rating=request.rating
+        author=current_user.name
     )
-
     db.add(new_review)
     return new_review
 

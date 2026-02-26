@@ -42,17 +42,19 @@ git branch                                 //Перевірка гілки
 git add .
 
 # 2. Робимо коміт (опис того, що ти зробила)
-git commit -m "feat(mail): add email sending endpoint. refactor(logger): fix logging initialization and imports. db(user): remove unused security columns"
+git commit -m "fix: service layer, user access control, cart retrieval and exception handling"
 
 # 3. Пушимо САМЕ в гілку db-features
 git push origin auth-features
 
 Перейти на main
 git checkout main
+
 Повернутися на db-features
-git checkout db-features
+git checkout auth-features
 
 ********************
+СОЗДАТЬ ВЕТКУ
 
-git checkout -b auth-features
+git checkout -b NAME
 

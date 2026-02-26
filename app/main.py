@@ -22,13 +22,20 @@ from .core.middleware import setup_middleware
 from app.core.logger import setup_logging, logger
 
 
-#LIFESPAN
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
-    # Дії при запуску (аналог startup)
-    async with AsyncSessionLocal() as db:
-        await startup_service.run_startup(db)
+    # Дії при запуску
+    async with AsyncSessionLocal() as session:
+        try:
+            await startup_service.run_startup(session)
+            await session.commit()
+        except Exception as e:
+            await session.rollback()
+            print(f"Error during startup seeding: {e}")
+        finally:
+            await session.close()
     yield
+
 
 setup_logging()
 

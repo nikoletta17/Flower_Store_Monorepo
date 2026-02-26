@@ -25,6 +25,8 @@ class Settings(BaseSettings):
     USE_CREDENTIALS: bool = True
     VALIDATE_CERTS: bool = True
 
+    API_HOST:str
+
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 Config = Settings()

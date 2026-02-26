@@ -50,10 +50,10 @@ async def create_new_review(
 
     request.text = clean_text
 
-    async with db.begin():
 
-        review = await repo.reviews.create_review(db, request, current_user)
-        await db.refresh(review)
+    review = await repo.reviews.create_review(db, request, current_user)
+    await db.commit()
+    await db.refresh(review)
 
     logger.info("Review %s created by user %s", review.id, current_user.id)
     return review
@@ -69,8 +69,8 @@ async def delete_review(
         raise FlowerAppException("Тільки адміністратор може видаляти відгуки")
 
 
-    async with db.begin():
-        await repo.reviews.delete_review(review_id, db)
+    await repo.reviews.delete_review(review_id, db)
+    await db.commit()
 
     logger.info("Review %s deleted by admin %s", review_id, current_user.id)
     return None

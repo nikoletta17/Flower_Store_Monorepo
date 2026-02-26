@@ -1,8 +1,8 @@
-"""test_async_connection
+"""add_user_review_relationship
 
-Revision ID: 16e6b57f7576
-Revises: 
-Create Date: 2026-02-19 23:05:39.804156
+Revision ID: cefb62941cf2
+Revises: 94ee3986fb37
+Create Date: 2026-02-26 15:22:27.945112
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '16e6b57f7576'
-down_revision: Union[str, Sequence[str], None] = None
+revision: str = 'cefb62941cf2'
+down_revision: Union[str, Sequence[str], None] = '94ee3986fb37'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

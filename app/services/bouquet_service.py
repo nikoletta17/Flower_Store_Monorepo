@@ -32,10 +32,10 @@ async def create_new_bouquet(
     if current_user.role != "admin":
         raise FlowerAppException("Тільки адміністратор може додавати букети")
 
-    async with db.begin():
-        bouquet = await repo.bouquet.create_bouquet(db, request)
-        # Додаємо refresh всередині транзакції
-        await db.refresh(bouquet)
+
+    bouquet = await repo.bouquet.create_bouquet(db, request)
+    await db.commit()
+    await db.refresh(bouquet)
     return bouquet
 
 
@@ -48,9 +48,10 @@ async def update_bouquet(
     if current_user.role != "admin":
         raise FlowerAppException("Тільки адміністратор може редагувати букети")
 
-    async with db.begin():
-        bouquet = await repo.bouquet.update_bouquet(bouquet_id, db, request)
-        await db.refresh(bouquet)
+
+    bouquet = await repo.bouquet.update_bouquet(bouquet_id, db, request)
+    await db.commit()
+    await db.refresh(bouquet)
     return bouquet
 
 
@@ -62,5 +63,7 @@ async def delete_bouquet_by_id(
     if current_user.role != "admin":
         raise FlowerAppException("Тільки адміністратор може видаляти букети")
 
-    async with db.begin():
-        await repo.bouquet.delete_bouquet(bouquet_id, db)
+
+    await repo.bouquet.delete_bouquet(bouquet_id, db)
+    await db.commit()
+    return None

@@ -1,5 +1,3 @@
-# app/routers/ai_assistant.py
-
 from fastapi import APIRouter, status
 from ..schemas.ai_chat import ChatRequest, ChatResponse
 from ..services.ai_service import run_ai_assistant

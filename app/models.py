@@ -25,6 +25,9 @@ class Review(Base):
     author = Column(String)
     rating = Column(Integer, default=5)
 
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user = relationship("User", back_populates="reviews")
+
     __table_args__ = (
         CheckConstraint('rating >= 1 AND rating <= 5', name='rating_check'),
     )
@@ -46,6 +49,7 @@ class User(Base):
     # is_locked_until = Column(DateTime, nullable=True)
     # is_email_verified = Column(Boolean, default=False)
 
+    reviews = relationship("Review", back_populates="user", cascade="all, delete-orphan")
     cart = relationship("Cart", back_populates="user", uselist=False)
 
 

@@ -31,11 +31,11 @@ async def login(
     now = datetime.utcnow()
 
     # Перевірка блокування
-    if user.is_locked_until and user.is_locked_until > now:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Акаунт тимчасово заблоковано. Спробуйте пізніше."
-        )
+    # if user.is_locked_until and user.is_locked_until > now:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_403_FORBIDDEN,
+    #         detail="Акаунт тимчасово заблоковано. Спробуйте пізніше."
+    #     )
 
     # Перевірка пароля
     if not Hash.verify(

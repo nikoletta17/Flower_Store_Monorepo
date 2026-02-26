@@ -50,3 +50,12 @@ class UserRead(UserBase):
 
     class Config:
         from_attributes = True
+
+
+
+class UserRegisterResponse(BaseModel):
+    message: str
+    user: UserRead
+
+    class Config:
+        from_attributes = True

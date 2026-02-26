@@ -20,4 +20,3 @@ Base = declarative_base()
 async def get_db():
     async with AsyncSessionLocal() as session:
         yield session
-        # Сесія закриється автоматично після виходу з контекстного менеджера
