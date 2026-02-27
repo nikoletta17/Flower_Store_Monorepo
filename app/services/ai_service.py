@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 import os
 import json
 import asyncio
+
+from app.core.exceptions import AIException
 from .ai_tools import AI_TOOLS, search_flowers_by_price
 
 # 1. Завантажуємо .env
@@ -27,39 +29,26 @@ async def run_ai_assistant(prompt: str) -> str:
     ]
 
     try:
-        # ПЕРШИЙ ЗАПИТ
         response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",   # ← БЕЗКОШТОВНА АКТИВНА МОДЕЛЬ
+            model="llama-3.1-8b-instant",
             messages=messages,
             tools=AI_TOOLS,
             tool_choice="auto",
             temperature=0.0
         )
-
         response_message = response.choices[0].message
 
-        # Чи викликає інструмент?
         if hasattr(response_message, "tool_calls") and response_message.tool_calls:
-
             tool_call = response_message.tool_calls[0]
             function_name = tool_call.function.name
             args = json.loads(tool_call.function.arguments)
 
             if function_name == "search_flowers_by_price":
-                max_price = args.get("max_price")
-                min_price = args.get("min_price", 0.0)
-
-                loop = asyncio.get_event_loop()
-
-                # виконання інструменту
-                tool_result_json = await loop.run_in_executor(
-                    None,
-                    search_flowers_by_price,
-                    max_price,
-                    min_price
+                tool_result_json = await search_flowers_by_price(
+                    max_price=args.get("max_price"),
+                    min_price=args.get("min_price", 0.0)
                 )
 
-                # Додаємо у messages
                 messages.append(response_message)
                 messages.append({
                     "tool_call_id": tool_call.id,
@@ -68,18 +57,15 @@ async def run_ai_assistant(prompt: str) -> str:
                     "content": tool_result_json,
                 })
 
-                # ДРУГИЙ ЗАПИТ — фінальна відповідь
                 second_response = client.chat.completions.create(
-                    model="llama-3.1-8b-instant",  # ← теж ставимо цю модель
+                    model="llama-3.1-8b-instant",
                     messages=messages,
                     tools=AI_TOOLS,
                     tool_choice="auto"
                 )
-
                 return second_response.choices[0].message.content
 
-        # Якщо інструмент не потрібен
         return response_message.content
 
     except Exception as e:
-        return f"Внутрішня помилка сервера AI: {e}"
+        raise AIException(message="AI Service Error", detail=str(e))
