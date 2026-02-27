@@ -26,11 +26,15 @@ mail = FastMail(
     config=mail_config
 )
 
-def create_message(recipients:list[str], subject:str, body:str)->MessageSchema:
+def create_message(
+        recipients:list[str],
+        subject:str,
+        template_data: dict
+)->MessageSchema:
     message = MessageSchema(
         recipients= recipients,
         subject = subject,
-        body = body,
+        template_body = template_data,
         subtype= MessageType.html
     )
 

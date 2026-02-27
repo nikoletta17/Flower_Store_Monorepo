@@ -30,7 +30,6 @@ async def get_full_cart_details(
 
 
 
-
 async def add_item_to_cart(
         user_id: int,
         item_data: CartItemCreate,

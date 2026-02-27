@@ -44,6 +44,9 @@ class User(Base):
     password = Column(String)
     role = Column(String, default="user")
 
+    #for email
+    is_verified = Column(Boolean, default=False)
+
     #security
     # failed_login_attempts = Column(Integer, default=0)
     # is_locked_until = Column(DateTime, nullable=True)

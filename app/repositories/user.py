@@ -14,6 +14,22 @@ async def get_user_by_email(
     return result.scalar_one_or_none()
 
 
+#for email
+async def update_user_verification(
+        db: AsyncSession,
+        email: str
+):
+    result = await db.execute(
+        select(models.User).where(models.User.email == email)
+    )
+    user = result.scalar_one_or_none()
+    if user:
+        user.is_verified = True
+        await db.commit()
+    return user
+
+
+
 async def get_all(
         db: AsyncSession,
         skip: int = 0,

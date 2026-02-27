@@ -1,6 +1,8 @@
 from typing import List
 
 from fastapi import APIRouter, Depends, status, Response, HTTPException
+from fastapi.responses import RedirectResponse
+from fastapi_mail import MessageSchema, MessageType
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..database import get_db
@@ -9,7 +11,7 @@ from  .. import repositories as repo
 from .. import services as service
 from ..schemas.user import UserCreate, UserUpdate, UserRead, UserRegisterResponse
 from ..models import User as UserModel
-from ..core.exceptions import FlowerAppException
+from ..core.exceptions import FlowerAppException, NotFoundException
 from app.core.mail import mail, create_message
 from app.core.config import Config
 
@@ -27,48 +29,44 @@ async def create_new_user(
 ):
     new_user, token = await service.user_service.register_new_user(db, request)
 
-#localhost + router's prefix + ...
+
     link = f"http://{Config.API_HOST}/users/verify/{token}"
 
-    html_message = f"""
-        <h1>Verify your Email</h1>
-        <p>Please click this <a href="{link}">link</a> to verify your email</p>
-        """
-
-    message = create_message(
+    message = MessageSchema(
         recipients=[new_user.email],
-        subject="Verify your email",
-        body=html_message
+        subject="Підтвердження реєстрації - Whisper of Flower",
+        template_body={"link": link},
+        subtype=MessageType.html
     )
 
-    await mail.send_mail(message)
+    await mail.send_message(message, template_name="welcome.html")
 
     return {
-        "message": "Account Created! Check email to verify your account",
+        "message": "Обліковий запис створено! Перевірте пошту для верифікації",
         "user": new_user
     }
 
 
+
 @router.get("/verify/{token}")
 async def verify_user_email(
-        token: str,
-        db: AsyncSession = Depends(get_db)
+    token:str,
+    db: AsyncSession =Depends(get_db)
 ):
-    token_data = decode_url_safe_token(token)
+   user = await service.user_service.verify_user_email(token, db)
 
-    user_email = token_data.get("email")
+   if not user:
+       raise NotFoundException(entity="User", identifier="invalid or expired")
 
-    # if user_email:
-    #     user = repo.user.get_user_by_email(db, user_email)
-    #
-    #     if not user
+   return RedirectResponse(url=f"{Config.FRONTEND_URL}/login.html?verified=true")
+
+
 
 
 @router.get("/me", response_model=UserRead, status_code=status.HTTP_200_OK)
 async def get_me(
         current_user: UserModel = Depends(get_current_user)
 ):
-    # Повертаємо те, що вже знайшов get_current_user у JWT
     return current_user
 
 

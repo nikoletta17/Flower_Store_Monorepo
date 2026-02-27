@@ -7,9 +7,9 @@ from ..utils.hashing import Hash
 from ..core.security import create_access_token
 from ..core.config import Config
 
-
 MAX_FAILED_ATTEMPTS = 10
 LOCK_TIME_MINUTES = 15
+
 
 async def login(
         form_data,
@@ -21,40 +21,53 @@ async def login(
         email=form_data.username
     )
 
+    # Якщо користувача не знайдено
     if not user:
         raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Невірний email або пароль",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Невірний email або пароль",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
     now = datetime.utcnow()
 
-    # Перевірка блокування
-    # if user.is_locked_until and user.is_locked_until > now:
-    #     raise HTTPException(
-    #         status_code=status.HTTP_403_FORBIDDEN,
-    #         detail="Акаунт тимчасово заблоковано. Спробуйте пізніше."
-    #     )
+    if user.is_locked_until and user.is_locked_until > now:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Акаунт тимчасово заблоковано. Спробуйте пізніше."
+        )
 
-    # Перевірка пароля
-    if not Hash.verify(
-            form_data.password,
-            user.password
-    ):
+
+    if not Hash.verify(form_data.password, user.password):
         user.failed_login_attempts += 1
 
         if user.failed_login_attempts >= MAX_FAILED_ATTEMPTS:
             user.is_locked_until = now + timedelta(minutes=LOCK_TIME_MINUTES)
 
         await db.commit()
-        raise invalid_credentials
+
+        # Піднімаємо помилку ТУТ (всередині блоку if)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Невірний email або пароль",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
 
     user.failed_login_attempts = 0
     user.is_locked_until = None
+
+
+    if not user.is_verified:
+        await db.commit()
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Будь ласка, підтвердіть вашу електронну пошту перед входом."
+        )
+
     await db.commit()
 
-    # 3. Створити токен
+
     access_token = create_access_token(
         data={
             "sub": user.email,
