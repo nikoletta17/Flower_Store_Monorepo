@@ -29,7 +29,7 @@ class UserUpdate(BaseModel):
     password: str | None = Field(default=None, min_length=4)
     confirm_password: str | None = Field(default=None, min_length=4)
 
-    model_validator(mode="after")
+    @model_validator(mode="after")
     def validate_password_update(self):
         if self.password is None and self.confirm_password is None:
             return self

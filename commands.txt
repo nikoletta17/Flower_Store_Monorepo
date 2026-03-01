@@ -42,10 +42,10 @@ git branch                                 //Перевірка гілки
 git add .
 
 # 2. Робимо коміт (опис того, що ти зробила)
-git commit -m "refactor: standardize exceptions architecture and add AccountNotVerified error"
+git commit -m "Added UserResetPasswordRequest and UserResetPasswordConfirm schemas to auth-schemas"
 
 # 3. Пушимо САМЕ в гілку db-features
-git push origin auth-features
+git push origin password_resets
 
 Перейти на main
 git checkout main
