@@ -68,4 +68,4 @@ async def run_ai_assistant(prompt: str) -> str:
         return response_message.content
 
     except Exception as e:
-        raise AIException(message="AI Service Error", detail=str(e))
+        raise AIException(message="AI Service Error", details=str(e))

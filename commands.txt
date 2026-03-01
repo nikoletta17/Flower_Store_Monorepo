@@ -42,7 +42,7 @@ git branch                                 //Перевірка гілки
 git add .
 
 # 2. Робимо коміт (опис того, що ти зробила)
-git commit -m "fix: service layer, user access control, cart retrieval and exception handling"
+git commit -m "refactor: standardize exceptions architecture and add AccountNotVerified error"
 
 # 3. Пушимо САМЕ в гілку db-features
 git push origin auth-features
@@ -56,5 +56,7 @@ git checkout auth-features
 ********************
 СОЗДАТЬ ВЕТКУ
 
-git checkout -b NAME
+git checkout -b password_resets
+
+
 

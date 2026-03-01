@@ -60,10 +60,7 @@ async def login(
 
     if not user.is_verified:
         await db.commit()
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Будь ласка, підтвердіть вашу електронну пошту перед входом."
-        )
+        raise AccountNotVerifiedException()
 
     await db.commit()
 
