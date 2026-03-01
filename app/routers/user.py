@@ -6,10 +6,10 @@ from fastapi_mail import MessageSchema, MessageType
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..database import get_db
-from ..core.security import get_current_user, decode_url_safe_token
-from  .. import repositories as repo
+from ..core.security import get_current_user
 from .. import services as service
 from ..schemas.user import UserCreate, UserUpdate, UserRead, UserRegisterResponse
+from ..schemas.auth import UserResetPasswordRequest, UserResetPasswordConfirm
 from ..models import User as UserModel
 from ..core.exceptions import FlowerAppException, NotFoundException
 from app.core.mail import mail, create_message
@@ -47,7 +47,7 @@ async def create_new_user(
     }
 
 
-
+#email
 @router.get("/verify/{token}")
 async def verify_user_email(
     token:str,
@@ -62,12 +62,49 @@ async def verify_user_email(
 
 
 
+#for password reset
+@router.post("/password-reset-request")
+async def send_password_reset_email(
+        request: UserResetPasswordRequest,
+        db: AsyncSession = Depends(get_db)
+):
+    user, token = await service.user_service.prepare_password_reset(db, request.email)
+    link = f"{Config.FRONTEND_URL}/reset-password.html?token={token}"
+
+    message = create_message(
+        recipients=[user.email],
+        subject="Скидання пароля - Whisper of Flower",
+        template_data={"link": link, "name": user.name},
+    )
+
+    await mail.send_message(message, template_name="password_reset.html")
+    return {
+        "message": "Інструкції зі скидання пароля надіслано на вашу пошту"
+    }
+
+
+
+#for password reset
+@router.post("/password-reset-confirm/{token}")
+async def password_reset_confirm(
+    token: str,
+    passwords: UserResetPasswordConfirm,
+    db: AsyncSession = Depends(get_db)
+):
+    await service.user_service.reset_user_password(db, token, passwords.new_password)
+    return {
+        "message": "Пароль успішно змінено. Тепер ви можете увійти"
+    }
+
+
+
 
 @router.get("/me", response_model=UserRead, status_code=status.HTTP_200_OK)
 async def get_me(
         current_user: UserModel = Depends(get_current_user)
 ):
     return current_user
+
 
 
 

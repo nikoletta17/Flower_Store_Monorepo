@@ -1,67 +1,55 @@
 from datetime import timedelta, datetime
-from fastapi import HTTPException, status
+from fastapi import status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .. import repositories as repo
 from ..utils.hashing import Hash
 from ..core.security import create_access_token
 from ..core.config import Config
+from ..core.exceptions import FlowerAppException, AccountNotVerifiedException
 
-MAX_FAILED_ATTEMPTS = 10
+MAX_FAILED_ATTEMPTS = 5
 LOCK_TIME_MINUTES = 15
 
+async def login(form_data, db: AsyncSession):
+    # 1. Находим пользователя
+    user = await repo.user.get_user_by_email(db=db, email=form_data.username)
 
-async def login(
-        form_data,
-        db: AsyncSession
-):
-    # 1. Знайти користувача
-    user = await repo.user.get_user_by_email(
-        db=db,
-        email=form_data.username
-    )
-
-    # Якщо користувача не знайдено
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Невірний email або пароль",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        raise FlowerAppException(message="Невірний email або пароль")
 
     now = datetime.utcnow()
 
+    #Проверка на бан
     if user.is_locked_until and user.is_locked_until > now:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Акаунт тимчасово заблоковано. Спробуйте пізніше."
+        minutes_left = round((user.is_locked_until - now).total_seconds() / 60)
+        raise FlowerAppException(
+            message=f"Акаунт заблоковано. Спробуйте через {minutes_left} хв."
         )
 
-
+    # Проверка пароля
     if not Hash.verify(form_data.password, user.password):
         user.failed_login_attempts += 1
 
         if user.failed_login_attempts >= MAX_FAILED_ATTEMPTS:
             user.is_locked_until = now + timedelta(minutes=LOCK_TIME_MINUTES)
+            message = "Забагато невдалих спроб. Акаунт заблоковано на 15 хвилин."
+        else:
+            left = MAX_FAILED_ATTEMPTS - user.failed_login_attempts
+            message = f"Невірний пароль. Залишилось спроб: {left}"
 
         await db.commit()
+        raise FlowerAppException(message=message)
 
-        # Піднімаємо помилку ТУТ (всередині блоку if)
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Невірний email або пароль",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-
-
-    user.failed_login_attempts = 0
-    user.is_locked_until = None
-
-
+    #Проверка верификации
     if not user.is_verified:
+        user.failed_login_attempts = 0
         await db.commit()
         raise AccountNotVerifiedException()
 
+    #Успех: сбрасываем счетчик неудач
+    user.failed_login_attempts = 0
+    user.is_locked_until = None
     await db.commit()
 
 
