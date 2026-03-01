@@ -256,7 +256,7 @@
       <div class="footer-about">
         <h3 data-i18n="footerAboutTitle">Whisper of Flower</h3>
         <p data-i18n="footerAboutDesc">Магазин квітів, де кожен букет створюється з любов’ю та ніжністю. Подаруйте емоції у кожній пелюстці!</p>
-        <p id="p-animated" data-i18n="footerCopyright">&copy; 2025 Whisper of Flower</p>
+        <p id="p-animated" data-i18n="footerCopyright">&copy; <span id="year"></span> Whisper of Flower</p>
       </div>
 
       <div class="footer-links">
@@ -298,6 +298,9 @@
 
 
  <!-- SCRIPTS -->
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
    <script src="js/navBar.js"></script>
    <script src="./js/Slider_dots.js"></script>
    <script src="js/scrollBtn.js"></script>

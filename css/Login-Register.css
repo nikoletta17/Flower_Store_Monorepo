@@ -12,7 +12,7 @@
 :root {
    --primary-color: 252, 123, 144;
    --back-color: #000000;
-   --bg-color: #f1e6eb; /* ніжно-рожевий фон */
+   --bg-color: #ffffffaf; 
    --accent-1: 233 135 175;  /* рожевий */
 }
 
@@ -23,7 +23,7 @@ html, body {
 }
 
 body {
-   background-image: url(../img/bg/Login-Register.png);
+   background-image: url(../img/bg/intro5.jpeg);
    background-repeat: no-repeat;
    background-position: center;
    background-size: cover; 
@@ -105,7 +105,7 @@ a:hover {
    height: 3.438rem;
    font-size: 1rem;
    background: transparent;
-   color: whitesmoke; 
+   color: rgb(159, 64, 80); 
    border: 2px solid rgb(206, 92, 111); 
    padding: 0 1.25rem 0 9.375rem;
    outline: none;
@@ -168,12 +168,25 @@ a:hover {
 }
 
 .register{
-   text-align: center;
+   display: flex;
+   justify-content: center;
+   align-items: center;
    margin-top: 0.938rem;
 }
 
 .register a {
-    font-weight: 500;
+   display: inline-block;
+    font-weight: 600;
+    margin-left: 10px;
+    transition: all 0.3s;
+}
+
+.register a:hover{
+   color: rgb(206, 92, 111);
+}
+
+.register a:active {
+   transform: scale(1.1);
 }
 
 :is(input[type="radio"],input[type="checkbox"]) {
@@ -293,11 +306,16 @@ a:hover {
     text-decoration: none;
     color: #333;
     font-weight: bold;
-    transition: background 0.3s;
+    transition: all 0.3s;
 }
 
+.google-btn:active{
+   transform: scale(0.95);
+}
+
+
 .google-btn:hover {
-    background-color: rgba(var(--primary-color));
+    background-color: rgba(252, 123, 144, 0.8);
     color: #333;
 }
 
