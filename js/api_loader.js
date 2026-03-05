@@ -31,12 +31,14 @@ function getDisplayPrice(bouquet) {
 
 function openModal(bouquetData) {
     if (!modal) return; 
-    const priceValue = getDisplayPrice(bouquetData); 
-    modalPrice.innerText = priceValue === 0.0 ? 'Ціна недоступна' : `₴${priceValue.toFixed(2)}`;
+ 
+    modalPrice.innerText = bouquetData.formatted_price || 'Ціна недоступна';
+
     modalImg.src = `${STATIC_BASE_URL}${bouquetData.image_url}`;
     modalImg.alt = bouquetData.title;
     modalTitle.innerText = bouquetData.title;
     modalDesc.innerText = bouquetData.description;
+    
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
 }
@@ -57,10 +59,9 @@ function initModalClosing() {
     });
 }
 
-// 3. СТВОРЕННЯ КАРТОК
 function createBouquetCard(bouquet) {
-    const priceValue = getDisplayPrice(bouquet); 
-    if (priceValue === 0.0) return document.createElement('div');
+    // Беремо готовий рядок від бекенда.
+    const priceText = bouquet.formatted_price || `₴${(bouquet.price / 100).toFixed(2)}`;
     
     const card = document.createElement('a');
     card.href = `#bouquet-${bouquet.id}`; 
@@ -70,14 +71,16 @@ function createBouquetCard(bouquet) {
         <div class="card-img">
             <img src="${STATIC_BASE_URL}${bouquet.image_url}" alt="${bouquet.title}">
         </div>
-        <div class="price">₴${priceValue.toFixed(2)}</div>
+        <div class="price">${priceText}</div> 
         <h3>${bouquet.title}</h3>
         <p>${bouquet.description}</p>
     `;
+
     card.addEventListener('click', (e) => {
         e.preventDefault(); 
         openModal(bouquet); 
     });
+
     return card;
 }
 
