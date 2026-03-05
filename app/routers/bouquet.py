@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import List
+from typing import List, Any, Dict
 
 from ..database import get_db
 from .. import services as service
@@ -16,7 +16,7 @@ router = APIRouter(
 
 
 
-@router.get("/", response_model=dict)
+@router.get("/", response_model=Dict[str, Any])
 async def get_all_bouquets(
         db: AsyncSession = Depends(get_db),
         skip: int = 0,

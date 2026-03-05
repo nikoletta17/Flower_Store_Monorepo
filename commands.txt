@@ -42,10 +42,10 @@ git branch                                 //Перевірка гілки
 git add .
 
 # 2. Робимо коміт (опис того, що ти зробила)
-git commit -m "feat: implement password reset flow via email, added brute-force-protection and account lockout"
+git commit -m "feat: implement ai_parser and pagination through the backend to services"
 
 # 3. Пушимо САМЕ в гілку db-features
-git push origin password_resets
+git push origin helpers
 
 Перейти на main
 git checkout main

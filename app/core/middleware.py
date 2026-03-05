@@ -30,6 +30,7 @@ def setup_middleware(app):
         "http://localhost:5500",
         "http://127.0.0.1:8000",
         "http://localhost:8000",
+        "http://0.0.0.0:5500",
         "http://127.0.0.1:7641",
         "http://localhost:7641",
     ]

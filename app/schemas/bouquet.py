@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, computed_field
 from pydantic import Field
 
 class BouquetBase(BaseModel):
@@ -30,20 +30,13 @@ class BouquetRead(BaseModel):
     description: str
     image_url: str
     anchor_id: str | None
+    price: int  # Ціна в копійках для бази
 
-    # 🛑 ПОВЕРТАЄМО price ЯКЕ Є ЗНАЧЕННЯМ З БД (INT), але воно буде ігноруватися на фронтенді
-    price: int  # ⬅️ Поле для SQLAlchemy (120000)
-
-    # 🛑 ЦЕ НАШЕ ОБЧИСЛЮВАНЕ ПОЛЕ, ЯКЕ МИ ВИКОРИСТАЄМО НА ФРОНТЕНДІ
+    @computed_field
     @property
     def price_uah(self) -> float:
-        """Ціна, конвертована в гривні для відображення клієнту."""
-        # 'self.price' тут - це об'єкт моделі SQLAlchemy, який має price (int)
-        if self.price is not None:
-            return round(self.price / 100.0, 2)
-        return 0.0
+        """Це поле автоматично потрапить у JSON як 'price_uah'."""
+        return round(self.price / 100.0, 2)
 
     class Config:
         from_attributes = True
-        property_model_by_alias = True  # ⬅️ Це гарантує, що price_uah потрапляє в JSON
-        # populate_by_name = True (тепер не потрібен)
