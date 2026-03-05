@@ -1,10 +1,11 @@
 from pydantic import BaseModel, computed_field
 from pydantic import Field
+from app.utils.formatters import format_price
 
 class BouquetBase(BaseModel):
     title: str
     description: str
-    price: int
+    price: float
     image_url: str
     anchor_id: str | None
 
@@ -19,7 +20,7 @@ class BouquetCreate(BouquetBase):
 class BouquetUpdate(BaseModel):
     title: str | None
     description: str | None
-    price: int | None
+    price: float | None
     image_url: str | None
     anchor_id: str | None
 
@@ -30,13 +31,18 @@ class BouquetRead(BaseModel):
     description: str
     image_url: str
     anchor_id: str | None
-    price: int  # Ціна в копійках для бази
+    price: int
 
     @computed_field
     @property
     def price_uah(self) -> float:
-        """Це поле автоматично потрапить у JSON як 'price_uah'."""
         return round(self.price / 100.0, 2)
+
+    @computed_field
+    @property
+    def formatted_price(self) -> str:
+        """Це нове поле, яке поверне вже готовий рядок: '450.00 ₴'"""
+        return format_price(self.price)
 
     class Config:
         from_attributes = True
