@@ -42,7 +42,7 @@ git branch                                 //Перевірка гілки
 git add .
 
 # 2. Робимо коміт (опис того, що ти зробила)
-git commit -m "fix: bouquets loader through pagination"
+git commit -m "feat: add utility helper for price formatting"
 
 # 3. Пушимо САМЕ в гілку db-features
 git push origin helpers

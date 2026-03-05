@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, UploadFile, File, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Any, Dict
 
@@ -43,6 +43,46 @@ async def create_new_bouquet(
 ):
     return await service.bouquet_service.create_new_bouquet(db, request, current_user)
 
+
+# @router.post("/")
+# async def create_bouquet(
+#     title: str = Form(...),
+#     description: str = Form(...),
+#     price: float = Form(...),
+#     anchor_id: str = Form(None),
+#     file: UploadFile = File(...), # Приймаємо файл
+#     db: AsyncSession = Depends(get_db),
+#     current_user: User = Depends(get_current_active_user)
+# ):
+#     # Збираємо дані в схему вручну, бо Form не працює автоматично з Pydantic моделями
+#     request = BouquetCreate(
+#         title=title,
+#         description=description,
+#         price=price,
+#         image_url="", # Буде заповнено в сервісі
+#         anchor_id=anchor_id
+#     )
+#     return await service.bouquet_service.create_new_bouquet(db, request, current_user, file)
+
+
+router.post("/", response_model=BouquetRead, status_code=status.HTTP_201_CREATED)
+async def create_bouquet(
+        title: str = Form(...),
+        description: str = Form(...),
+        price: float = Form(...),
+        anchor_id: str = Form(None),
+        file: UploadFile = File(...),
+        db: AsyncSession = Depends(get_db),
+        current_user: UserModel = Depends(is_admin)
+):
+    request = BouquetCreate(
+        title=title,
+        description=description,
+        price=price,
+        image_url="",
+        anchor_id=anchor_id
+    )
+    return await service.bouquet_service.create_new_bouquet(db, request, current_user, file)
 
 
 
