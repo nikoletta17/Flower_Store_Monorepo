@@ -2,16 +2,18 @@ from fastapi import status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from typing import List
+from sqlalchemy import func
 
 from .. import models
 from ..schemas.bouquet import BouquetCreate, BouquetUpdate
 from ..core.exceptions import NotFoundException
 
 
+#for pagination
 async def get_all(
         db: AsyncSession,
         skip: int = 0,
-        limit: int = 100
+        limit: int = 8
 ) -> List[models.Bouquet]:
    result = await db.execute(
        select(models.Bouquet).offset(skip).limit(limit)
@@ -19,6 +21,12 @@ async def get_all(
    return result.scalars().all()
 
 
+
+async def get_count(db: AsyncSession) -> int:
+   result = await db.execute(
+       select(func.count(models.Bouquet.id))
+   )
+   return result.scalar() or 0
 
 async def get_bouquet_by_id(
         bouquet_id: int,

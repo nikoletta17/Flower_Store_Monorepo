@@ -16,11 +16,13 @@ router = APIRouter(
 
 
 
-@router.get("/", response_model=List[BouquetRead])
+@router.get("/", response_model=dict)
 async def get_all_bouquets(
-        db: AsyncSession = Depends(get_db)
+        db: AsyncSession = Depends(get_db),
+        skip: int = 0,
+        limit: int = 8
 ):
-    return await service.bouquet_service.get_all_bouquets(db)
+    return await service.bouquet_service.get_all_bouquets(db, skip, limit)
 
 
 

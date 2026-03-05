@@ -5,16 +5,24 @@ from .. import repositories as repo
 from ..schemas.bouquet import BouquetCreate, BouquetUpdate
 from ..models import User as UserModel
 from ..core.exceptions import FlowerAppException
+from app.utils.pagination import paginate_response
 
 
 
 async def get_all_bouquets(
         db: AsyncSession,
         skip: int = 0,
-        limit: int = 100
+        limit: int = 8
 ):
-    return await repo.bouquet.get_all(db, skip, limit)
+    bouquets =  await repo.bouquet.get_all(db, skip, limit)
+    total_count = await repo.bouquet.get_count(db)
 
+    return paginate_response(
+        items=bouquets,
+        total_count=total_count,
+        skip=skip,
+        limit=limit
+    )
 
 
 async def get_bouquet_by_id(

@@ -5,6 +5,7 @@ import json
 import asyncio
 
 from app.core.exceptions import AIException
+from app.utils.ai_parser import extract_json_from_ai_response
 from .ai_tools import AI_TOOLS, search_flowers_by_price
 
 # 1. Завантажуємо .env
@@ -41,7 +42,9 @@ async def run_ai_assistant(prompt: str) -> str:
         if hasattr(response_message, "tool_calls") and response_message.tool_calls:
             tool_call = response_message.tool_calls[0]
             function_name = tool_call.function.name
-            args = json.loads(tool_call.function.arguments)
+
+            args_text = tool_call.function.arguments
+            args = extract_json_from_ai_response(args_text)
 
             if function_name == "search_flowers_by_price":
                 tool_result_json = await search_flowers_by_price(
