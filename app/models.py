@@ -1,7 +1,8 @@
 from sqlalchemy.orm import relationship
 from .database import Base
-from sqlalchemy import Column, Integer, String, CheckConstraint, ForeignKey, Float, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, CheckConstraint, ForeignKey, Float, Boolean, DateTime, Enum
 from datetime import datetime
+import enum
 
 
 class Bouquet(Base):
@@ -54,6 +55,7 @@ class User(Base):
 
     reviews = relationship("Review", back_populates="user", cascade="all, delete-orphan")
     cart = relationship("Cart", back_populates="user", uselist=False)
+    orders = relationship("Order", back_populates="user", cascade="all, delete-orphan")
 
 
 class Cart(Base):
@@ -82,3 +84,47 @@ class CartItem(Base):
     def subtotal(self) -> float:
         """Обчислює загальну вартість цієї позиції у гривнях."""
         return round(self.quantity * self.price_on_add, 2)
+
+
+class OrderStatus(enum.Enum):
+    PENDING = "pending"   # Очікує підтвердження
+    ACCEPTED = "accepted" # Прийнято адміном
+    REJECTED = "rejected"
+    PAID = "paid"
+    SHIPPED = "shipped"   # Відправлено
+    DELIVERED = "delivered"
+    CANCELED = "canceled"
+
+
+
+class Order(Base):
+    __tablename__ = 'orders'
+    id = Column(Integer, primary_key=True, index=True)
+    status = Column(Enum(OrderStatus), default=OrderStatus.PENDING, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    delivery_address = Column(String, nullable=False)
+    phone_number = Column(String, nullable=False)
+
+    total_price = Column(Integer, nullable=False)
+
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+
+    user = relationship("User", back_populates="orders")
+    items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
+
+
+
+class OrderItem(Base):
+    __tablename__ = 'orders_items'
+    id = Column(Integer, primary_key=True, index=True)
+
+    quantity = Column(Integer, default=1, nullable=False)
+    # Фіксуємо ціну в копійках на момент замовлення
+    price_at_purchase = Column(Integer, nullable=False)
+
+    order_id = Column(Integer, ForeignKey("orders.id"), nullable=False)
+    bouquet_id = Column(Integer, ForeignKey("bouquets.id"), nullable=False)
+
+    order = relationship("Order", back_populates="items")
+    bouquet = relationship("Bouquet")

@@ -23,6 +23,16 @@ USERNAME_REGEX = re.compile(
     r"^[a-zA-Z0-9_а-яА-ЯіїєґІЇЄҐ]{3,20}$"
 )
 
+PHONE_REGEX = re.compile(r"^\+?3?8?(0\d{9})$")
+
+
+def validate_phone_number(phone: str):
+    if not PHONE_REGEX.match(phone):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Некоректний формат номера. Приклад: +380951234567 або 0951234567"
+        )
+
 
 def validate_password_strength(password: str):
     if not PASSWORD_REGEX.match(password):
