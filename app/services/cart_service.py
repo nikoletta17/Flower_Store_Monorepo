@@ -2,10 +2,8 @@ import logging
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from .. import repositories as repo
-from ..schemas.cart import CartItemCreate, CartItemRead
+from ..schemas.cart import CartItemCreate
 from .. import models
-from sqlalchemy.future import select
-from sqlalchemy.orm import selectinload
 
 
 logger = logging.getLogger(__name__)

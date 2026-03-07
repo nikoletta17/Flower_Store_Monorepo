@@ -45,7 +45,7 @@ git add .
 
 # 2. Робимо коміт (опис того, що ти зробила)
 
-git commit -m "feat: add Order and OrderItem schemas"
+git commit -m "feat: implement order repository with item management and status updates"
 
 
 # 3. Пушимо САМЕ в гілку db-features
