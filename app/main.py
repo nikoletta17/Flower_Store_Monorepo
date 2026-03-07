@@ -4,7 +4,6 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 
-from pyexpat.errors import messages
 
 from .routers import (
     bouquet as bouquet_router,

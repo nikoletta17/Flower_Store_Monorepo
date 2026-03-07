@@ -56,7 +56,7 @@ git checkout auth-features
 ********************
 СОЗДАТЬ ВЕТКУ
 
-git checkout -b password_resets
+git checkout -b languages
 
 
 

@@ -2,113 +2,145 @@ from typing import List, Dict, Any
 
 initial_bouquets_data: List[Dict[str, Any]] = [
     {
-        "title": "Рожевий роман",
-        "description": "Скромний, ніжний, чарівний",
+        "title_ua": "Рожевий роман",
+        "title_en": "Pink Romance",
+        "description_ua": "Скромний, ніжний, чарівний",
+        "description_en": "Modest, tender, charming",
         "price": 1200.00,
         "image_url": "img/wo_vase/romantic-bouquet-pink-roses_191095-83984-Photoroom.png",
         "anchor_id": "#bouquet1"
     },
     {
-        "title": "Лавандові сни",
-        "description": "Аромат та елегантність",
+        "title_ua": "Лавандові сни",
+        "title_en": "Lavender Dreams",
+        "description_ua": "Аромат та елегантність",
+        "description_en": "Aroma and elegance",
         "price": 550.00,
         "image_url": "img/in_vase/png-clipart-floral-design-flower-bouquet-cut-flowers-wedding-wildflower-bouquet-purple-flower-arranging-removebg-preview.png",
         "anchor_id": "#bouquet2"
     },
     {
-        "title": "Весняна свіжість",
-        "description": "Букет для гарного настрою",
+        "title_ua": "Весняна свіжість",
+        "title_en": "Spring Freshness",
+        "description_ua": "Букет для гарного настрою",
+        "description_en": "A bouquet for a good mood",
         "price": 700.00,
         "image_url": "img/wo_vase/1549121120_flower-4-removebg-preview (1).png",
         "anchor_id": "#bouquet3"
     },
     {
-        "title": "Ніжність весни",
-        "description": "Делікатне поєднання пастельних квітів",
+        "title_ua": "Ніжність весни",
+        "title_en": "Spring Tenderness",
+        "description_ua": "Делікатне поєднання пастельних квітів",
+        "description_en": "A delicate combination of pastel flowers",
         "price": 650.00,
         "image_url": "img/in_vase/png-clipart-floral-design-garden-roses-flower-bouquet-cut-flowers-vase-vase-flower-arranging-wedding-removebg-preview.png",
         "anchor_id": "#bouquet4"
     },
     {
-        "title": "Сонячна усмішка",
-        "description": "Букет, що дарує тепло та позитив",
+        "title_ua": "Сонячна усмішка",
+        "title_en": "Sunny Smile",
+        "description_ua": "Букет, що дарує тепло та позитив",
+        "description_en": "A bouquet that brings warmth and positivity",
         "price": 2100.00,
         "image_url": "img/wo_vase/png-clipart-flower-bouquet-garden-roses-flower-delivery-flower-flower-arranging-wedding.png",
         "anchor_id": "#bouquet5"
     },
     {
-        "title": "Магія вечора",
-        "description": "Вишуканість у кожній ноті кольору",
+        "title_ua": "Магія вечора",
+        "title_en": "Evening Magic",
+        "description_ua": "Вишуканість у кожній ноті кольору",
+        "description_en": "Elegance in every shade of color",
         "price": 700.00,
         "image_url": "img/in_vase/png-transparent-bouquet-bouquet-vase-flowers-removebg-preview.png",
         "anchor_id": "#bouquet6"
     },
     {
-        "title": "Червоне серце",
-        "description": "Пристрасть і ніжність у кожній пелюстці",
+        "title_ua": "Червоне серце",
+        "title_en": "Red Heart",
+        "description_ua": "Пристрасть і ніжність у кожній пелюстці",
+        "description_en": "Passion and tenderness in every petal",
         "price": 3000.00,
         "image_url": "img/wo_vase/png-clipart-flower-bouquet-rose-cut-flowers-valentine-s-day-red-rose-bouquet-love-flower-arranging-removebg-preview.png",
         "anchor_id": "#bouquet7"
     },
     {
-        "title": "Пелюстки ніжності",
-        "description": "Ідеальний подарунок для найдорожчих",
+        "title_ua": "Пелюстки ніжності",
+        "title_en": "Petals of Tenderness",
+        "description_ua": "Ідеальний подарунок для найдорожчих",
+        "description_en": "The perfect gift for your loved ones",
         "price": 500.00,
         "image_url": "img/in_vase/png-transparent-floral-design-cut-flowers-vase-flower-bouquet-vase-flower-arranging-artificial-flower-vase-removebg-preview.png",
         "anchor_id": "#bouquet8"
     },
     {
-        "title": "Квіткова симфонія",
-        "description": "Розкішне поєднання кольорів та ароматів",
+        "title_ua": "Квіткова симфонія",
+        "title_en": "Flower Symphony",
+        "description_ua": "Розкішне поєднання кольорів та ароматів",
+        "description_en": "A luxurious blend of colors and aromas",
         "price": 800.00,
         "image_url": "img/wo_vase/png-klev-club-qape-p-buket-tsvetov-png-2-removebg-preview.png",
         "anchor_id": "#bouquet9"
     },
     {
-        "title": "Перлина літа",
-        "description": "Яскравий акцент для будь-якої події",
+        "title_ua": "Перлина літа",
+        "title_en": "Summer Pearl",
+        "description_ua": "Яскравий акцент для будь-якої події",
+        "description_en": "A bright accent for any occasion",
         "price": 950.00,
         "image_url": "img/in_vase/png-transparent-flower-bouquet-flower-delivery-floristry-cut-flowers-bouquet-of-flowers-purple-flower-arranging-vase-removebg-preview.png",
         "anchor_id": "#bouquet10"
     },
     {
-        "title": "Королівська грація",
-        "description": "Теплі відтінки любові та турботи",
+        "title_ua": "Королівська грація",
+        "title_en": "Royal Grace",
+        "description_ua": "Теплі відтінки любові та турботи",
+        "description_en": "Warm shades of love and care",
         "price": 3650.00,
         "image_url": "img/wo_vase/png-transparent-a-bunch-of-pink-roses-red-silk-ribbon-bouquet-holiday-gift-removebg-preview.png",
         "anchor_id": "#bouquet11"
     },
     {
-        "title": "Тепло серпня",
-        "description": "Квіткове нагадування про літо",
+        "title_ua": "Тепло серпня",
+        "title_en": "August Warmth",
+        "description_ua": "Квіткове нагадування про літо",
+        "description_en": "A floral reminder of summer",
         "price": 1000.00,
         "image_url": "img/in_vase/png-transparent-flower-bouquet-ottawa-cut-flowers-flower-delivery-monstera-flower-arranging-wedding-vase-removebg-preview.png",
         "anchor_id": "#bouquet12"
     },
     {
-        "title": "Тюльпанове щастя",
-        "description": "Весняна легкість у кожному стеблі",
+        "title_ua": "Тюльпанове щастя",
+        "title_en": "Tulip Happiness",
+        "description_ua": "Весняна легкість у кожному стеблі",
+        "description_en": "Spring lightness in every stem",
         "price": 1100.00,
         "image_url": "img/wo_vase/png-transparent-flower-bouquet-tulip-cut-flowers-wedding-tulip-flower-arranging-photography-flower-removebg-preview.png",
         "anchor_id": "#bouquet13"
     },
     {
-        "title": "Літній настрій",
-        "description": "Барви, що приносять усмішку",
+        "title_ua": "Літній настрій",
+        "title_en": "Summer Mood",
+        "description_ua": "Барви, що приносять усмішку",
+        "description_en": "Colors that bring a smile",
         "price": 450.00,
         "image_url": "img/in_vase/png-clipart-transvaal-daisy-floral-design-flower-bouquet-vase-cut-flowers-vase-removebg-preview.png",
         "anchor_id": "#bouquet14"
     },
     {
-        "title": "Шовковий ранок",
-        "description": "Легкий та витончений аромат початку дня",
+        "title_ua": "Шовковий ранок",
+        "title_en": "Silken Morning",
+        "description_ua": "Легкий та витончений аромат початку дня",
+        "description_en": "A light and delicate scent to start the day",
         "price": 650.00,
         "image_url": "img/wo_vase/Screenshot_1-removebg-preview.png",
         "anchor_id": "#bouquet15"
     },
     {
-        "title": "Світанкові мрії",
-        "description": "Теплі відтінки ранкового сонця",
+        "title_ua": "Світанкові мрії",
+        "title_en": "Dawn Dreams",
+        "description_ua": "Теплі відтінки ранкового сонця",
+        "description_en": "Warm shades of the morning sun",
         "price": 1150.00,
         "image_url": "img/in_vase/png-transparent-garden-roses-flower-bouquet-vase-rose-mash-table-flowers-material-garden-roses-flower-bouquet-vase-removebg-preview.png",
         "anchor_id": "#bouquet16"

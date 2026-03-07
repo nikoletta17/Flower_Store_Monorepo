@@ -3,8 +3,11 @@ from pydantic import Field
 from app.utils.formatters import format_price
 
 class BouquetBase(BaseModel):
-    title: str
-    description: str
+    # Нові двомовні поля
+    title_ua: str
+    title_en: str
+    description_ua: str
+    description_en: str
     price: float
     image_url: str
     anchor_id: str | None
@@ -27,8 +30,10 @@ class BouquetUpdate(BaseModel):
 
 class BouquetRead(BaseModel):
     id: int
-    title: str
-    description: str
+    title_ua: str
+    title_en: str
+    description_ua: str
+    description_en: str
     image_url: str
     anchor_id: str | None
     price: int

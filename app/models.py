@@ -3,19 +3,20 @@ from .database import Base
 from sqlalchemy import Column, Integer, String, CheckConstraint, ForeignKey, Float, Boolean, DateTime
 from datetime import datetime
 
+
 class Bouquet(Base):
     __tablename__ = 'bouquets'
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String)
-    description = Column(String)
+    title_ua = Column(String)
+    title_en = Column(String)
+    description_ua = Column(String)
+    description_en = Column(String)
     price = Column(Integer)
-    # Шлях до зображення (відносно папки 'img/')
     image_url = Column(String)
-    # HTML-якоря, наприклад '#bouquet1'
     anchor_id = Column(String)
 
     def __repr__(self):
-        return f"<Bouquet(title='{self.title}', price='{self.price}')>"
+        return f"<Bouquet(title_ua='{self.title_ua}', price='{self.price}')>"
 
 
 class Review(Base):
