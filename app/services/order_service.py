@@ -21,7 +21,7 @@ async def place_order(
     4. Переносить товари.
     5. Очищує кошик.
     """
-    # Отримуємо кошик та перевіряємо, чи він не порожній
+    # 1. Отримуємо кошик та перевіряємо, чи він не порожній
     cart = await repo.cart.get_or_create_cart(user_id, db)
     cart_items = await repo.cart.get_all_items_from_cart(cart.id, db)
 
@@ -29,22 +29,42 @@ async def place_order(
         logger.warning("User %s tried to checkout with empty cart", user_id)
         raise EmptyCartException()
 
+    # 2. Рахуємо суму
     total_price = round(sum(item.price_on_add * item.quantity for item in cart_items), 2)
 
     try:
-        new_order = await repo.order.create_order(db, user_id, total_price, order_data)
-        await repo.order.add_order_items(db, new_order.id, cart_items)
+        # 3. Створюємо головний запис замовлення
+        new_order = await repo.order.create_order(
+            db=db,
+            user_id=user_id,
+            total_price=total_price,
+            order_data=order_data
+        )
+
+        # 4. Додаємо товари до замовлення (копіюємо з кошика)
+        await repo.order.add_order_items(
+            db=db,
+            order_id=new_order.id,
+            cart_items=cart_items
+        )
+
+        # 5. Очищуємо кошик користувача
         await repo.order.clear_user_cart(db, cart.id)
 
+        # 6. Фіксуємо транзакцію
         await db.commit()
-        await db.refresh(new_order)
-        return new_order
+
+        # !!! КЛЮЧОВИЙ МОМЕНТ ДЛЯ ВИПРАВЛЕННЯ ПОМИЛКИ !!!
+        # Отримуємо свіже замовлення з уже підвантаженими зв'язками для відповіді API
+        order_with_details = await repo.order.get_order_by_id(new_order.id, db)
+
+        logger.info("Order %s created successfully for user %s", new_order.id, user_id)
+        return order_with_details
 
     except Exception as e:
         await db.rollback()
-        logger.error("Failed to place order: %s", str(e))
+        logger.error("Failed to place order for user %s: %s", user_id, str(e))
         raise e
-
 
 
 

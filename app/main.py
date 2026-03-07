@@ -14,6 +14,7 @@ from .api import (
     user as user_router,
     cart as cart_router,
     google_auth as google_auth_router,
+    order as order_router
 )
 
 from .database import AsyncSessionLocal
@@ -81,3 +82,4 @@ app.include_router(auth_router.router)
 app.include_router(user_router.router)
 app.include_router(cart_router.router)
 app.include_router(google_auth_router.router)
+app.include_router(order_router.router)

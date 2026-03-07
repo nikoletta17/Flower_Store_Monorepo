@@ -7,7 +7,7 @@ from .. import services
 from ..schemas.order import OrderCreate, OrderRead
 from ..core.security import get_current_user
 from ..models import User as UserModel, OrderStatus
-from ..core.exceptions import InsufficientPermissionsException
+from ..core.exceptions import InsufficientPermissionsException, AccountNotVerifiedException
 
 router = APIRouter(
     prefix="/orders",
@@ -15,16 +15,13 @@ router = APIRouter(
 )
 
 
-@router.post("/checkout", response_model=OrderRead, status_code=status.HTTP_201_CREATED)
+@router.post("/checkout", response_model=OrderRead)
 async def checkout(
-        order_data: OrderCreate,
-        db: AsyncSession = Depends(get_db),
-        current_user: UserModel = Depends(get_current_user)
+    order_data: OrderCreate,
+    db: AsyncSession = Depends(get_db),
+    current_user: UserModel = Depends(get_current_user)
 ):
-    """
-    Оформлення замовлення.
-    Сервіс сам викине EmptyCartException, якщо кошик порожній.
-    """
+    # ТУТ НЕ МАЄ БУТИ ПЕРЕВІРКИ is_verified
     return await services.order_service.place_order(current_user.id, order_data, db)
 
 
@@ -39,20 +36,16 @@ async def get_my_orders(
     return await services.order_service.get_my_orders(current_user.id, db)
 
 
-
-
-
 @router.get("/admin/all", response_model=List[OrderRead])
 async def get_all_orders_for_admin(
         db: AsyncSession = Depends(get_db),
         current_user: UserModel = Depends(get_current_user)
 ):
-    """Перегляд всіх замовлень (тільки для адміна)."""
-    if not current_user.is_admin:
+    # ЗАМІНИ ЦЕ:
+    if current_user.role != "admin":
         raise InsufficientPermissionsException()
 
     return await services.order_service.admin_get_all_orders(db)
-
 
 
 
@@ -63,11 +56,8 @@ async def update_order_status(
         db: AsyncSession = Depends(get_db),
         current_user: UserModel = Depends(get_current_user)
 ):
-    """
-    Зміна статусу замовлення.
-    Сервіс сам викине NotFoundException, якщо замовлення не існує.
-    """
-    if not current_user.is_admin:
+    # І ТУТ ТАКОЖ ЗАМІНИ:
+    if current_user.role != "admin":
         raise InsufficientPermissionsException()
 
     return await services.order_service.admin_change_status(order_id, new_status, db)
