@@ -7,7 +7,7 @@ from ..schemas.user import UserCreate, UserUpdate
 from ..utils.hashing import Hash
 from ..core.exceptions import AlreadyExistsException, FlowerAppException, NotFoundException
 
-
+#for creating a new user
 async def register_new_user(db: AsyncSession, request: UserCreate):
     existing_user = await repo.user.get_user_by_email(db, request.email)
     if existing_user:
@@ -27,6 +27,7 @@ async def register_new_user(db: AsyncSession, request: UserCreate):
     return new_user, token
 
 
+#for email
 async def verify_user_email(
         token: str,
         db: AsyncSession
@@ -41,6 +42,47 @@ async def verify_user_email(
         return None
 
     user = await repo.user.update_user_verification(db, user_email)
+    return user
+
+
+
+#for passwords resets
+async def prepare_password_reset(
+        db: AsyncSession,
+        email:str
+):
+    user = await repo.user.get_user_by_email(db, email)
+    if not user:
+        raise NotFoundException(entity="User", identifier=email)
+
+    token = create_url_safe_token(
+        {
+            "email": email
+        }
+    )
+    return user, token
+
+
+#for passwords resets
+async def reset_user_password(
+        db: AsyncSession,
+        token: str,
+        new_password: str
+):
+    token_data = decode_url_safe_token(token)
+    if not token_data:
+        raise FlowerAppException("Токен недійсний або протермінований")
+
+    email = token_data.get("email")
+    user = await repo.user.get_user_by_email(db, email)
+
+    if not user:
+        raise NotFoundException(entity="User", identifier=email)
+
+    hashed_password = Hash.bcrypt(new_password)
+
+    await repo.user.update_user(db, user, {"password": hashed_password})
+    await db.commit()
     return user
 
 

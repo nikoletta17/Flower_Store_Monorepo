@@ -48,9 +48,8 @@ class User(Base):
     is_verified = Column(Boolean, default=False)
 
     #security
-    # failed_login_attempts = Column(Integer, default=0)
-    # is_locked_until = Column(DateTime, nullable=True)
-    # is_email_verified = Column(Boolean, default=False)
+    failed_login_attempts = Column(Integer, default=0)
+    is_locked_until = Column(DateTime, nullable=True)
 
     reviews = relationship("Review", back_populates="user", cascade="all, delete-orphan")
     cart = relationship("Cart", back_populates="user", uselist=False)

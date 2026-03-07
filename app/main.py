@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 
+from pyexpat.errors import messages
 
 from .routers import (
     bouquet as bouquet_router,
@@ -17,7 +18,7 @@ from .routers import (
 
 from .database import AsyncSessionLocal
 from .services import startup_service
-from .core.exceptions import FlowerAppException, NotFoundException, AlreadyExistsException
+from .core.exceptions import FlowerAppException, NotFoundException, AlreadyExistsException, AccountNotVerifiedException
 from .core.middleware import setup_middleware
 from app.core.logger import setup_logging, logger
 
@@ -55,21 +56,22 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 #Global Exceptions
 @app.exception_handler(FlowerAppException)
 async def flower_app_exception_handler(request: Request, exc: FlowerAppException):
-    # Визначаємо статус-код
-    status_code = 400
-    if isinstance(exc, NotFoundException):
-        status_code = 404
-    elif isinstance(exc, AlreadyExistsException):
-        status_code = 409
+    # Тело ответа
+    error_content = {
+        "status": "error",
+        "message": exc.message,
+        "error_type": exc.__class__.__name__,
+    }
+
+    if exc.details:
+        error_content.update(exc.details)
 
     return JSONResponse(
-        status_code=status_code,
-        content={
-            "status": "error",
-            "message": exc.message,
-            "error_type": exc.__class__.__name__
-        }
+        status_code=exc.status_code,
+        content=error_content
     )
+
+
 
 #Routers
 app.include_router(bouquet_router.router)

@@ -10,9 +10,9 @@ class ReviewBase(BaseModel):
         class Config:
             from_attributes = True
 
-class ReviewCreate(BaseModel): # ⬅️ ЗМІНЕНО: тепер успадковуємо від BaseModel
-    text: str  # ⬅️ ЯВНО ДОДАНО
-    rating: int # ⬅️ ЯВНО ДОДАНО
+class ReviewCreate(BaseModel):
+    text: str
+    rating: int
 
 
 class ReviewUpdate(BaseModel):
@@ -22,8 +22,8 @@ class ReviewUpdate(BaseModel):
 
 class ReviewRead(BaseModel):
     id: int
-    text: str   # ⬅️ ТЕКСТ ВІДГУКУ (ВИПРАВЛЕННЯ)
-    author: str # ⬅️ АВТОР (ВИПРАВЛЕННЯ)
+    text: str
+    author: str
     rating: int
 
     class Config:
