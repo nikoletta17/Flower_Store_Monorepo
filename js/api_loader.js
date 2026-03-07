@@ -20,6 +20,11 @@ const limit = 8;
 let hasMore = true;
 let isLoading = false;
 
+
+let allBouquets = [];
+
+
+
 // 2. ДОПОМІЖНІ ФУНКЦІЇ (Ціна, Модалки)
 function getDisplayPrice(bouquet) {
     let priceValue = bouquet.price_uah; 
@@ -31,17 +36,29 @@ function getDisplayPrice(bouquet) {
 
 function openModal(bouquetData) {
     if (!modal) return; 
- 
-    modalPrice.innerText = bouquetData.formatted_price || 'Ціна недоступна';
+    const lang = localStorage.getItem("selectedLang") || 'ua';
 
+    // Текст залежно від мови
+    const title = lang === 'en' ? bouquetData.title_en : bouquetData.title_ua;
+    const desc = lang === 'en' ? bouquetData.description_en : bouquetData.description_ua;
+    
+    // Ціна
+    let priceText = bouquetData.formatted_price;
+    if (lang === 'en') {
+        priceText = `$${(bouquetData.price_uah / 42).toFixed(2)}`;
+    }
+
+    modalPrice.innerText = priceText;
     modalImg.src = `${STATIC_BASE_URL}${bouquetData.image_url}`;
-    modalImg.alt = bouquetData.title;
-    modalTitle.innerText = bouquetData.title;
-    modalDesc.innerText = bouquetData.description;
+    modalImg.alt = title;
+    modalTitle.innerText = title;
+    modalDesc.innerText = desc;
     
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
 }
+
+
 
 function closeModal() {
     if (modal) {
@@ -60,20 +77,29 @@ function initModalClosing() {
 }
 
 function createBouquetCard(bouquet) {
-    // Беремо готовий рядок від бекенда.
-    const priceText = bouquet.formatted_price || `₴${(bouquet.price / 100).toFixed(2)}`;
+    const lang = localStorage.getItem("selectedLang") || 'ua';
+    
+    // Вибираємо правильні поля
+    const title = lang === 'en' ? bouquet.title_en : bouquet.title_ua;
+    const description = lang === 'en' ? bouquet.description_en : bouquet.description_ua;
+    
+    // Форматуємо ціну для долара, якщо обрано EN
+    let priceText = bouquet.formatted_price;
+    if (lang === 'en') {
+        const priceInUsd = (bouquet.price_uah / 42).toFixed(2);
+        priceText = `$${priceInUsd}`;
+    }
     
     const card = document.createElement('a');
     card.href = `#bouquet-${bouquet.id}`; 
     card.className = 'bouquet-card';
-    card.style.cursor = 'pointer'; 
     card.innerHTML = `
         <div class="card-img">
-            <img src="${STATIC_BASE_URL}${bouquet.image_url}" alt="${bouquet.title}">
+            <img src="${STATIC_BASE_URL}${bouquet.image_url}" alt="${title}">
         </div>
         <div class="price">${priceText}</div> 
-        <h3>${bouquet.title}</h3>
-        <p>${bouquet.description}</p>
+        <h3>${title}</h3>
+        <p>${description}</p>
     `;
 
     card.addEventListener('click', (e) => {
@@ -84,6 +110,22 @@ function createBouquetCard(bouquet) {
     return card;
 }
 
+
+function renderBouquets() {
+    if (!bouquetGrid || allBouquets.length === 0) return;
+    
+    bouquetGrid.innerHTML = ''; 
+    allBouquets.forEach(bouquet => {
+        const card = createBouquetCard(bouquet);
+        bouquetGrid.appendChild(card);
+    });
+}
+// Зробимо функцію глобальною, щоб файл транслейшн її бачив
+window.renderBouquets = renderBouquets;
+
+
+
+
 // 4. ЗАВАНТАЖЕННЯ ДАНИХ (API)
 async function loadBouquets() {
     if (!bouquetGrid || isLoading) return;
@@ -91,27 +133,26 @@ async function loadBouquets() {
     
     try {
         const response = await fetch(`${API_BASE_URL}/bouquet/?skip=${currentSkip}&limit=${limit}`);
-        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-        
         const data = await response.json(); 
         const items = data.items ? data.items : data;
-        hasMore = data.has_more !== undefined ? data.has_more : false;
-
-        if (currentSkip === 0) bouquetGrid.innerHTML = ''; 
         
-        if (Array.isArray(items)) {
-            items.forEach(bouquet => {
-                const card = createBouquetCard(bouquet);
-                bouquetGrid.appendChild(card);
-            });
+        if (currentSkip === 0) {
+            allBouquets = items; // Зберігаємо нові дані
+        } else {
+            allBouquets = [...allBouquets, ...items]; // Додаємо до існуючих
         }
+
+        renderBouquets(); // Викликаємо рендер
+        
+        hasMore = data.has_more !== undefined ? data.has_more : false;
     } catch (error) {
-        console.error("Помилка завантаження букетів:", error);
-        bouquetGrid.innerHTML = '<p class="error-message">Не вдалося завантажити асортимент.</p>';
+        console.error("Помилка:", error);
     } finally {
         isLoading = false;
     }
 }
+
+
 
 async function fetchMoreBouquets() {
     if (!hasMore || isLoading) return;

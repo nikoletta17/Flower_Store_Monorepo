@@ -25,54 +25,7 @@ const translations = {
     aboutText3: "Our assortment includes flowers for any occasion — from romantic surprises to grand events. We care about the quality of every bouquet and your emotions, because our goal is to make the world brighter, gentler, and warmer.",
     aboutText4: "Whisper of Flower is more than a flower shop. It's a place where flowers speak, and the whisper of petals tells your story.",
     bouquetTitle: "Bouquet assortment",
-   bouquetCard1Title: "Pink Romance",
-   bouquetCard1Desc: "Modest, tender, charming",
-   bouquetCard1Price: "$28.57", // 1200 / 42
-   bouquetCard2Title: "Lavender Dreams",
-   bouquetCard2Desc: "Aroma and elegance",
-   bouquetCard2Price: "$13.10", // 550 / 42
-   bouquetCard3Title: "Spring Freshness",
-   bouquetCard3Desc: "Bouquet for a good mood",
-   bouquetCard3Price: "$16.67", // 700 / 42
-   bouquetCard4Title: "Spring Tenderness",
-   bouquetCard4Desc: "Delicate combination of pastel flowers",
-   bouquetCard4Price: "$15.48", // 650 / 42
-   bouquetCard5Title: "Sunny Smile",
-   bouquetCard5Desc: "Bouquet that gives warmth and positivity",
-   bouquetCard5Price: "$50.00", // 2100 / 42
-   bouquetCard6Title: "Evening Magic",
-   bouquetCard6Desc: "Elegance in every color note",
-   bouquetCard6Price: "$16.67", // 700 / 42
-   bouquetCard7Title: "Red Heart",
-   bouquetCard7Desc: "Passion and tenderness in every petal",
-   bouquetCard7Price: "$71.43", // 3000 / 42
-   bouquetCard8Title: "Petals of Tenderness",
-   bouquetCard8Desc: "Perfect gift for your loved ones",
-   bouquetCard8Price: "$11.90", // 500 / 42
-   bouquetCard9Title: "Flower Symphony",
-   bouquetCard9Desc: "Luxurious combination of colors and aromas",
-   bouquetCard9Price: "$19.05", // 800 / 42
-   bouquetCard10Title: "Pearl of Summer",
-   bouquetCard10Desc: "Bright accent for any occasion",
-   bouquetCard10Price: "$22.62", // 950 / 42
-   bouquetCard11Title: "Royal Grace",
-   bouquetCard11Desc: "Warm shades of love and care",
-   bouquetCard11Price: "$86.90", // 3650 / 42
-   bouquetCard12Title: "August Warmth",
-   bouquetCard12Desc: "A floral reminder of summer",
-   bouquetCard12Price: "$23.81", // 1000 / 42
-   bouquetCard13Title: "Tulip Happiness",
-   bouquetCard13Desc: "Spring lightness in every stem",
-   bouquetCard13Price: "$26.19", // 1100 / 42
-   bouquetCard14Title: "Summer Mood",
-   bouquetCard14Desc: "Colors that bring a smile",
-   bouquetCard14Price: "$10.71", // 450 / 42
-   bouquetCard15Title: "Silken Morning",
-   bouquetCard15Desc: "Light and refined scent of the morning",
-   bouquetCard15Price: "$15.48", // 650 / 42
-   bouquetCard16Title: "Dawn Dreams",
-   bouquetCard16Desc: "Warm shades of morning sun",
-   bouquetCard16Price: "$27.38", // 1150 / 42
+   
     // Модальне вікно
     modalOrderBtn: "Order",
     // Секція Reviews
@@ -158,55 +111,8 @@ const translations = {
     aboutText3: "Наш асортимент включає квіти для будь‑яких подій — від романтичних сюрпризів до урочистих заходів. Ми дбаємо про якість кожного букета та про ваші емоції, адже наша мета — робити світ яскравішим, ніжнішим та теплішим.",
     aboutText4: "Whisper of Flower — це більше ніж магазин квітів. Це місце, де квіти говорять, а шепіт пелюсток розповідає вашу історію.",
     // Секція Bouquet
-    bouquetTitle: "Асортимент букетів",
-    bouquetCard1Title: "Рожевий роман",
-    bouquetCard1Desc: "Скромний, ніжний, чарівний",
-    bouquetCard1Price: "₴1200",
-    bouquetCard2Title: "Лавандові сни",
-    bouquetCard2Desc: "Аромат та елегантність",
-    bouquetCard2Price: "₴550",
-    bouquetCard3Title: "Весняна свіжість",
-    bouquetCard3Desc: "Букет для гарного настрою",
-    bouquetCard3Price: "₴700",
-    bouquetCard4Title: "Ніжність весни",
-    bouquetCard4Desc: "Делікатне поєднання пастельних квітів",
-    bouquetCard4Price: "₴650",
-    bouquetCard5Title: "Сонячна усмішка",
-    bouquetCard5Desc: "Букет, що дарує тепло та позитив",
-    bouquetCard5Price: "₴2100",
-    bouquetCard6Title: "Магія вечора",
-    bouquetCard6Desc: "Вишуканість у кожній ноті кольору",
-    bouquetCard6Price: "₴700",
-    bouquetCard7Title: "Червоне серце",
-    bouquetCard7Desc: "Пристрасть і ніжність у кожній пелюстці",
-    bouquetCard7Price: "₴3000",
-    bouquetCard8Title: "Пелюстки ніжності",
-    bouquetCard8Desc: "Ідеальний подарунок для найдорожчих",
-    bouquetCard8Price: "₴500",
-    bouquetCard9Title: "Квіткова симфонія",
-    bouquetCard9Desc: "Розкішне поєднання кольорів та ароматів",
-    bouquetCard9Price: "₴800",
-    bouquetCard10Title: "Перлина літа",
-    bouquetCard10Desc: "Яскравий акцент для будь-якої події",
-    bouquetCard10Price: "₴950",
-    bouquetCard11Title: "Королівська грація",
-    bouquetCard11Desc: "Теплі відтінки любові та турботи",
-    bouquetCard11Price: "₴3650",
-    bouquetCard12Title: "Тепло серпня",
-    bouquetCard12Desc: "Квіткове нагадування про літо",
-    bouquetCard12Price: "₴1000",
-    bouquetCard13Title: "Тюльпанове щастя",
-    bouquetCard13Desc: "Весняна легкість у кожному стеблі",
-    bouquetCard13Price: "₴1100",
-    bouquetCard14Title: "Літній настрій",
-    bouquetCard14Desc: "Барви, що приносять усмішку",
-    bouquetCard14Price: "₴450",
-    bouquetCard15Title: "Шовковий ранок",
-    bouquetCard15Desc: "Легкий та витончений аромат початку дня",
-    bouquetCard15Price: "₴650",
-    bouquetCard16Title: "Світанкові мрії",
-    bouquetCard16Desc: "Теплі відтінки ранкового сонця",
-    bouquetCard16Price: "₴1150",
+
+
     // Модальне вікно
     modalOrderBtn: "Замовити",
     // Секція Reviews
@@ -272,81 +178,100 @@ const translations = {
   }
 };
 
+
+/**
+ * ОНОВЛЕНА ФУНКЦІЯ ПЕРЕКЛАДУ СТАТИЧНИХ ЕЛЕМЕНТІВ
+ */
 function applyTranslation(lang) {
+    // Переклад елементів з атрибутом data-i18n
     document.querySelectorAll("[data-i18n]").forEach(el => {
         const key = el.getAttribute("data-i18n");
         if (translations[lang] && translations[lang][key]) {
-            // ДЛЯ КНОПОК SUBMIT ТА INPUT TYPE=BUTTON
+            // Для кнопок та інпутів
             if (el.tagName === 'INPUT' && (el.type === 'submit' || el.type === 'button')) {
                 el.setAttribute('value', translations[lang][key]);
             } 
-            // ДЛЯ span, h, p, a, div 
+            // Для звичайних текстових блоків
             else {
                 el.innerHTML = translations[lang][key]; 
             }
         }
     });
 
-    //ДЛЯ PLACEHOLDE
+    // Переклад плейсхолдерів
     document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
         const key = el.getAttribute("data-i18n-placeholder");
         if (translations[lang] && translations[lang][key]) {
             el.setAttribute('placeholder', translations[lang][key]);
         }
     });
+
+    // Оновлення заголовка вкладки браузера (якщо є в об'єкті)
+    const titleKey = document.body.getAttribute('data-page-title') || 'indexTitle';
+    if (translations[lang] && translations[lang][titleKey]) {
+        document.title = translations[lang][titleKey];
+    }
 }
-// ЗАВАНТАЖЕННЯ МОВИ З LOCALSTORAGE
-window.addEventListener("DOMContentLoaded", () => {
-   // Беремо мову з атрибута lang="ua" у HTML, якщо в сховищі нічого немає
-   const defaultLang = document.documentElement.getAttribute('lang') || 'ua';
-   const savedLang = localStorage.getItem("selectedLang") || defaultLang;
-   setLanguage(savedLang);
-});
 
-
-// ВСТАНОВИТИ МОВУ
+/**
+ * ВСТАНОВЛЕННЯ МОВИ ТА ОНОВЛЕННЯ КОНТЕНТУ
+ */
 function setLanguage(lang) {
-   // знайти відповідний елемент у меню
-   const option = document.querySelector(`a[data-lang="${lang}"]`);
-   if (!option) return;
+    // 1. Оновлюємо вигляд перемикача мов
+    const option = document.querySelector(`a[data-lang="${lang}"]`);
+    if (!option) return;
 
-   const flagClass = option.querySelector('span').className;
-   const languageText = option.textContent.trim();
+    const flagSpan = option.querySelector('span');
+    const flagClass = flagSpan ? flagSpan.className : '';
+    const languageText = option.textContent.trim();
 
-   selected.innerHTML = `<span class="${flagClass}"></span> ${languageText}`;
-   selected.setAttribute("data-lang", lang);
+    selected.innerHTML = `<span class="${flagClass}"></span> ${languageText}`;
+    selected.setAttribute("data-lang", lang);
 
-   applyTranslation(lang);
+    // 2. Зберігаємо вибір у браузері
+    localStorage.setItem("selectedLang", lang);
 
-   localStorage.setItem("selectedLang", lang);
+    // 3. Перекладаємо статичні елементи (меню, футер тощо)
+    applyTranslation(lang);
+
+    // 4. ОНОВЛЮЄМО ДИНАМІЧНИЙ КАТАЛОГ (Букети з бази)
+    // Якщо у тебе функція рендеру називається інакше, заміни назву тут
+    if (typeof renderBouquets === 'function') {
+        renderBouquets(); 
+    }
 }
 
+/**
+ * ПОДІЇ ТА СЛУХАЧІ
+ */
 
-// КЛІК ПО МЕНЮ ВИБОРУ МОВИ
+// Завантаження сторінки
+window.addEventListener("DOMContentLoaded", () => {
+    const defaultLang = document.documentElement.getAttribute('lang') || 'ua';
+    const savedLang = localStorage.getItem("selectedLang") || defaultLang;
+    setLanguage(savedLang);
+});
+
+// Відкриття меню мов
 selected.addEventListener('click', (e) => {
-   e.stopPropagation();
-   langMenu.classList.toggle('show');
+    e.stopPropagation();
+    langMenu.classList.toggle('show');
 });
 
-
-// ВИБІР МОВИ
+// Вибір мови в меню
 options.forEach(option => {
-   option.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      const lang = option.getAttribute('data-lang');
-
-      setLanguage(lang);
-
-      langMenu.classList.remove('show');
-   });
+    option.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const lang = option.getAttribute('data-lang');
+        setLanguage(lang);
+        langMenu.classList.remove('show');
+    });
 });
 
-
-// ЗАКРИТТЯ МЕНЮ ПРИ КЛІКУ 
+// Закриття меню при кліку в будь-якому іншому місці
 document.addEventListener('click', (e) => {
-   if (!langMenu.contains(e.target) && !selected.contains(e.target)) {
-      langMenu.classList.remove('show');
-   }
+    if (langMenu && !langMenu.contains(e.target) && !selected.contains(e.target)) {
+        langMenu.classList.remove('show');
+    }
 });
