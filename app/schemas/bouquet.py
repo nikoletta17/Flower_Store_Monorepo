@@ -21,8 +21,10 @@ class BouquetCreate(BouquetBase):
 
 
 class BouquetUpdate(BaseModel):
-    title: str | None
-    description: str | None
+    title_ua: str | None
+    title_en: str | None
+    description_ua: str | None
+    description_en: str | None
     price: float | None
     image_url: str | None
     anchor_id: str | None

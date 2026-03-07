@@ -36,53 +36,29 @@ async def get_single_bouquet(
 
 
 @router.post("/", response_model=BouquetRead, status_code=status.HTTP_201_CREATED)
-async def create_new_bouquet(
-        request: BouquetCreate,
-        db: AsyncSession = Depends(get_db),
-        current_user: UserModel = Depends(is_admin)
-):
-    return await service.bouquet_service.create_new_bouquet(db, request, current_user)
-
-
-# @router.post("/")
-# async def create_bouquet(
-#     title: str = Form(...),
-#     description: str = Form(...),
-#     price: float = Form(...),
-#     anchor_id: str = Form(None),
-#     file: UploadFile = File(...), # Приймаємо файл
-#     db: AsyncSession = Depends(get_db),
-#     current_user: User = Depends(get_current_active_user)
-# ):
-#     # Збираємо дані в схему вручну, бо Form не працює автоматично з Pydantic моделями
-#     request = BouquetCreate(
-#         title=title,
-#         description=description,
-#         price=price,
-#         image_url="", # Буде заповнено в сервісі
-#         anchor_id=anchor_id
-#     )
-#     return await service.bouquet_service.create_new_bouquet(db, request, current_user, file)
-
-
-router.post("/", response_model=BouquetRead, status_code=status.HTTP_201_CREATED)
 async def create_bouquet(
-        title: str = Form(...),
-        description: str = Form(...),
+        title_ua: str = Form(...),
+        title_en: str = Form(...),
+        description_ua: str = Form(...),
+        description_en: str = Form(...),
         price: float = Form(...),
         anchor_id: str = Form(None),
         file: UploadFile = File(...),
         db: AsyncSession = Depends(get_db),
         current_user: UserModel = Depends(is_admin)
 ):
+    # Збираємо нову двомовну схему
     request = BouquetCreate(
-        title=title,
-        description=description,
+        title_ua=title_ua,
+        title_en=title_en,
+        description_ua=description_ua,
+        description_en=description_en,
         price=price,
         image_url="",
         anchor_id=anchor_id
     )
     return await service.bouquet_service.create_new_bouquet(db, request, current_user, file)
+
 
 
 

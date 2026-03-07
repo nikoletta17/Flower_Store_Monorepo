@@ -50,8 +50,10 @@ async def create_bouquet(
     price_in_cents = int(request.price * 100)
 
     new_bouquet = models.Bouquet(
-        title=request.title,
-        description=request.description,
+        title_ua=request.title_ua,
+        title_en=request.title_en,
+        description_ua=request.description_ua,
+        description_en=request.description_en,
         price=price_in_cents,
         image_url=request.image_url,
         anchor_id=request.anchor_id
@@ -59,7 +61,6 @@ async def create_bouquet(
 
     db.add(new_bouquet)
     return new_bouquet
-
 
 
 async def update_bouquet(
