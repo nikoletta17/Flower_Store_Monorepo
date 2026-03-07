@@ -38,7 +38,7 @@ python app/QR-code/generate_qr.py
 ********************
 GIT
 
-git branch                                 //Перевірка гілки
+git branch
 
 # 1. Додаємо всі змінені файли до списку збереження
 git add .
