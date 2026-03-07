@@ -6,6 +6,7 @@ from . import auth_service
 from . import startup_service
 from . import ai_service
 from . import ai_tools
+from . import order_service
 
 __all__ = [
     "bouquet_service",
@@ -14,7 +15,7 @@ __all__ = [
     "cart_service",
     "auth_service",
     "startup_service",
-    # NEED TO BE FIXED!!!
     "ai_service",
-    "ai_tools"
+    "ai_tools",
+    "order_service"
 ]

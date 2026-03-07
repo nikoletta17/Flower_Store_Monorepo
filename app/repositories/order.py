@@ -45,13 +45,12 @@ cart_items: list[models.CartItem]
 
 
 async def clear_user_cart(
-        cart_id: int,
-        db: AsyncSession
+        db: AsyncSession,
+        cart_id: int
 ):
     await db.execute(
         delete(models.CartItem).where(models.CartItem.cart_id == cart_id)
     )
-
 
 
 async def get_order_by_id(
@@ -66,6 +65,7 @@ async def get_order_by_id(
         )
     )
     return result.scalar_one_or_none()
+
 
 
 async def get_user_orders(

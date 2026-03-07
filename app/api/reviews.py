@@ -1,4 +1,4 @@
-# app/routers/review.py
+# app/api/review.py
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List

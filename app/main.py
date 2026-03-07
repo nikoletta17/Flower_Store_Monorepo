@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 
 from pyexpat.errors import messages
 
-from .routers import (
+from .api import (
     bouquet as bouquet_router,
     reviews as reviews_router,
     ai_assistant as ai_assistant_router,

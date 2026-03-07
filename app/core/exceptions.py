@@ -40,4 +40,15 @@ class AccountNotVerifiedException(FlowerAppException):
         }
         super().__init__(message="Account not verified", details=details)
 
-# Коли ми почнемо робити Оплату або Замовлення, ми додамо, наприклад, InsufficientStockException (якщо квітів немає в наявності)
+
+class EmptyCartException(FlowerAppException):
+    status_code = 400
+    def __init__(self, message: str = "Кошик порожній. Додайте товари перед оформленням."):
+        super().__init__(message=message)
+
+
+
+class InsufficientPermissionsException(FlowerAppException):
+    status_code = 403
+    def __init__(self, message: str = "Недостатньо прав для виконання цієї дії."):
+        super().__init__(message=message)
