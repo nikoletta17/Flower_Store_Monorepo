@@ -13,7 +13,7 @@ uvicorn app.main:app --reload
 
 ********************
 Migrations:
-alembic revision --autogenerate -m "added is_verified field to user model" (маленькі літери)
+alembic revision --autogenerate -m "add orders and order_items_tables" (маленькі літери)
 alembic upgrade head                              #закріпити зміну
 ********************
 
