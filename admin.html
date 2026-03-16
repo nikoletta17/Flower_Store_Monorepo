@@ -126,6 +126,20 @@
         background: #ff4d4d;
         color: white;
       }
+
+      #orders-table td {
+        vertical-align: top; /* Щоб текст у високих рядках був зверху */
+        font-size: 0.9rem;
+      }
+      #orders-table small {
+        display: block;
+        line-height: 1.2;
+        margin-top: 2px;
+      }
+      select {
+        cursor: pointer;
+        background-color: #fff;
+      }
     </style>
   </head>
   <body>
@@ -203,16 +217,16 @@
       </div>
 
       <div id="orders" class="tab-content">
-        <h1>Замовлення</h1>
+        <h1>Керування замовленнями</h1>
         <div class="card">
           <table id="orders-table">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Клієнт</th>
+                <th>№</th>
+                <th>Клієнт / Контакти</th>
+                <th>Склад замовлення</th>
                 <th>Сума</th>
-                <th>Статус</th>
-                <th>Дії</th>
+                <th>Змінити статус</th>
               </tr>
             </thead>
             <tbody></tbody>
