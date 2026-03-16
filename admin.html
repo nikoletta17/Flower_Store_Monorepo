@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Адмін-панель | Whisper of Flower</title>
+    <style>
+      :root {
+        --main-color: #ff9900;
+        --bg-gray: #f4f4f4;
+      }
+      body {
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+        display: flex;
+        background: #fafafa;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 250px;
+        background: #333;
+        color: white;
+        height: 100vh;
+        position: fixed;
+      }
+      .sidebar h2 {
+        padding: 20px;
+        font-size: 1.2rem;
+        border-bottom: 1px solid #444;
+      }
+      .sidebar button {
+        width: 100%;
+        padding: 15px;
+        background: none;
+        border: none;
+        color: white;
+        text-align: left;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .sidebar button:hover,
+      .sidebar button.active {
+        background: var(--main-color);
+      }
+
+      /* Main Content */
+      .main-content {
+        margin-left: 250px;
+        padding: 40px;
+        width: calc(100% - 250px);
+      }
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+
+      /* Forms & Tables */
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+      input,
+      textarea,
+      select {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      textarea {
+        height: 80px;
+        resize: vertical;
+      }
+
+      button.btn-save {
+        background: var(--main-color);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      button.btn-save:hover {
+        background: #e68a00;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: white;
+      }
+      th,
+      td {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+        text-align: left;
+      }
+      th {
+        background: var(--bg-gray);
+        color: #555;
+      }
+
+      .delete-btn {
+        color: #ff4d4d;
+        border: 1px solid #ff4d4d;
+        background: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .delete-btn:hover {
+        background: #ff4d4d;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar">
+      <h2>Whisper of Flower Admin</h2>
+      <button onclick="openTab(event, 'bouquets')" class="tab-btn active">
+        💐 Букети
+      </button>
+      <button onclick="openTab(event, 'orders')" class="tab-btn">
+        📦 Замовлення
+      </button>
+      <button onclick="openTab(event, 'reviews')" class="tab-btn">
+        ⭐ Відгуки
+      </button>
+      <button onclick="openTab(event, 'users')" class="tab-btn">
+        👥 Користувачі
+      </button>
+      <button
+        onclick="window.location.href = 'index.html'"
+        style="margin-top: 50px; color: #ccc; border-top: 1px solid #444"
+      >
+        ← На сайт
+      </button>
+    </div>
+
+    <div class="main-content">
+      <div id="bouquets" class="tab-content active">
+        <h1>Керування букетами</h1>
+        <div class="card">
+          <h3>Додати новий букет</h3>
+          <input type="hidden" id="bouquet-id" />
+          <div class="form-grid">
+            <input type="text" id="b-title-ua" placeholder="Назва (UA)" />
+            <input type="text" id="b-title-en" placeholder="Назва (EN)" />
+            <textarea id="b-desc-ua" placeholder="Опис (UA)"></textarea>
+            <textarea id="b-desc-en" placeholder="Опис (EN)"></textarea>
+            <input type="number" id="b-price" placeholder="Ціна (напр. 550)" />
+            <div style="display: flex; flex-direction: column; gap: 5px">
+              <label style="font-size: 0.8rem; color: #666"
+                >Виберіть фото букета:</label
+              >
+              <input type="file" id="b-image-file" accept="image/*" />
+            </div>
+          </div>
+          <button class="btn-save" onclick="handleBouquetSubmit()">
+            Зберегти букет
+          </button>
+          <button
+            onclick="location.reload()"
+            style="
+              background: #ccc;
+              border: none;
+              padding: 10px;
+              cursor: pointer;
+              border-radius: 4px;
+            "
+          >
+            Скасувати
+          </button>
+        </div>
+
+        <div class="card">
+          <table id="bouquets-table">
+            <thead>
+              <tr>
+                <th>Фото</th>
+                <th>Назва (UA)</th>
+                <th>Ціна</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="orders" class="tab-content">
+        <h1>Замовлення</h1>
+        <div class="card">
+          <table id="orders-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Клієнт</th>
+                <th>Сума</th>
+                <th>Статус</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="reviews" class="tab-content">
+        <h1>Відгуки</h1>
+        <div class="card">
+          <table id="reviews-table">
+            <thead>
+              <tr>
+                <th>Автор</th>
+                <th>Текст</th>
+                <th>Рейтинг</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="users" class="tab-content">
+        <h1>Користувачі</h1>
+        <div class="card">
+          <table id="users-table">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Роль</th>
+                <th>Статус</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+  </body>
+</html>

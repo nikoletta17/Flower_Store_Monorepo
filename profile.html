@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мій Кабінет | Whisper of Flower</title>
+    <style>
+        :root { --main-pink: #ff85a2; --bg-gray: #f8f9fa; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-gray); margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h2 { color: #444; border-bottom: 2px solid var(--main-pink); padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #666; }
+        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; background: var(--main-pink); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-size: 16px; transition: 0.3s; }
+        button:hover { background: #f06a8d; }
+        .order-item { border: 1px solid #eee; padding: 15px; border-radius: 8px; margin-bottom: 10px; background: #fff; }
+        .status-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; background: #eee; }
+        .verified-badge { color: green; font-size: 12px; margin-bottom: 10px; display: block; }
+        @media (max-width: 768px) { .container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h2>Мій Профіль</h2>
+        <span id="verifiedStatus" class="verified-badge"></span>
+        <form id="profileForm">
+            <div class="form-group">
+                <label>Ім'я</label>
+                <input type="text" id="nameInput" required>
+            </div>
+            <div class="form-group">
+                <label>Електронна пошта</label>
+                <input type="email" id="emailInput" required>
+            </div>
+            <hr>
+            <p style="font-size: 13px; color: #888;">Заповніть лише якщо хочете змінити пароль:</p>
+            <div class="form-group">
+                <label>Новий пароль</label>
+                <input type="password" id="passwordInput" placeholder="Мінімум 6 символів">
+            </div>
+            <button type="submit" id="saveBtn">Зберегти зміни</button>
+        </form>
+        <button onclick="requestPasswordReset()" style="margin-top: 15px; background: #6c757d;">Забули пароль?</button>
+    </div>
+
+    <div class="card">
+        <h2>Історія замовлень</h2>
+        <div id="ordersContainer">Завантаження...</div>
+    </div>
+</div>
+
+<script src="js/profile.js"></script>
+</body>
+</html>
