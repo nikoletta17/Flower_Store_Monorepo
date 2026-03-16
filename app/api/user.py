@@ -6,7 +6,7 @@ from fastapi_mail import MessageSchema, MessageType
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..database import get_db
-from ..core.security import get_current_user
+from ..core.security import get_current_user, create_url_safe_token
 from .. import services as service
 from ..schemas.user import UserCreate, UserUpdate, UserRead, UserRegisterResponse
 from ..schemas.auth import UserResetPasswordRequest, UserResetPasswordConfirm
@@ -123,7 +123,6 @@ async def read_users(
     )
 
 
-
 @router.put("/{user_id}", response_model=UserRead)
 async def update_user_data(
         user_id: int,
@@ -134,8 +133,23 @@ async def update_user_data(
     if user_id != current_user.id and current_user.role != "admin":
         raise FlowerAppException("Не дозволено оновлювати дані іншого користувача.")
 
-    return await service.user_service.update_user_info(db, user_id, request)
+    # Оновлюємо дані
+    updated_user = await service.user_service.update_user_info(db, user_id, request)
 
+    # Якщо пошта змінилася (і тепер вона не верифікована), надсилаємо новий лист
+    if not updated_user.is_verified:
+        token = create_url_safe_token({"email": updated_user.email})
+        link = f"http://{Config.API_HOST}/users/verify/{token}"
+
+        # Використовуємо твій шаблон листа
+        message = create_message(
+            recipients=[updated_user.email],
+            subject="Підтвердження нової пошти - Whisper of Flower",
+            template_data={"link": link, "name": updated_user.name},
+        )
+        await mail.send_message(message, template_name="welcome.html")
+
+    return updated_user
 
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)

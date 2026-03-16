@@ -2,6 +2,7 @@ import logging
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from ..models import User
+from app.core.config import Config
 from ..utils.hashing import Hash
 from .. import repositories as repo
 from .. import initial_data
@@ -12,21 +13,28 @@ import os
 logger = logging.getLogger(__name__)
 
 async def create_superuser(db: AsyncSession):
-    admin_email = os.getenv("SUPERUSER_EMAIL")
-    admin_password = os.getenv("SUPERUSER_PASSWORD")
+    admin_email = Config.SUPERUSER_EMAIL
+    admin_password = Config.SUPERUSER_PASSWORD
+
+    if not admin_email or not admin_password:
+        logger.warning("SUPERUSER_EMAIL or PASSWORD are not assigned in .env")
+        return
 
     if await repo.user.get_user_by_email(db, admin_email):
         return
 
     hashed_password = Hash.bcrypt(admin_password)
     db_user = User(
-        name="Super Admin",
+        name="Super_Admin",
         email=admin_email,
         password=hashed_password,
-        role="admin"
+        role="admin",
+        is_verified=True, # Исправили с isVerified на is_verified (как в модели)
     )
     db.add(db_user)
     await db.commit()
+    await db.refresh(db_user)
+    print(f"Admin {admin_email} was created successfully!")
 
 
 async def seed_data(db: AsyncSession):

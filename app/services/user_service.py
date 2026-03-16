@@ -119,6 +119,7 @@ async def update_user_info(db: AsyncSession, user_id: int, user_update: UserUpda
         existing = await repo.user.get_user_by_email(db, update_data['email'])
         if existing:
             raise AlreadyExistsException(f"Email '{update_data['email']}' вже зайнятий.")
+        db_user.is_verified = False  # Скидаємо прапорець, бо нова пошта не підтверджена
 
     updated_user = await repo.user.update_user(db, db_user, update_data)
     await db.commit()

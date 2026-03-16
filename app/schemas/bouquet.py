@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel, computed_field
 from pydantic import Field
 from app.utils.formatters import format_price
@@ -9,8 +11,8 @@ class BouquetBase(BaseModel):
     description_ua: str
     description_en: str
     price: float
-    image_url: str
-    anchor_id: str | None
+    image_url: str = "default.jpg"
+    anchor_id: Optional[str] = None
 
     class Config:
         from_attributes = True

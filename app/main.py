@@ -1,8 +1,12 @@
 # app/main.py
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
+from .database import AsyncSessionLocal, engine, Base
+from .models import *
+from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.templating import Jinja2Templates
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 
 from .api import (
@@ -25,7 +29,9 @@ from app.core.logger import setup_logging, logger
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
-    # Дії при запуску
+    async with engine.begin() as connection:
+        await connection.run_sync(Base.metadata.create_all)
+
     async with AsyncSessionLocal() as session:
         try:
             await startup_service.run_startup(session)
@@ -35,6 +41,7 @@ async def lifespan(_app: FastAPI):
             print(f"Error during startup seeding: {e}")
         finally:
             await session.close()
+
     yield
 
 
@@ -53,24 +60,40 @@ setup_middleware(app)
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
+templates = Jinja2Templates(directory="app/templates")
 #Global Exceptions
 @app.exception_handler(FlowerAppException)
 async def flower_app_exception_handler(request: Request, exc: FlowerAppException):
-    # Тело ответа
+    # Проверяем: если запрос пришел от браузера (хочет HTML)
+    if "text/html" in request.headers.get("accept", ""):
+        return templates.TemplateResponse(
+            "404.html" if exc.status_code == 404 else "error.html",
+            {"request": request, "message": exc.message, "status_code": exc.status_code},
+            status_code=exc.status_code
+        )
+
+    # Если запрос от JavaScript (админка или фронтенд fetch) — отдаем JSON
     error_content = {
         "status": "error",
         "message": exc.message,
         "error_type": exc.__class__.__name__,
     }
-
     if exc.details:
         error_content.update(exc.details)
 
-    return JSONResponse(
-        status_code=exc.status_code,
-        content=error_content
-    )
+    return JSONResponse(status_code=exc.status_code, content=error_content)
 
+
+# 3. ДОБАВЬ ТАКЖЕ ЭТО: для стандартных ошибок FastAPI (например, если просто вбили кривой URL)
+@app.exception_handler(StarletteHTTPException)
+async def http_exception_handler(request: Request, exc: StarletteHTTPException):
+    if "text/html" in request.headers.get("accept", ""):
+        return templates.TemplateResponse(
+            "404.html" if exc.status_code == 404 else "error.html",
+            {"request": request, "message": exc.detail, "status_code": exc.status_code},
+            status_code=exc.status_code
+        )
+    return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
 
 
 #Routers

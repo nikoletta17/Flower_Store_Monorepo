@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Error page</title>
+    <style>
+        body { text-align: center; padding: 100px; font-family: 'Segoe UI', sans-serif; background: #fffaf0; color: #444; }
+        .icon { font-size: 80px; margin-bottom: 20px; }
+        h1 { color: #d9534f; font-size: 60px; margin: 0; }
+        p { font-size: 18px; line-height: 1.6; }
+        .error-box {
+            background: #fff; border: 1px solid #eee; padding: 20px;
+            display: inline-block; margin: 20px 0; border-radius: 8px;
+            max-width: 500px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .btn {
+            display: inline-block; background: #ff9900; color: white;
+            padding: 12px 25px; text-decoration: none; border-radius: 30px;
+            font-weight: bold; transition: 0.3s;
+        }
+        .btn:hover { background: #e68a00; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <div class="icon">⚙️</div>
+    <h1>Упс! Сталася помилка</h1>
+    <div class="error-box">
+        <p>Наші флористи вже розбираються, чому цей запит не розквітнув.</p>
+        <p style="color: #888; font-style: italic;">Код помилки: {{ status_code }}</p>
+        <p><strong>Повідомлення:</strong> {{ message }}</p>
+    </div>
+    <br>
+    <a href="/" class="btn">Повернутися на головну</a>
+</body>
+</html>
