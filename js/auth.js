@@ -1,19 +1,44 @@
 const BASE_URL = 'http://127.0.0.1:8000'; 
 
+// --- СТАРТ (ОБ'ЄДНАНИЙ) ---
+document.addEventListener('DOMContentLoaded', async () => {
+    // 1. ПЕРЕВІРКА ТОКЕНА В URL (для Google Auth)
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenFromUrl = urlParams.get('token');
+
+    if (tokenFromUrl) {
+        console.log("Знайдено токен в URL, зберігаємо...");
+        localStorage.setItem('access_token', tokenFromUrl);
+        // Очищаємо URL від токена, щоб не "світився"
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    // 2. ОНОВЛЕННЯ МЕНЮ ТА ПРОФІЛЮ
+    await updateAuthLinks(); 
+
+    // 3. ПРИВ'ЯЗКА ФОРМ (якщо вони є на сторінці)
+    const pageTitle = document.title;
+    const form = document.querySelector('form');
+    
+    if (form) {
+        if (pageTitle.includes('Зареєструватися')) {
+            form.addEventListener('submit', handleRegister);
+        } else if (pageTitle.includes('Увійти')) {
+            form.addEventListener('submit', handleLogin);
+        }
+    }
+});
+
 // --- ФУНКЦІЯ ОТРИМАННЯ ПРОФІЛЮ ---
 async function fetchCurrentUser(token) {
     if (!token) return null;
     
-    // Очищаем токен от лишних кавычек и пробелов
     const cleanToken = token.replace(/['"]+/g, '').trim();
     
-    console.log("Відправляємо токен:", cleanToken); // Проверка для консоли
-
     try {
         const response = await fetch(`${BASE_URL}/users/me`, {
             method: 'GET',
             headers: {
-                // ВАЖНО: убедись, что после Bearer стоит ровно один пробел
                 'Authorization': `Bearer ${cleanToken}`,
                 'Content-Type': 'application/json',
             },
@@ -26,9 +51,7 @@ async function fetchCurrentUser(token) {
             return user;
         } else {
             console.error("Помилка профілю:", response.status);
-            // Если сервер вернул 400, давай посмотрим на тело ошибки
-            const errData = await response.json().catch(() => ({}));
-            console.error("Деталі помилки:", errData);
+            if (response.status === 401) logoutUser(null, false); // Якщо токен протух
             return null;
         }
     } catch (error) {
@@ -37,29 +60,20 @@ async function fetchCurrentUser(token) {
     }
 }
 
-
-// --- ВИХІД ---
-const logoutUser = (e, shouldRedirect = true) => {
-    if (e) e.preventDefault();
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('user_name'); 
-    localStorage.removeItem('user_role'); 
-    if (shouldRedirect) window.location.href = 'index.html';
-    else updateAuthLinks();
-};
-
 // --- ОНОВЛЕННЯ МЕНЮ ---
 const updateAuthLinks = async () => {
     const authLinksContainer = document.getElementById('auth-links-container');
     const token = localStorage.getItem('access_token');
     if (!authLinksContainer) return;
+
     authLinksContainer.innerHTML = ''; 
 
     if (token) {
         let userName = localStorage.getItem('user_name');
         let userRole = localStorage.getItem('user_role');
         
-        if (!userName || !userRole) {
+        // Якщо токен є, а імені немає в пам'яті — йдемо на сервер
+        if (!userName) {
             const user = await fetchCurrentUser(token);
             if (user) {
                 userName = user.name;
@@ -75,23 +89,31 @@ const updateAuthLinks = async () => {
                 : '';
 
             userDropdown.innerHTML = `
-                <span class="user-greeting">Привіт, ${userName}! <i class="fas fa-caret-down"></i></span>
+                <span class="user-greeting" style="cursor:pointer">Привіт, ${userName}! <i class="fas fa-caret-down"></i></span>
                 <ul class="dropdown-menu">
                     ${adminLink}
-                    <li><a href="profile.html">Мій профіль</a></li> 
+                    <li><a href="profile.html">Мій профіль</a></li>
+                    <li><a href="#" id="logout-link">Вихід</a></li>
                 </ul>`;
+            
             authLinksContainer.appendChild(userDropdown);
-
-            const logoutLink = document.createElement('li');
-            logoutLink.innerHTML = '<a href="#" id="logout-link">Вихід</a>';
-            authLinksContainer.appendChild(logoutLink);
             document.getElementById('logout-link').addEventListener('click', logoutUser);
+            return;
         }
-    } else {
-        authLinksContainer.innerHTML = `
-            <li><a href="Login.html">Увійти</a></li>
-            <li><a href="Register.html">Зареєструватися</a></li>`;
     }
+
+    // Якщо не авторизований або сталася помилка профілю
+    authLinksContainer.innerHTML = `
+        <li><a href="Login.html">Увійти</a></li>
+        <li><a href="Register.html">Зареєструватися</a></li>`;
+};
+
+// --- ВИХІД ---
+const logoutUser = (e, shouldRedirect = true) => {
+    if (e) e.preventDefault();
+    localStorage.clear(); // Чистимо все відразу
+    if (shouldRedirect) window.location.href = 'index.html';
+    else updateAuthLinks();
 };
 
 // --- ЛОГІН ---
@@ -114,23 +136,13 @@ async function handleLogin(e) {
         if (response.ok) {
             const tokenData = await response.json();
             localStorage.setItem('access_token', tokenData.access_token);
-            
-            // Отримуємо дані профілю, щоб зберегти ім'я та роль
-            const user = await fetchCurrentUser(tokenData.access_token); 
-
-            if (user) {
-                alert('Вхід успішний!');
-                
-                // ТЕПЕР ЗАВЖДИ КИДАЄМО НА ГОЛОВНУ
-                window.location.href = 'index.html'; 
-            }
+            await fetchCurrentUser(tokenData.access_token); 
+            window.location.href = 'index.html'; 
         } else {
             const error = await response.json();
             alert(`Помилка: ${error.detail || 'Невірні дані'}`);
         }
-    } catch (error) {
-        console.error('Помилка:', error);
-    }
+    } catch (error) { console.error('Помилка:', error); }
 }
 
 // --- РЕЄСТРАЦІЯ ---
@@ -147,21 +159,11 @@ async function handleRegister(e) {
             body: JSON.stringify({ name, email, password, confirm_password: password }),
         });
         if (response.ok) {
-            alert('Успіх! Увійдіть.');
+            alert('Успіх! Тепер увійдіть.');
             window.location.href = 'Login.html';
+        } else {
+            const err = await response.json();
+            alert(err.detail || "Помилка реєстрації");
         }
     } catch (err) { console.error(err); }
-}
-
-// --- СТАРТ ---
-document.addEventListener('DOMContentLoaded', () => {
-    const pageTitle = document.title;
-    const form = document.querySelector('form');
-    
-    updateAuthLinks(); 
-
-    if (form) {
-        if (pageTitle.includes('Зареєструватися')) form.addEventListener('submit', handleRegister);
-        else if (pageTitle.includes('Увійти')) form.addEventListener('submit', handleLogin);
-    }
-});
+}   

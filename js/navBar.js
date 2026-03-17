@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!sidebar.contains(e.target) && !hambtn.contains(e.target) && sidebar.classList.contains("open")) {
       sidebar.classList.remove("open");
       main.classList.remove("shift");
-      // ПОВЕРТАЄМО КНОПКУ, КОЛИ ЗАКРИЛИ
       hambtn.style.opacity = "1";
       hambtn.style.pointerEvents = "auto";
     }

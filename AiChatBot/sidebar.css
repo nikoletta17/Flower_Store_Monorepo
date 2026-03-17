@@ -7,16 +7,7 @@
   --sidebar-width: 560px; /* Можна зменшити, якщо 560px забагато для чату */
 }
 
-body {
-  margin: 0;
-  font-family: "Inter", system-ui, sans-serif; 
-}
 
-/* APP - Основний контейнер для Sidebar */
-.app {
-  display: flex;
-  min-height: 100vh;
-}
 
 /* SIDEBAR - БІЧНА ПАНЕЛЬ */
 .sidebar {
@@ -30,7 +21,6 @@ body {
              ); 
   position: fixed;
   top: 0;
-  /* 🛑 КРИТИЧНО: Відкриваємо СПРАВА */
   right: auto; 
   left: 0; 
   height: 100%;
@@ -42,7 +32,7 @@ body {
   font-weight: 600;
   transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translateX(-100%);
-  z-index: 999; 
+  z-index: 1000; 
 }
 
 /* Відкритий стан */
@@ -53,36 +43,22 @@ body {
   transform: translateX(0);
 }
 
-/* MAIN CONTENT WRAPPER */
-.main {
-  flex: 1;
-  margin: 0;
-  padding: 0; 
-  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1); /* Змінено на transform */
-}
 
-.main.shift {
- transform: translateX(var(--sidebar-width));
-}
-
-
-/* Hamburger button (Кнопка відкриття чату) */
 .hambtn {
   position: fixed;
-  /* ⬅️ НОВЕ ПОЗИЦІОНУВАННЯ: ЛІВИЙ НИЖНІЙ КУТ */
   left: 30px; 
   bottom: 30px; 
-  right: auto; /* Запобігаємо конфлікту */
+  right: auto; 
   top: auto; 
   
-  z-index: 1000;
-  /* Розміри та стилі */
+  z-index: 999;
+
   width: 55px; 
   height: 55px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%; /* Кругла кнопка */
+  border-radius: 50%; 
   font-size: 24px;
   
   background: rgba(var(--accent-1), 0.95); 
