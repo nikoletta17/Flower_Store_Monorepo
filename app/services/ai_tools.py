@@ -3,7 +3,6 @@ from typing import List, Dict
 from ..database import AsyncSessionLocal
 from .. import repositories as repo
 
-
 async def search_flowers_by_price(max_price: float, min_price: float = 0.0) -> str:
     async with AsyncSessionLocal() as db:
         try:
@@ -12,27 +11,26 @@ async def search_flowers_by_price(max_price: float, min_price: float = 0.0) -> s
 
             min_cents = int(min_price * 100)
             max_cents = int(max_price * 100)
-
-            flowers = await repo.bouquet.get_all(db)
+            flowers = await repo.bouquet.get_all(db, limit=100)
 
             result = []
             for bouquet in flowers:
                 if min_cents <= bouquet.price <= max_cents:
                     result.append({
                         "id": bouquet.id,
-                        "title": bouquet.title,
+                        "title": bouquet.title_ua,
                         "price": round(bouquet.price / 100, 2),
-                        "description": bouquet.description,
+                        "description": bouquet.description_ua,
                     })
 
             if not result:
-                return json.dumps({"result": "На жаль, букети не знайдено. Спробуйте інший бюджет."})
+                return json.dumps({"result": "На жаль, букети не знайдено за цим бюджетом."})
 
-            return json.dumps(result)
+            return json.dumps(result, ensure_ascii=False)
 
         except Exception as e:
-            return json.dumps({"error": f"Внутрішня помилка бази даних: {e}"})
-
+            logger.error(f"Database AI tool error: {e}")
+            return json.dumps({"error": f"Помилка бази даних"})
 
 
 AI_TOOLS = [

@@ -45,7 +45,7 @@ git add .
 
 # 2. Робимо коміт (опис того, що ти зробила)
 
-git commit -m "feat: implement bouquets translation"
+git commit -m "feat: implement error page"
 
 
 # 3. Пушимо САМЕ в гілку db-features

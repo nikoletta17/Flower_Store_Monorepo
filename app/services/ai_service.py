@@ -18,8 +18,10 @@ client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 SYSTEM_INSTRUCTION = (
     "Ти — доброзичливий AI-асистент квіткового магазину 'Whisper of Flower'. "
     "Відповідай українською. "
-    "Для пошуку товару за бюджетом використовуй інструмент 'search_flowers_by_price'. "
-    "На загальні питання (догляд за квітами, графік роботи) відповідай сам."
+    "Якщо користувач питає про букети або бюджет, ТИ ОБОВ'ЯЗКОВО повинен викликати функцію 'search_flowers_by_price'. "
+    "Отримавши дані від функції, просто перелічи ці букети користувачу у ввічливій формі. "
+    "Якщо клієнт питає про догляд за квітами (наприклад, як поливати орхідеї), пораду чи графік роботи — ВІДПОВІДАЙ САМОСТІЙНО, використовуючи свої знання. "
+    "Не вигадуй букети сам, використовуй лише ті, що повернула функція."
 )
 
 
@@ -35,7 +37,7 @@ async def run_ai_assistant(prompt: str) -> str:
             messages=messages,
             tools=AI_TOOLS,
             tool_choice="auto",
-            temperature=0.0
+            temperature=0.5
         )
         response_message = response.choices[0].message
 
@@ -43,8 +45,7 @@ async def run_ai_assistant(prompt: str) -> str:
             tool_call = response_message.tool_calls[0]
             function_name = tool_call.function.name
 
-            args_text = tool_call.function.arguments
-            args = extract_json_from_ai_response(args_text)
+            args = extract_json_from_ai_response(tool_call.function.arguments)
 
             if function_name == "search_flowers_by_price":
                 tool_result_json = await search_flowers_by_price(
@@ -60,15 +61,19 @@ async def run_ai_assistant(prompt: str) -> str:
                     "content": tool_result_json,
                 })
 
+                # ВТОРОЙ ВЫЗОВ: убираем tools и tool_choice, чтобы ИИ просто ответил текстом
                 second_response = client.chat.completions.create(
                     model="llama-3.1-8b-instant",
                     messages=messages,
-                    tools=AI_TOOLS,
-                    tool_choice="auto"
+                    temperature=0.7  # Повышаем для более живого ответа
                 )
-                return second_response.choices[0].message.content
+
+                final_answer = second_response.choices[0].message.content
+
+                # Если ИИ почему-то вернул None, даем запасной ответ
+                return final_answer if final_answer else "Ось список знайдених букетів за вашим запитом."
 
         return response_message.content
 
     except Exception as e:
-        raise AIException(message="AI Service Error", details=str(e))
+        raise AIException(message="Виникла помилка при спілкуванні з асистентом.")

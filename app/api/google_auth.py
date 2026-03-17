@@ -7,6 +7,7 @@ from app.core.security import create_access_token
 from app.database import get_db
 from app import repositories as repo
 from app.schemas.user import UserCreate
+from app.utils.hashing import Hash
 
 router = APIRouter(
     prefix="/auth",
@@ -34,15 +35,25 @@ async def google_callback(request: Request, db: AsyncSession = Depends(get_db)):
         import secrets
         # Генерируем один случайный пароль
         random_pass = secrets.token_urlsafe(16)
+        hashed_password = Hash.bcrypt(random_pass)
 
-        # Передаем его и в пароль, и в подтверждение
         new_user_data = UserCreate(
             email=email,
             name=name,
             password=random_pass,
-            confirm_password=random_pass  # Добавь эту строку!
+            confirm_password=random_pass
         )
-        user = await repo.user.create_user(db, user=new_user_data)
+
+        # Передаємо створений хеш у репозиторій
+        user = await repo.user.create_user(
+            db=db,
+            request=new_user_data,
+            hashed_password=hashed_password
+        )
+
+        # Якщо в самому репозиторії немає commit, додаємо його тут:
+        await db.commit()
+        await db.refresh(user)
 
     # 2. Генерируем JWT токен
     access_token = create_access_token(data={"user_id": user.id})
