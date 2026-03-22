@@ -16,6 +16,7 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
+
 .cart-section h2 {
     font-size: 2.5rem;
     margin-bottom: 30px;
@@ -149,6 +150,37 @@
 }
 .continue-shopping:hover {
     text-decoration: underline;
+}
+
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #f8f8f8;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-right: 15px;
+}
+
+.qty-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: rgb(var(--accent-1));
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.qty-btn:hover {
+    transform: scale(1.2);
+}
+
+.item-quantity {
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
 }
 
 /* Адаптивність */

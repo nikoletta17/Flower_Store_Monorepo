@@ -291,11 +291,11 @@ async function loadOrders() {
                 <td><strong>${(o.total_price / 100).toFixed(2)} грн</strong></td>
                 <td>
                     <select onchange="updateOrderStatus(${o.id}, this.value)" style="padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
-                        <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>⏳ Очікує</option>
-                        <option value="processing" ${o.status === 'processing' ? 'selected' : ''}>⚙️ В роботі</option>
-                        <option value="shipped" ${o.status === 'shipped' ? 'selected' : ''}>🚚 Відправлено</option>
-                        <option value="delivered" ${o.status === 'delivered' ? 'selected' : ''}>✅ Доставлено</option>
-                        <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>❌ Скасовано</option>
+                        <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>Очікується</option>
+                        <option value="processing" ${o.status === 'processing' ? 'selected' : ''}>Обробляється</option>
+                        <option value="shipped" ${o.status === 'shipped' ? 'selected' : ''}>Відправлено</option>
+                        <option value="delivered" ${o.status === 'delivered' ? 'selected' : ''}>Доставлено</option>
+                        <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>Скасовано</option>
                     </select>
                 </td>
             </tr>`;
@@ -305,9 +305,9 @@ async function loadOrders() {
     }
 }
 
-// ФУНКЦИЯ СМЕНЫ СТАТУСА
 async function updateOrderStatus(orderId, newStatus) {
     try {
+        // Зверни увагу на назву параметра: new_status (як у твоїй функції Python)
         const res = await fetch(`${API_URL}/orders/admin/${orderId}/status?new_status=${newStatus}`, {
             method: 'PATCH',
             headers: { 
@@ -317,9 +317,11 @@ async function updateOrderStatus(orderId, newStatus) {
         });
 
         if (res.ok) {
-            alert("Статус замовлення змінено!");
+            alert("Статус замовлення змінено! Користувач побачить це у профілі.");
         } else {
-            alert("Не вдалося змінить статус.");
+            const err = await res.json();
+            console.error("Помилка:", err);
+            alert("Не вдалося змінити статус.");
         }
     } catch (err) {
         console.error(err);

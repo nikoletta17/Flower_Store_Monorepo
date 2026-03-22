@@ -1,58 +1,67 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ua">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Кошик | Whisper of Flower</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> 
-    
-    <link rel="stylesheet" href="css/style.css"> 
-    <link rel="stylesheet" href="css/cart.css"> </head>
-<body>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/cart.css" />
+  </head>
+  <body>
     <div class="app">
-        
-        <header>
-            <nav class="nav">
-                <div class="logo">W&F</div>
-                <ul class="nav-links">
-                    <li><a href="index.html#intro">Головна</a></li>
-                    <li><a href="index.html#bouquet-section">Каталог</a></li>
-                </ul>
-                <ul class="auth-links" id="auth-links-container">
-                    </ul>
-            </nav>
-        </header>
+      <header>
+        <nav class="nav">
+          <div class="logo">W&F</div>
+          <ul class="nav-links">
+            <li><a href="index.html#intro">Головна</a></li>
+            <li><a href="index.html#bouquet-section">Каталог</a></li>
+          </ul>
+          <ul class="auth-links" id="auth-links-container"></ul>
+        </nav>
+      </header>
 
-        <main>
-            <section class="cart-section container">
-                <h2 class="gradient-header">Ваш Кошик</h2>
+      <main>
+        <section class="cart-section container">
+          <h2 class="gradient-header">Ваш Кошик</h2>
 
-                <div class="cart-items-list" id="cart-items-container">
-                    <p id="loading-message">Завантаження...</p>
-                </div>
+          <div class="cart-items-list" id="cart-items-container">
+            <p id="loading-message">Завантаження...</p>
+          </div>
 
-                <div class="cart-summary-wrapper">
-                    <div class="cart-summary">
-                        <p class="summary-total-label">Загальна сума:</p>
-                        <p class="summary-total-price" id="total-price">0.00 ₴</p>
-                    </div>
+          <div class="cart-summary-wrapper">
+            <div class="cart-summary">
+              <p class="summary-total-label">Загальна сума:</p>
+              <p class="summary-total-price" id="total-price">0.00 ₴</p>
+            </div>
 
-                    <button class="primary-cta" id="checkout-btn" disabled>
-                        Оформити замовлення
-                    </button>
-                    
-                    <a href="index.html#bouquet-section" class="continue-shopping">
-                        Продовжити покупки
-                    </a>
-                </div>
-            </section>
-        </main>
-        
-        <footer>
-            </footer>
+            <button class="primary-cta" id="checkout-btn" disabled>
+              Оформити замовлення
+            </button>
+
+            <a href="index.html#bouquet-section" class="continue-shopping">
+              Продовжити покупки
+            </a>
+          </div>
+        </section>
+      </main>
+
+      <footer></footer>
     </div>
 
-   <script src="js/auth.js"></script> <script src="js/cart.js"></script> <!-- Does Matter! -->
-</body>
+     <!--  Mouse Cursor -->
+        <div class="mouse__cursor"></div> 
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/mouseCursor.js"></script>
+    <!-- Does Matter! -->
+  </body>
 </html>

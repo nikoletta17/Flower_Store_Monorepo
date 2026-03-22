@@ -37,22 +37,28 @@ function openModal(bouquetData) {
   if (!modal) return;
   const lang = localStorage.getItem("selectedLang") || "ua";
 
-  // Текст залежно від мови
   const title = lang === "en" ? bouquetData.title_en : bouquetData.title_ua;
   const desc =
     lang === "en" ? bouquetData.description_en : bouquetData.description_ua;
 
-  // Ціна
-  let priceText = bouquetData.formatted_price;
-  if (lang === "en") {
-    priceText = `$${(bouquetData.price_uah / 42).toFixed(2)}`;
-  }
-
-  modalPrice.innerText = priceText;
+  modalPrice.innerText = bouquetData.formatted_price;
   modalImg.src = `${STATIC_BASE_URL}${bouquetData.image_url}`;
   modalImg.alt = title;
   modalTitle.innerText = title;
   modalDesc.innerText = desc;
+
+  // ОНОВЛЕННЯ: Прив'язуємо ID до кнопки "Замовити" в модалці
+  const orderBtn = document.getElementById("orderBtn");
+  if (orderBtn) {
+    // Очищаємо старі обробники, щоб не додавалося по 10 разів
+    const newBtn = orderBtn.cloneNode(true);
+    orderBtn.parentNode.replaceChild(newBtn, orderBtn);
+
+    newBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      addToCart(bouquetData.id); // Викликаємо функцію додавання
+    });
+  }
 
   modal.classList.add("open");
   document.body.style.overflow = "hidden";
@@ -104,6 +110,7 @@ function createBouquetCard(bouquet) {
         <div class="price">${priceText}</div> 
         <h3>${title}</h3>
         <p>${description}</p>
+
     `;
 
   card.addEventListener("click", (e) => {
@@ -203,24 +210,24 @@ async function loadReviews() {
     const reviews = await response.json();
     reviewGridContainer.innerHTML = "";
     reviews.forEach((review, index) => {
-    const stars = '⭐'.repeat(review.rating); 
-    const card = document.createElement('div');
-    card.className = 'review-card';
+      const stars = "⭐".repeat(review.rating);
+      const card = document.createElement("div");
+      card.className = "review-card";
 
-    // 👉 начальное состояние
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(40px)';
-    card.style.transition = 'all 0.6s ease';
+      // 👉 начальное состояние
+      card.style.opacity = "0";
+      card.style.transform = "translateY(40px)";
+      card.style.transition = "all 0.6s ease";
 
-    card.innerHTML = `<p>“${review.text}”</p><h4>— ${review.author} ${stars}</h4>`;
-    reviewGridContainer.appendChild(card);
+      card.innerHTML = `<p>“${review.text}”</p><h4>— ${review.author} ${stars}</h4>`;
+      reviewGridContainer.appendChild(card);
 
-    // ✨ анимация
-    setTimeout(() => {
-        card.style.opacity = '1';
-        card.style.transform = 'translateY(0)';
-    }, index * 120);
-});
+      // ✨ анимация
+      setTimeout(() => {
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+      }, index * 120);
+    });
   } catch (error) {
     console.error("Помилка завантаження відгуків:", error);
   }
@@ -239,8 +246,8 @@ const observer = new IntersectionObserver(
       if (entry.isIntersecting) {
         entry.target.classList.add("show");
       } else {
-      entry.target.classList.remove("show"); // infinity effect
-    }
+        entry.target.classList.remove("show"); // infinity effect
+      }
     });
   },
   {
@@ -258,30 +265,61 @@ document
     observer.observe(el);
   });
 
+const sectionObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        if (entry.target.id === "bouquet-section") {
+          loadBouquets();
+        }
 
-  const sectionObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
+        if (entry.target.id === "review-section") {
+          loadReviews();
+        }
 
-      if (entry.target.id === 'bouquet-section') {
-        loadBouquets();
+        // щоб не викликалось повторно
+        sectionObserver.unobserve(entry.target);
       }
+    });
+  },
+  {
+    threshold: 0.3,
+  },
+);
 
-      if (entry.target.id === 'review-section') {
-        loadReviews();
-      }
-
-      // щоб не викликалось повторно
-      sectionObserver.unobserve(entry.target);
-    }
-  });
-}, {
-  threshold: 0.3
-  });
-
-
-  const bouquetSection = document.getElementById('bouquet-section');
-const reviewSection = document.getElementById('review-section');
+const bouquetSection = document.getElementById("bouquet-section");
+const reviewSection = document.getElementById("review-section");
 
 if (bouquetSection) sectionObserver.observe(bouquetSection);
 if (reviewSection) sectionObserver.observe(reviewSection);
+
+async function addToCart(bouquetId) {
+  const token = localStorage.getItem("access_token");
+  if (!token) {
+    alert("Будь ласка, увійдіть в акаунт, щоб зробити замовлення!");
+    window.location.href = "Login.html";
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/cart/add`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ bouquet_id: bouquetId, quantity: 1 }),
+    });
+
+    if (response.ok) {
+      alert("💐 Букет додано у кошик!");
+      // Можна оновити цифру на іконці кошика тут
+    } else {
+      const error = await response.json();
+      alert(`Помилка: ${error.detail}`);
+    }
+  } catch (err) {
+    console.error("Cart error:", err);
+    alert("Помилка мережі при додаванні в кошик.");
+  }
+}
