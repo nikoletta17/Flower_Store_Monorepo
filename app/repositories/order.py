@@ -61,7 +61,8 @@ async def get_order_by_id(
         select(models.Order)
         .where(models.Order.id == order_id)
         .options(
-            selectinload(models.Order.items).selectinload(models.OrderItem.bouquet)
+            selectinload(models.Order.items).selectinload(models.OrderItem.bouquet),
+            selectinload(models.Order.user)
         )
     )
     return result.scalar_one_or_none()

@@ -30,7 +30,8 @@ async def place_order(
         raise EmptyCartException()
 
     # 2. Рахуємо суму
-    total_price = round(sum(item.price_on_add * item.quantity for item in cart_items), 2)
+    total_price_grn = sum(item.price_on_add * item.quantity for item in cart_items)
+    total_price = int(round(total_price_grn * 100))
 
     try:
         # 3. Створюємо головний запис замовлення
@@ -85,19 +86,23 @@ async def admin_get_all_orders(
     return await repo.order.get_all_orders_admin(db)
 
 
-
-
 async def admin_change_status(
         order_id: int,
         new_status: models.OrderStatus,
         db: AsyncSession
 ):
+    # 1. Оновлюємо статус (це вже працює)
     order = await repo.order.update_order_status_repo(order_id, new_status, db)
 
     if not order:
         raise NotFoundException(entity="Замовлення", identifier=order_id)
 
     await db.commit()
-    await db.refresh(order)
-    logger.info("Order %s status updated to %s", order_id, new_status)
-    return order
+
+    # --- ОСЬ ТУТ ВИПРАВЛЕННЯ ---
+    # Замість простого refresh, ми завантажуємо замовлення заново
+    # з усіма зв'язками (user, items, bouquet), які тепер вимагає наша схема
+    updated_order = await repo.order.get_order_by_id(order_id, db)
+
+    logger.info("Order %s status updated to %s and reloaded with details", order_id, new_status)
+    return updated_order

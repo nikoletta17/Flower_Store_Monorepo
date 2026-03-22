@@ -27,42 +27,61 @@ async def get_full_cart_details(
     }
 
 
-
 async def add_item_to_cart(
         user_id: int,
         item_data: CartItemCreate,
         db: AsyncSession
 ):
-
-        # 1. Отримуємо або створюємо кошик
+    # 1. Отримуємо або створюємо кошик
     cart = await repo.cart.get_or_create_cart(user_id, db)
 
-    # 2. Отримуємо букет (для ціни та перевірки наявності)
+    # 2. Отримуємо букет для актуальної ціни
     bouquet = await repo.bouquet.get_bouquet_by_id(item_data.bouquet_id, db)
+    if not bouquet:
+        # Можна додати помилку, якщо букета не існує
+        return None
+
     price_in_uah = round(bouquet.price / 100.0, 2)
 
     # 3. Шукаємо, чи є вже такий товар у кошику
     cart_item = await repo.cart.get_item_in_cart(cart.id, item_data.bouquet_id, db)
 
     if cart_item:
+        # Рахуємо нову кількість (наприклад 1 + (-1) = 0)
+        new_quantity = cart_item.quantity + item_data.quantity
+
+        if new_quantity <= 0:
+            # Якщо кількість стала 0 або менше — видаляємо запис
+            await db.delete(cart_item)
+            await db.commit()
+            logger.info("Item %s removed from cart (quantity reached 0)", item_data.bouquet_id)
+            return None
+
         # Оновлюємо кількість
-        cart_item.quantity += item_data.quantity
+        cart_item.quantity = new_quantity
     else:
-        # Створюємо новий елемент
-        cart_item = models.CartItem(
-            cart_id=cart.id,
-            bouquet_id=item_data.bouquet_id,
-            quantity=item_data.quantity,
-            price_on_add=price_in_uah
-        )
-        db.add(cart_item)
+        # Якщо товару немає, створюємо його тільки якщо кількість додатна
+        if item_data.quantity > 0:
+            cart_item = models.CartItem(
+                cart_id=cart.id,
+                bouquet_id=item_data.bouquet_id,
+                quantity=item_data.quantity,
+                price_on_add=price_in_uah
+            )
+            db.add(cart_item)
+        else:
+            return None
 
     await db.commit()
-    await db.refresh(cart_item)
 
-    logger.info("User %s added bouquet %s to cart", user_id, item_data.bouquet_id)
+    # Робимо refresh тільки якщо ми не видалили об'єкт
+    if cart_item in db:
+        await db.refresh(cart_item)
+
+    logger.info("User %s updated bouquet %s in cart. New qty: %s",
+                user_id, item_data.bouquet_id, getattr(cart_item, 'quantity', 0))
+
     return cart_item
-
 
 async def remove_item_from_cart(user_id: int, item_id: int, db: AsyncSession):
     # Спершу отримуємо кошик

@@ -1,14 +1,18 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, computed_field
 from typing import List
 from datetime import datetime
 from ..models import OrderStatus
 from app.utils.validators import validate_phone_number
+from app.utils.formatters import format_price, format_date
+
+from .cart import BouquetBaseForCart
 
 
 class OrderItemRead(BaseModel):
     bouquet_id: int
     quantity: int = Field(default=1, ge=1)
     price_at_purchase: int = Field(..., description="Ціна в копійках на момент покупки")
+    bouquet: BouquetBaseForCart
 
     model_config = {"from_attributes": True}
 
@@ -24,20 +28,35 @@ class OrderCreate(BaseModel):
         return v
 
 
+class UserForOrder(BaseModel):
+    id: int
+    name: str
+    email: str
+
+    model_config = {"from_attributes": True}
+
+
 class OrderRead(BaseModel):
     id: int
     created_at: datetime
     status: OrderStatus
     delivery_address: str
     phone_number: str
-    total_price: int  # Сума в копійках
+    total_price: int
     items: List[OrderItemRead]
+    # ДОДАЙ ЦЕЙ РЯДОК:
+    user: UserForOrder
 
-    @field_validator("status", mode="before")
-    def serialize_status(cls, v):
-        """Перетворює Enum статус у зрозумілий текст для фронтенду"""
-        if isinstance(v, OrderStatus):
-            return v.value
-        return v
+    @computed_field
+    @property
+    def formatted_total_price(self) -> str:
+        return format_price(self.total_price)
+
+    @computed_field
+    @property
+    def formatted_created_at(self) -> str:
+        return format_date(self.created_at)
 
     model_config = {"from_attributes": True}
+
+

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, computed_field
 from typing import List, Optional
 
 from .bouquet import BouquetRead
@@ -6,57 +6,48 @@ from .bouquet import BouquetRead
 
 class CartItemCreate(BaseModel):
     bouquet_id: int
-    quantity: int = Field(default=1, ge=1)  # Кількість має бути не менше 1
-
-    class Config:
-        from_attributes = True
+    quantity: int
 
 
 #відобразити назву букета в кошику
 class BouquetBaseForCart(BaseModel):
     id: int
-    title: str
+    # Додаємо реальні поля з моделі
+    title_ua: str
+    title_en: Optional[str] = None
     image_url: str
-    # ⬅️ ЦІНА З БД (INT)
     price: int
 
+    # Це "віртуальне" поле, яке очікує твій фронтенд
+    @computed_field
+    @property
+    def title(self) -> str:
+        return self.title_ua
+
+    @computed_field
     @property
     def price_uah(self) -> float:
-        """Поточна ціна букета в гривнях (для відображення)"""
         return round(self.price / 100.0, 2)
 
-    class Config:
-        from_attributes = True
-        property_model_by_alias = True
-
-
+    model_config = {"from_attributes": True}
 
 class CartItemRead(BaseModel):
-    """Схема для відображення ОДНОГО елемента кошика"""
     id: int
     quantity: int
     price_on_add: float
-
-    # інформація про букет
     bouquet: BouquetBaseForCart
 
+    @computed_field
     @property
     def subtotal(self) -> float:
-        """Обчислювана загальна вартість цієї позиції"""
         return round(self.quantity * self.price_on_add, 2)
 
-    class Config:
-        from_attributes = True
-        property_model_by_alias = True
-
-
+    model_config = {"from_attributes": True}
 
 class CartRead(BaseModel):
-    """Схема для відображення всього Кошика користувача (вихідна)"""
     id: int
     user_id: int
     items: List[CartItemRead] = []
-    total_price: float  #обчислено в репозиторії
+    total_price: float
 
-    class Config:
-        from_attributes = True
+    model_config = {"from_attributes": True}
