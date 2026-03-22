@@ -1,10 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
     <title>Мій Кабінет | Whisper of Flower</title>
     <style>
       body {
@@ -22,7 +25,7 @@
         gap: 30px;
         padding: 20px;
         /* Це змушує обидві колонки бути однакової висоти */
-        align-items: stretch; 
+        align-items: stretch;
       }
 
       .card {
@@ -52,8 +55,8 @@
 
       /* --- ОСЬ ТУТ МАГІЯ ОДНАКОВОЇ ВИСОТИ ТА СКРОЛУ --- */
       .orders-wrapper {
-        flex-grow: 1;      /* Займає все місце, що залишилося в картці */
-        overflow-y: auto;  /* Вмикає прокрутку тільки тут */
+        flex-grow: 1; /* Займає все місце, що залишилося в картці */
+        overflow-y: auto; /* Вмикає прокрутку тільки тут */
         padding-right: 10px;
         max-height: 450px; /* Обмежуємо висоту, щоб вона збігалася з карткою профілю */
       }
@@ -68,7 +71,9 @@
       }
       /* ------------------------------------------- */
 
-      .form-group { margin-bottom: 20px; }
+      .form-group {
+        margin-bottom: 20px;
+      }
       label {
         font-size: 0.9rem;
         font-weight: 600;
@@ -86,7 +91,11 @@
       }
 
       button#saveBtn {
-        background: linear-gradient(135deg, rgb(var(--accent-1)), rgb(var(--gr-color-pink)));
+        background: linear-gradient(
+          135deg,
+          rgb(var(--accent-1)),
+          rgb(var(--gr-color-pink))
+        );
         color: white;
         border-radius: 15px;
         font-weight: bold;
@@ -105,14 +114,16 @@
       }
 
       @media (max-width: 850px) {
-        .container { grid-template-columns: 1fr; }
-        .orders-wrapper { max-height: 400px; }
+        .container {
+          grid-template-columns: 1fr;
+        }
+        .orders-wrapper {
+          max-height: 400px;
+        }
       }
     </style>
   </head>
   <body>
-    <div class="mouse__cursor"></div>
-
     <header>
       <nav class="nav">
         <div class="logo">W&F</div>
@@ -136,26 +147,49 @@
             <label>Електронна пошта</label>
             <input type="email" id="emailInput" required />
           </div>
-          <p style="font-size: 12px; color: rgba(var(--text) / 0.5); margin: 15px 0 10px;">
+          <p
+            style="
+              font-size: 12px;
+              color: rgba(var(--text) / 0.5);
+              margin: 15px 0 10px;
+            "
+          >
             Для зміни пароля:
           </p>
           <div class="form-group">
-            <input type="password" id="passwordInput" placeholder="Новий пароль" />
+            <input
+              type="password"
+              id="passwordInput"
+              placeholder="Новий пароль"
+            />
           </div>
           <button type="submit" id="saveBtn">Зберегти зміни</button>
         </form>
-        <button onclick="requestPasswordReset()" style="margin-top: 10px; background: none; border: none; color: #888; font-size: 13px; text-decoration: underline; cursor: pointer; width: 100%;">
-            Забули пароль?
+        <button
+          onclick="requestPasswordReset()"
+          style="
+            margin-top: 10px;
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 13px;
+            text-decoration: underline;
+            cursor: pointer;
+            width: 100%;
+          "
+        >
+          Забули пароль?
         </button>
       </div>
 
-      <div class="card animate show" style="transition-delay: 0.2s;">
+      <div class="card animate show" style="transition-delay: 0.2s">
         <h2>Історія замовлень</h2>
-        <div id="ordersContainer" class="orders-wrapper">
-            Завантаження...
-        </div>
+        <div id="ordersContainer" class="orders-wrapper">Завантаження...</div>
       </div>
     </div>
+
+    <!--  Mouse Cursor -->
+    <div class="mouse__cursor"></div>
 
     <script src="js/auth.js"></script>
     <script src="js/profile.js"></script>

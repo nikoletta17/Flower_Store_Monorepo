@@ -14,28 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return token;
   }
 
-  /* const renderCartItem = (item) => {
-        const itemHtml = `
-            <div class="cart-item" data-item-id="${item.id}">
-                <img src="${item.bouquet.image_url}" alt="${item.bouquet.title}" class="item-image">
-                <div class="item-details">
-                    <h4 class="item-title">${item.bouquet.title}</h4>
-                    <p class="item-price">Ціна: ${item.price_on_add} ₴</p>
-                    <div class="item-controls">
-                        <span class="item-quantity">Кількість: ${item.quantity}</span>
-                        <button class="remove-btn" data-item-id="${item.id}" title="Видалити">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="item-subtotal">
-                    ${item.subtotal} ₴
-                </div>
-            </div>
-        `;
-        cartContainer.insertAdjacentHTML('beforeend', itemHtml);
-    }; */
-
   const renderCartItem = (item) => {
     // Міняємо item.bouquet_id на item.bouquet.id
     const bId = item.bouquet.id; 

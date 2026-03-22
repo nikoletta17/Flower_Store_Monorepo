@@ -1,44 +1,101 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@6.7.0/css/flag-icons.min.css">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <link rel="stylesheet" href="css/review-form.css">
-  <title data-i18n="reviewTitle">Залишити відгук</title>
-</head>
-<body>
-   <div class="lang-menu">
-         <div class="selected-lang" data-lang="ua">
-            <span class="fi fi-ua"></span> UA
-         </div>
-         <ul>
-            <li><a href="#" data-lang="en"><span class="fi fi-us"></span> EN</a></li>
-            <li><a href="#" data-lang="ua"><span class="fi fi-ua"></span> UA</a></li>
-         </ul>
-    </div>
-  <div class="review-form-container">
-    <h2 data-i18n="reviewBtn">Залишити відгук</h2>
-    <form id="reviewForm">             
-     <div class="form-group">
-      <label for="rating" data-i18n="reviewRatingLabel">Оцінка (1-5):</label><br><br>
-      <input type="number" id="rating" name="rating" min="1" max="5" value="1" required>             
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flag-icons@6.7.0/css/flag-icons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/review-form.css" />
+    <title data-i18n="reviewTitle">Залишити відгук</title>
+  </head>
+  <body>
+    <div class="lang-menu">
+      <div class="selected-lang" data-lang="ua">
+        <span class="fi fi-ua"></span> UA
       </div>
-      <label for="message" data-i18n="reviewMessageLabel">Ваш відгук:</label>
-      <textarea 
-          id="message" 
-          name="message" 
-          rows="5" 
-          placeholder=" "  
-          data-i18n="reviewMessagePlaceholder" 
+      <ul>
+        <li>
+          <a href="#" data-lang="en"><span class="fi fi-us"></span> EN</a>
+        </li>
+        <li>
+          <a href="#" data-lang="ua"><span class="fi fi-ua"></span> UA</a>
+        </li>
+      </ul>
+    </div>
+    <div class="review-form-container">
+      <h2 data-i18n="reviewBtn">Залишити відгук</h2>
+      <form id="reviewForm">
+                         
+        <div class="form-group">
+          <label for="rating" data-i18n="reviewRatingLabel">Оцінка (1-5):</label
+          ><br /><br />
+          <input
+            type="number"
+            id="rating"
+            name="rating"
+            min="1"
+            max="5"
+            value="1"
+            required
+          />
+                     
+        </div>
+        <label for="message" data-i18n="reviewMessageLabel">Ваш відгук:</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="5"
+          placeholder=" "
+          data-i18n="reviewMessagePlaceholder"
           required
-          onfocus="handleTextareaFocus(this)"  onblur="handleTextareaBlur(this)">Поділіться вашими враженнями...</textarea>
-      <button type="submit" class="submit-btn" data-i18n="reviewSubmitBtn">Надіслати</button>
-    </form>
-  </div>
-  <script src="js/translations.js"></script>
-  <script src="js/review.js"></script>
-</body>
+          onfocus="handleTextareaFocus(this)"
+          onblur="handleTextareaBlur(this)"
+        >
+Поділіться вашими враженнями...</textarea
+        >
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+          "
+        >
+          <button type="submit" class="submit-btn" data-i18n="reviewSubmitBtn">
+            Надіслати
+          </button>
+          <a
+            href="index.html"
+            class="submit-btn"
+            style="
+              text-decoration: none;
+              display: inline-block;
+              text-align: center;
+            "
+            data-i18n="reviewSubmitBtBackHome"
+          >
+            Повернутися на головну
+          </a>
+        </div>
+           
+      </form>
+    </div>
+
+    <!--  Mouse Cursor -->
+    <div class="mouse__cursor"></div>
+
+    <script src="js/mouseCursor.js"></script>
+    <script src="js/translations.js"></script>
+    <script src="js/review.js"></script>
+  </body>
 </html>

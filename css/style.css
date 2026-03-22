@@ -1108,6 +1108,7 @@ header {
 
 .review-scroll {
   overflow-x: auto;
+  overflow-y: hidden;
   scroll-behavior: smooth;
   padding: 1.25rem;
   max-width: 69.375rem;
@@ -1115,7 +1116,7 @@ header {
 
   -webkit-overflow-scrolling: touch; 
   scroll-snap-type: x mandatory;    
-  touch-action: pan-x;             
+  touch-action: pan-x;  
 }
 
 .review-grid-content {
