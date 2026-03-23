@@ -2,17 +2,121 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Error 404</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сторінку не знайдено</title>
     <style>
-        body { text-align: center; padding: 100px; font-family: sans-serif; background: #fff5f5; }
-        h1 { color: #ff9900; font-size: 80px; margin: 0; }
-        p { font-size: 20px; color: #555; }
-        .back-link { display: inline-block; margin-top: 20px; color: #ff9900; text-decoration: none; border: 1px solid; padding: 10px 20px; border-radius: 5px; }
+        :root {
+            --bg-color: #f1e6eb;
+            --accent-1: 233 135 175;
+            --accent-2: 143 198 169;
+            --text: 28 18 20;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: rgb(var(--text));
+            background-color: var(--bg-color);
+            background-image: url("/static/img/error-page.jpeg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2.5rem 1.25rem;
+
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Рожеве напилення поверх фону */
+        body::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 230, 238, 0.4);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(var(--text), 0.1);
+            max-width: 450px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 80px;
+            margin-bottom: 0.5rem;
+            color: rgb(var(--accent-1));
+            line-height: 1;
+        }
+
+        p {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .error-message {
+            font-style: italic;
+            opacity: 0.7;
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+      .back-link {
+          display: inline-block;
+          margin-top: 1.5rem;
+          padding: 0.8rem 2rem;
+
+          font-family: "Playfair Display", serif;
+          font-size: 1rem;
+          color: white;
+          text-decoration: none;
+
+          background: linear-gradient(
+            135deg,
+            rgb(var(--accent-1)),
+            rgb(var(--accent-2))
+          );
+          border-radius: 12px;
+
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 15px rgba(233, 135, 175, 0.3);
+
+          position: relative;
+          z-index: 5;
+    }
+
+    .back-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(233, 135, 175, 0.4);
+      opacity: 0.9;
+    }
     </style>
 </head>
 <body>
-    <h1>404</h1>
-    <p>Ой! Сторінку не знайдено!</p>
-    <p><i>{{ message }}</i></p> <a href="http://127.0.0.1:5500/index.html" class="back-link">Повернутися на головну</a>
+    <div class="container">
+        <h1>404</h1>
+        <p>Ой! Сторінку не знайдено!</p>
+       <p><i>{{ message }}</i></p> <a href="http://127.0.0.1:5500/index.html" class="back-link">Повернутися на головну</a>
+    </div>
 </body>
 </html>
