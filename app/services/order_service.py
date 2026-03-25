@@ -1,17 +1,22 @@
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import BackgroundTasks
+
 from .. import repositories as repo
 from ..schemas.order import OrderCreate
 from .. import models
 from ..core.exceptions import EmptyCartException, NotFoundException
+from ..core.notifications import send_order_confirmation
 
 logger = logging.getLogger(__name__)
 
 
 async def place_order(
         user_id: int,
+        user_email: str,
         order_data: OrderCreate,
-        db: AsyncSession
+        db: AsyncSession,
+        background_tasks: BackgroundTasks
 ):
     """
     Головний бізнес-процес:
@@ -55,9 +60,31 @@ async def place_order(
         # 6. Фіксуємо транзакцію
         await db.commit()
 
-        # !!! КЛЮЧОВИЙ МОМЕНТ ДЛЯ ВИПРАВЛЕННЯ ПОМИЛКИ !!!
-        # Отримуємо свіже замовлення з уже підвантаженими зв'язками для відповіді API
+        # 7. Отримуємо свіже замовлення (вже зроблено)
         order_with_details = await repo.order.get_order_by_id(new_order.id, db)
+
+        # --- НОВИЙ БЛОК: Формуємо список товарів для листа ---
+        items_for_email = []
+        for item in cart_items:
+            items_for_email.append({
+                "title": item.bouquet.title_ua,  # Назва квітки
+                "quantity": item.quantity,  # Кількість
+                "price": item.price_on_add  # Ціна за одиницю
+            })
+
+        order_info_for_email = {
+            "id": order_with_details.id,
+            "total_price": total_price_grn,
+            "address": order_data.delivery_address,
+            "items": items_for_email  # Додаємо список товарів сюди
+        }
+        # ----------------------------------------------------
+
+        background_tasks.add_task(
+            send_order_confirmation,
+            user_email,
+            order_info_for_email
+        )
 
         logger.info("Order %s created successfully for user %s", new_order.id, user_id)
         return order_with_details
@@ -99,9 +126,6 @@ async def admin_change_status(
 
     await db.commit()
 
-    # --- ОСЬ ТУТ ВИПРАВЛЕННЯ ---
-    # Замість простого refresh, ми завантажуємо замовлення заново
-    # з усіма зв'язками (user, items, bouquet), які тепер вимагає наша схема
     updated_order = await repo.order.get_order_by_id(order_id, db)
 
     logger.info("Order %s status updated to %s and reloaded with details", order_id, new_status)

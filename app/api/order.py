@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 
@@ -7,7 +7,7 @@ from .. import services
 from ..schemas.order import OrderCreate, OrderRead
 from ..core.security import get_current_user
 from ..models import User as UserModel, OrderStatus
-from ..core.exceptions import InsufficientPermissionsException, AccountNotVerifiedException
+from ..core.exceptions import InsufficientPermissionsException
 
 router = APIRouter(
     prefix="/orders",
@@ -18,12 +18,18 @@ router = APIRouter(
 @router.post("/checkout", response_model=OrderRead)
 async def checkout(
     order_data: OrderCreate,
+    background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
     current_user: UserModel = Depends(get_current_user)
 ):
-    # ТУТ НЕ МАЄ БУТИ ПЕРЕВІРКИ is_verified
-    return await services.order_service.place_order(current_user.id, order_data, db)
-
+    """Оформлення замовлення з фоновим надсиланням Email."""
+    return await services.order_service.place_order(
+        user_id=current_user.id,
+        user_email=current_user.email,
+        order_data=order_data,
+        db=db,
+        background_tasks=background_tasks
+    )
 
 
 
