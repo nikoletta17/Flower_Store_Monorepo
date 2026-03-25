@@ -93,10 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function loadCartContent() {
     const token = getAuthToken();
     if (!token) return;
-
-    cartContainer.innerHTML =
-      '<p class="loading-message">Завантаження вмісту кошика...</p>';
-
+    
     try {
       const response = await fetch(`${BASE_URL}/cart/me`, {
         method: "GET",

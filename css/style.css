@@ -47,51 +47,59 @@ a, button, [role="button"], .selected-lang {
 }
 
 
+/* Mouse cursor */
 .mouse__cursor {
-  position: fixed;
-  pointer-events: none; 
-  z-index: 10000;
-  background: rgba(209, 55, 137, 0.784);
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  box-shadow: 0 0 5px rgb(214, 123, 171),
-              0 0 15px rgb(214, 123, 171);
-  transform: translate(-50%, -50%);
-  display: none;
-  animation: cursorColors 4s infinite;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+    position: fixed;
+    pointer-events: none; 
+    z-index: 10000;
+    background: rgba(209, 55, 137, 0.784);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgb(214, 123, 171),
+                0 0 15px rgb(214, 123, 171);
+    
+    /* Начальное состояние: невидим и уменьшен */
+    opacity: 0; 
+    transform: translate(-50%, -50%) scale(0);
+    
+    animation: cursorColors 4s infinite;
+    /* Плавность появления и исчезновения */
+    transition: opacity 0.3s ease, transform 0.3s ease; 
 }
 
-/* Твой ободок остается таким же */
+/* Класс, который JS будет добавлять при движении */
+.mouse__cursor.visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Ободок при клике */
 .mouse__cursor::before {
-  content: "";
-  position: absolute;
-  background: rgb(214, 123, 171);
-  height: 30px;
-  width: 30px;
-  opacity: 0;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.5);
-  border-radius: 50%;
-  transition: all 0.3s ease;
+    content: "";
+    position: absolute;
+    background: rgb(214, 123, 171);
+    height: 30px;
+    width: 30px;
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+    border-radius: 50%;
+    transition: all 0.2s ease;
 }
 
 .mouse__cursor.active::before {
-  opacity: 0.3;
-  transform: translate(-50%, -50%) scale(1);
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1);
 }
 
 @keyframes cursorColors {
-   0% {
-      filter: hue-rotate(0deg);
-   }
-
-   100% {
-      filter: hue-rotate(360deg);
-   }
+   0% { filter: hue-rotate(0deg); }
+   100% { filter: hue-rotate(360deg); }
 }
+
+
 
 /* Scroll animation */
 .animate {
@@ -444,6 +452,7 @@ header {
 /* КНОПКА */
 .intro-btn {
   display: inline-block;
+  cursor: pointer;
   margin-top: 1.5rem;
   padding: 0.8rem 2rem;
   font-family: "Playfair Display", serif;

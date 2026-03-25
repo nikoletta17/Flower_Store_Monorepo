@@ -65,11 +65,21 @@ async function fetchOrders() {
         .map((order) => {
           const color = statusColors[order.status] || "#666";
           return `
-                <div class="order-item" style="border-left: 5px solid ${color}">
+                <div class="order-item" style="border-left: 5px solid ${color}; padding: 15px; margin-bottom: 10px; border-radius: 8px;">
                     <div style="display:flex; justify-content: space-between; align-items: center;">
                         <strong>Замовлення #${order.id}</strong>
-                        <span class="status-badge" style="background: ${color}22; color: ${color}; border: 1px solid ${color}44">
-                            ${order.status.toUpperCase()}
+                        <span class="status-badge" 
+                              style="
+                                background: ${color}22; 
+                                color: ${color}; 
+                                border: 1px solid ${color}44;
+                                padding: 5px 12px;     
+                                border-radius: 12px;    
+                                font-size: 0.8rem;      
+                                font-weight: bold;      
+                                text-transform: uppercase;
+                              ">
+                            ${order.status}
                         </span>
                     </div>
                     <p style="margin: 10px 0;">Сума: <b style="font-size: 1.1rem;">${order.formatted_total_price}</b></p>

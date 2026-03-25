@@ -6,9 +6,12 @@
    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@6.7.0/css/flag-icons.min.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
    <link rel="stylesheet" href="css/Login-Register.css">
    <title data-i18n="logTitle">Увійти</title>
+    <link rel="stylesheet" href="css/preloader.css" />
+    <script src="js/preloader.js" defer></script>
 </head>
 <body>
       <div class="lang-menu">
@@ -38,6 +41,9 @@
              <div class="input-box">
                   <input type="password" id="password" class="input-field" placeholder=" " required>
                   <label for="password" class="label" data-i18n="loginPassword">Пароль:</label>
+                  <button type="button" id="show_pw_btn" class="toggle__eye">
+                     <i class="fa-solid fa-eye" id="show_pw_icon"></i>
+                  </button>
                   <i class='bx bx-lock'></i>
             </div>
 
@@ -59,7 +65,7 @@
                   <p>Або увійдіть за допомогою:</p>
                   <a href="http://localhost:8000/auth/google" class="google-btn">
                   <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo" width="20">
-               Увійти через Google
+                     Увійти через Google
                   </a>
                </div>
          </div>
@@ -70,6 +76,7 @@
    <div class="mouse__cursor"></div> 
 
    <script src="js/mouseCursor.js"></script>
+   <script src="js/passwordToggle.js"></script>
    <script src="js/translations.js"></script>
    <script src="js/auth.js"></script> </body>
 </body>

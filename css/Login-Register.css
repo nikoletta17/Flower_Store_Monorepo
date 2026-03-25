@@ -20,6 +20,7 @@ html, body {
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  cursor: none;
 }
 
 body {
@@ -135,8 +136,8 @@ a:hover {
    transition: 0.3s;
 }
 
-.input-box:hover i,
-.input-field:focus ~ i{
+.input-box:hover i:not(#show_pw_icon):not(#show_conf_pw_icon),
+.input-field:focus ~ i:not(#show_pw_icon):not(#show_conf_pw_icon){
    color: var(--bg-color);
 }
 
@@ -181,8 +182,9 @@ a:hover {
     transition: all 0.3s;
 }
 
-.register a:hover{
-   color: rgb(206, 92, 111);
+.register a:hover {
+   color: var(--bg-color);
+   opacity: 0.8;           
 }
 
 .register a:active {
@@ -321,4 +323,73 @@ a:hover {
 
 .google-btn img {
     margin-right: 10px;
+}
+
+/* Eye icon */
+.toggle__eye {
+   position: absolute;
+   top: 50%;
+   display: flex;
+   right: 3.5rem;
+   cursor: pointer;
+   width: auto;
+   height: auto;
+   transform: translateY(-50%);
+   align-items: center;
+   background: none;
+   border: none;
+   outline: none;
+}
+
+
+/* Mouse cursor */
+.mouse__cursor {
+    position: fixed;
+    pointer-events: none; 
+    z-index: 10000;
+    background: rgba(209, 55, 137, 0.784);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgb(214, 123, 171),
+                0 0 15px rgb(214, 123, 171);
+    
+    /* Начальное состояние: невидим и уменьшен */
+    opacity: 0; 
+    transform: translate(-50%, -50%) scale(0);
+    
+    animation: cursorColors 4s infinite;
+    /* Плавность появления и исчезновения */
+    transition: opacity 0.3s ease, transform 0.3s ease; 
+}
+
+/* Класс, который JS будет добавлять при движении */
+.mouse__cursor.visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Ободок при клике */
+.mouse__cursor::before {
+    content: "";
+    position: absolute;
+    background: rgb(214, 123, 171);
+    height: 30px;
+    width: 30px;
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.mouse__cursor.active::before {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+@keyframes cursorColors {
+   0% { filter: hue-rotate(0deg); }
+   100% { filter: hue-rotate(360deg); }
 }

@@ -19,8 +19,14 @@
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
     <link rel="stylesheet" href="css/Login-Register.css" />
     <title data-i18n="regTitle">Зареєструватися</title>
+    <link rel="stylesheet" href="css/preloader.css" />
+    <script src="js/preloader.js" defer></script>
   </head>
   <body>
     <div class="lang-menu">
@@ -82,6 +88,9 @@
             <label for="password" class="label" data-i18n="registerPassword"
               >Пароль:</label
             >
+            <button type="button" id="show_pw_btn" class="toggle__eye">
+              <i class="fa-solid fa-eye" id="show_pw_icon"></i>
+            </button>
             <i class="bx bx-lock"></i>
           </div>
 
@@ -99,6 +108,9 @@
               data-i18n="registerRepeatPass"
               >Повторити:</label
             >
+            <button type="button" id="show_conf_pw_btn" class="toggle__eye">
+              <i class="fa-solid fa-eye" id="show_conf_pw_icon"></i>
+            </button>
             <i class="bx bx-lock"></i>
           </div>
 
@@ -138,6 +150,7 @@
     <div class="mouse__cursor"></div>
 
     <script src="js/translations.js"></script>
+    <script src="js/passwordToggle.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/mouseCursor.js"></script>
   </body>

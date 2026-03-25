@@ -11,7 +11,7 @@
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/flag-icons@6.7.0/css/flag-icons.min.css"
-    />
+    /> 
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -23,450 +23,440 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <link rel="icon" type="image/png" href="img/bg/favIcon.png" />
+    <link rel="stylesheet" href="css/preloader.css" />
+    <script src="js/preloader.js" defer></script>
   </head>
   <body>
     <!-- <div class="app"> -->
-      <button class="hambtn" id="toggleBtn">
-        <i class="fa-solid fa-comments"></i>
-      </button>
-      <div class="sidebar" id="sidebar">
-        <iframe class="chat-frame" src="AiChatBot/chat/chat.html"></iframe>
-      </div>
+    <button class="hambtn" id="toggleBtn">
+      <i class="fa-solid fa-comments"></i>
+    </button>
+    <div class="sidebar" id="sidebar">
+      <iframe class="chat-frame" src="AiChatBot/chat/chat.html"></iframe>
+    </div>
+ 
+    <!--  <div class="main" id="main-content-wrapper"> -->
+    <header>
+      <nav class="nav">
+        <div class="logo">W&F</div>
 
-     <!--  <div class="main" id="main-content-wrapper"> -->
-        <header>
-          <nav class="nav">
-            <div class="logo">W&F</div>
+        <div class="lang-menu">
+          <div class="selected-lang" data-lang="ua">
+            <span class="fi fi-ua"></span> UA
+          </div>
+          <ul>
+            <li>
+              <a href="#" data-lang="en"><span class="fi fi-us"></span> EN</a>
+            </li>
+            <li>
+              <a href="#" data-lang="ua"><span class="fi fi-ua"></span> UA</a>
+            </li>
+          </ul>
+        </div>
 
-            <div class="lang-menu">
-              <div class="selected-lang" data-lang="ua">
-                <span class="fi fi-ua"></span> UA
-              </div>
-              <ul>
-                <li>
-                  <a href="#" data-lang="en"
-                    ><span class="fi fi-us"></span> EN</a
-                  >
-                </li>
-                <li>
-                  <a href="#" data-lang="ua"
-                    ><span class="fi fi-ua"></span> UA</a
-                  >
-                </li>
-              </ul>
-            </div>
+        <div class="mobile-menu" id="mobileMenu">
+          <ul class="nav-links">
+            <li><a href="#intro">Головна</a></li>
+            <li><a href="#about-section">Про нас</a></li>
+            <li><a href="#bouquet-section">Каталог</a></li>
+            <li><a href="#review-section">Відгуки</a></li>
+            <li><a href="#contact-section">Зв'язатися</a></li>
+          </ul>
 
-            <div class="mobile-menu" id="mobileMenu">
-              <ul class="nav-links">
-                <li><a href="#intro">Головна</a></li>
-                <li><a href="#about-section">Про нас</a></li>
-                <li><a href="#bouquet-section">Каталог</a></li>
-                <li><a href="#review-section">Відгуки</a></li>
-                <li><a href="#contact-section">Зв'язатися</a></li>
-              </ul>
+          <ul class="auth-links" id="auth-links-container">
+            <li><a href="Login.html">Увійти</a></li>
+            <li><a href="Register.html">Реєстрація</a></li>
+          </ul>
+        </div>
 
-              <ul class="auth-links" id="auth-links-container">
-                <li><a href="Login.html">Увійти</a></li>
-                <li><a href="Register.html">Реєстрація</a></li>
-              </ul>
-            </div>
+        <div class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </nav>
+    </header>
 
-            <div class="hamburger" id="hamburger">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </nav>
-        </header>
-
-        <main>
-          <section class="intro" id="intro">
-            <div class="intro-slides">
-              <div class="intro-slide active">
-                <div
-                  class="intro__bg"
-                  style="background-image: url(&quot;./img/bg/intro1.jpg&quot;)"
-                ></div>
-                <div class="intro__overlay"></div>
-                <div class="container-content">
-                  <div class="intro-grid">
-                    <div class="preview-greeting intro-left">
-                      <h1 class="gradient-header" data-i18n="introTitle">
-                        Whisper of Flower
-                      </h1>
-                      <p data-i18n="introDesc">
-                        Кожен букет — як зізнання в коханні
-                      </p>
-                      <a
-                        href="#bouquet-section"
-                        class="intro-btn"
-                        data-i18n="introBtn"
-                        >Перейти в каталог</a
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="intro-slide">
-                <div
-                  class="intro__bg"
-                  style="background-image: url(&quot;./img/bg/intro2.png&quot;)"
-                ></div>
-                <div class="intro__overlay"></div>
-                <div class="container-content">
-                  <div class="intro-grid">
-                    <div class="preview-greeting intro-left">
-                      <h1 class="gradient-header" data-i18n="introTitle">
-                        Whisper of Flower
-                      </h1>
-                      <p data-i18n="introDesc">
-                        Кожен букет — як зізнання в коханні
-                      </p>
-                      <a
-                        href="#bouquet-section"
-                        class="intro-btn"
-                        data-i18n="introBtn"
-                        >Перейти в каталог</a
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="intro-slide">
-                <div
-                  class="intro__bg"
-                  style="
-                    background-image: url(&quot;./img/bg/intro3.jpeg&quot;);
-                  "
-                ></div>
-                <div class="intro__overlay"></div>
-                <div class="container-content">
-                  <div class="intro-grid">
-                    <div class="preview-greeting intro-left">
-                      <h1 class="gradient-header" data-i18n="introTitle">
-                        Whisper of Flower
-                      </h1>
-                      <p data-i18n="introDesc">
-                        Кожен букет — як зізнання в коханні
-                      </p>
-                      <a
-                        href="#bouquet-section"
-                        class="intro-btn"
-                        data-i18n="introBtn"
-                        >Перейти в каталог</a
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="intro-slide">
-                <div
-                  class="intro__bg"
-                  style="background-image: url(&quot;./img/bg/intro4.png&quot;)"
-                ></div>
-                <div class="intro__overlay"></div>
-                <div class="container-content">
-                  <div class="intro-grid">
-                    <div class="preview-greeting intro-left">
-                      <h1 class="gradient-header" data-i18n="introTitle">
-                        Whisper of Flower
-                      </h1>
-                      <p data-i18n="introDesc">
-                        Кожен букет — як зізнання в коханні
-                      </p>
-                      <a
-                        href="#bouquet-section"
-                        class="intro-btn"
-                        data-i18n="introBtn"
-                        >Перейти в каталог</a
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="intro-slide">
-                <div
-                  class="intro__bg"
-                  style="
-                    background-image: url(&quot;./img/bg/intro5.jpeg&quot;);
-                  "
-                ></div>
-                <div class="intro__overlay"></div>
-                <div class="container-content">
-                  <div class="intro-grid">
-                    <div class="preview-greeting intro-left">
-                      <h1 class="gradient-header" data-i18n="introTitle">
-                        Whisper of Flower
-                      </h1>
-                      <p data-i18n="introDesc">
-                        Кожен букет — як зізнання в коханні
-                      </p>
-                      <a
-                        href="#bouquet-section"
-                        class="intro-btn"
-                        data-i18n="introBtn"
-                        >Перейти в каталог</a
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <button class="intro-arrow intro-arrow--prev">❮</button>
-            <button class="intro-arrow intro-arrow--next">❯</button>
-
-            <div class="intro-dots">
-              <span class="intro-dot active"></span>
-              <span class="intro-dot"></span>
-              <span class="intro-dot"></span>
-              <span class="intro-dot"></span>
-              <span class="intro-dot"></span>
-            </div>
-
-            <div class="petal-layer">
-              <div class="petal p1" style="left: 10%; top: 15%"></div>
-              <div class="petal p2"></div>
-              <div class="petal p3"></div>
-              <div class="petal p4"></div>
-            </div>
-          </section>
-
-          <section id="about-section" class="about-section">
-            <div class="about-content">
-              <h2 data-i18n="aboutTitle">
-                Про нас: квіти, емоції та особливі моменти
-              </h2>
-              <p data-i18n="aboutText1">
-                Whisper of Flower – це місце, де кожен букет створюється з
-                любов’ю та ніжністю.
-              </p>
-              <p data-i18n="aboutText2">
-                Ми віримо, що квіти — це не просто декор, а справжня мова
-                почуттів. Наші флористи створюють унікальні композиції, які
-                передають емоції та дарують натхнення. У кожній пелюстці ми
-                вкладаємо частинку душі, щоб ваш подарунок став особливим.
-              </p>
-              <p data-i18n="aboutText3">
-                Наш асортимент включає квіти для будь‑яких подій — від
-                романтичних сюрпризів до урочистих заходів. Ми дбаємо про якість
-                кожного букета та про ваші емоції, адже наша мета — робити світ
-                яскравішим, ніжнішим та теплішим.
-              </p>
-              <p data-i18n="aboutText4">
-                Whisper of Flower — це більше ніж магазин квітів. Це місце, де
-                квіти говорять, а шепіт пелюсток розповідає вашу історію.
-              </p>
-            </div>
-          </section>
-
-          <section id="bouquet-section" class="bouquet-section">
-            <h2 class="gradient-header" data-i18n="bouquetTitle">
-              Асортимент букетів
-            </h2>
-
-            <div class="bouquet-wrapper">
-              <button class="scroll-btn left">❮</button>
-
-              <div class="bouquet-grid" id="bouquet-grid-container"></div>
-
-              <button class="scroll-btn right">❯</button>
-            </div>
-          </section>
-
-          <!-- Модальне вікно -->
-          <div id="modal" class="modal">
-            <div class="modal-card">
-              <img id="modalImg" src="" alt="" />
-              <div class="modal-info">
-                <h3 id="modalTitle"></h3>
-                <p id="modalDesc"></p>
-                <div id="modalPrice"></div>
-                <div class="modal-header-actions">
+    <main>
+      <section class="intro" id="intro">
+        <div class="intro-slides">
+          <div class="intro-slide active">
+            <div
+              class="intro__bg"
+              style="background-image: url(&quot;./img/bg/intro1.jpg&quot;)"
+            ></div>
+            <div class="intro__overlay"></div>
+            <div class="container-content">
+              <div class="intro-grid">
+                <div class="preview-greeting intro-left">
+                  <h1 class="gradient-header" data-i18n="introTitle">
+                    Whisper of Flower
+                  </h1>
+                  <p data-i18n="introDesc">
+                    Кожен букет — як зізнання в коханні
+                  </p>
                   <a
-                    href="cart.html"
-                    class="primary-cta"
-                    id="orderBtn"
-                    data-i18n="modalOrderBtn"
-                    >Замовити</a
+                    href="#bouquet-section"
+                    class="intro-btn"
+                    data-i18n="introBtn"
+                    >Перейти в каталог</a
                   >
-                  <button class="close-btn" onclick="closeModal()">✕</button>
                 </div>
               </div>
             </div>
           </div>
 
-          <section id="review-section" class="review-section">
-            <h2 class="gradient-header" data-i18n="reviewSectionTitle">
-              Відгуки клієнтів
-            </h2>
-
-            <div class="review-scroll">
-              <div id="review-grid-container" class="review-grid-content"></div>
+          <div class="intro-slide">
+            <div
+              class="intro__bg"
+              style="background-image: url(&quot;./img/bg/intro2.png&quot;)"
+            ></div>
+            <div class="intro__overlay"></div>
+            <div class="container-content">
+              <div class="intro-grid">
+                <div class="preview-greeting intro-left">
+                  <h1 class="gradient-header" data-i18n="introTitle">
+                    Whisper of Flower
+                  </h1>
+                  <p data-i18n="introDesc">
+                    Кожен букет — як зізнання в коханні
+                  </p>
+                  <a
+                    href="#bouquet-section"
+                    class="intro-btn"
+                    data-i18n="introBtn"
+                    >Перейти в каталог</a
+                  >
+                </div>
+              </div>
             </div>
+          </div>
 
-            <div class="review-btn-container">
+          <div class="intro-slide">
+            <div
+              class="intro__bg"
+              style="background-image: url(&quot;./img/bg/intro3.jpeg&quot;)"
+            ></div>
+            <div class="intro__overlay"></div>
+            <div class="container-content">
+              <div class="intro-grid">
+                <div class="preview-greeting intro-left">
+                  <h1 class="gradient-header" data-i18n="introTitle">
+                    Whisper of Flower
+                  </h1>
+                  <p data-i18n="introDesc">
+                    Кожен букет — як зізнання в коханні
+                  </p>
+                  <a
+                    href="#bouquet-section"
+                    class="intro-btn"
+                    data-i18n="introBtn"
+                    >Перейти в каталог</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="intro-slide">
+            <div
+              class="intro__bg"
+              style="background-image: url(&quot;./img/bg/intro4.png&quot;)"
+            ></div>
+            <div class="intro__overlay"></div>
+            <div class="container-content">
+              <div class="intro-grid">
+                <div class="preview-greeting intro-left">
+                  <h1 class="gradient-header" data-i18n="introTitle">
+                    Whisper of Flower
+                  </h1>
+                  <p data-i18n="introDesc">
+                    Кожен букет — як зізнання в коханні
+                  </p>
+                  <a
+                    href="#bouquet-section"
+                    class="intro-btn"
+                    data-i18n="introBtn"
+                    >Перейти в каталог</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="intro-slide">
+            <div
+              class="intro__bg"
+              style="background-image: url(&quot;./img/bg/intro5.jpeg&quot;)"
+            ></div>
+            <div class="intro__overlay"></div>
+            <div class="container-content">
+              <div class="intro-grid">
+                <div class="preview-greeting intro-left">
+                  <h1 class="gradient-header" data-i18n="introTitle">
+                    Whisper of Flower
+                  </h1>
+                  <p data-i18n="introDesc">
+                    Кожен букет — як зізнання в коханні
+                  </p>
+                  <a
+                    href="#bouquet-section"
+                    class="intro-btn"
+                    data-i18n="introBtn"
+                    >Перейти в каталог</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="intro-arrow intro-arrow--prev">❮</button>
+        <button class="intro-arrow intro-arrow--next">❯</button>
+
+        <div class="intro-dots">
+          <span class="intro-dot active"></span>
+          <span class="intro-dot"></span>
+          <span class="intro-dot"></span>
+          <span class="intro-dot"></span>
+          <span class="intro-dot"></span>
+        </div>
+
+        <div class="petal-layer">
+          <div class="petal p1" style="left: 10%; top: 15%"></div>
+          <div class="petal p2"></div>
+          <div class="petal p3"></div>
+          <div class="petal p4"></div>
+        </div>
+      </section>
+
+      <section id="about-section" class="about-section">
+        <div class="about-content">
+          <h2 data-i18n="aboutTitle">
+            Про нас: квіти, емоції та особливі моменти
+          </h2>
+          <p data-i18n="aboutText1">
+            Whisper of Flower – це місце, де кожен букет створюється з любов’ю
+            та ніжністю.
+          </p>
+          <p data-i18n="aboutText2">
+            Ми віримо, що квіти — це не просто декор, а справжня мова почуттів.
+            Наші флористи створюють унікальні композиції, які передають емоції
+            та дарують натхнення. У кожній пелюстці ми вкладаємо частинку душі,
+            щоб ваш подарунок став особливим.
+          </p>
+          <p data-i18n="aboutText3">
+            Наш асортимент включає квіти для будь‑яких подій — від романтичних
+            сюрпризів до урочистих заходів. Ми дбаємо про якість кожного букета
+            та про ваші емоції, адже наша мета — робити світ яскравішим,
+            ніжнішим та теплішим.
+          </p>
+          <p data-i18n="aboutText4">
+            Whisper of Flower — це більше ніж магазин квітів. Це місце, де квіти
+            говорять, а шепіт пелюсток розповідає вашу історію.
+          </p>
+        </div>
+      </section>
+
+      <section id="bouquet-section" class="bouquet-section">
+        <h2 class="gradient-header" data-i18n="bouquetTitle">
+          Асортимент букетів
+        </h2>
+
+        <div class="bouquet-wrapper">
+          <button class="scroll-btn left">❮</button>
+
+          <div class="bouquet-grid" id="bouquet-grid-container"></div>
+
+          <button class="scroll-btn right">❯</button>
+        </div>
+      </section>
+
+      <!-- Модальне вікно -->
+      <div id="modal" class="modal">
+        <div class="modal-card">
+          <img id="modalImg" src="" alt="" />
+          <div class="modal-info">
+            <h3 id="modalTitle"></h3>
+            <p id="modalDesc"></p>
+            <div id="modalPrice"></div>
+            <div class="modal-header-actions">
               <a
-                href="review-form.html"
-                class="review-btn"
-                data-i18n="reviewBtn"
-                >Залишити відгук</a
+                href="cart.html"
+                class="primary-cta"
+                id="orderBtn"
+                data-i18n="modalOrderBtn"
+                >Замовити</a
               >
+              <button class="close-btn" onclick="closeModal()">✕</button>
             </div>
-          </section>
+          </div>
+        </div>
+      </div>
 
-          <section id="contact-section" class="contact-section">
-            <div class="petal-layer">
-              <div class="petal"></div>
-              <div class="petal p2"></div>
-              <div class="petal p3"></div>
-              <div class="petal p4"></div>
-            </div>
+      <section id="review-section" class="review-section">
+        <h2 class="gradient-header" data-i18n="reviewSectionTitle">
+          Відгуки клієнтів
+        </h2>
 
-            <h2 class="gradient-header" data-i18n="contactSectionTitle">
-              Контактна інформація
-            </h2>
+        <div class="review-scroll">
+          <div id="review-grid-container" class="review-grid-content"></div>
+        </div>
 
-            <div class="contact-content">
-              <div class="contact-left">
-                <div class="contact-icons">
-                  <a href="https://www.facebook.com" target="_blank"
-                    ><img src="img/svg-pictures/facebook.svg" alt="Facebook"
-                  /></a>
-                  <a href="https://www.instagram.com" target="_blank"
-                    ><img src="img/svg-pictures/instagram.svg" alt="Instagram"
-                  /></a>
-                  <a href="https://telegram.org" target="_blank"
-                    ><img src="img/svg-pictures/telegram.svg" alt="Telegram"
-                  /></a>
-                </div>
+        <div class="review-btn-container">
+          <a href="review-form.html" class="review-btn" data-i18n="reviewBtn"
+            >Залишити відгук</a
+          >
+        </div>
+      </section>
 
-                <div class="contact-info">
-                  <p>
-                    <strong>Пошта:</strong>
-                    <a href="mailto:whisperofflower@gmail.com"
-                      >whisperofflower@gmail.com</a
-                    >
-                  </p>
-                  <p><strong>Телефони:</strong></p>
-                  <ul class="phone-list">
-                    <li><a href="tel:+380503456789">+38 050 345 67 89</a></li>
-                    <li><a href="tel:+380983456789">+38 098 345 67 89</a></li>
-                    <li><a href="tel:+380993456789">+38 099 345 67 89</a></li>
-                  </ul>
-                </div>
-              </div>
+      <section id="contact-section" class="contact-section">
+        <div class="petal-layer">
+          <div class="petal"></div>
+          <div class="petal p2"></div>
+          <div class="petal p3"></div>
+          <div class="petal p4"></div>
+        </div>
 
-              <div class="contact-right">
-                <center>
-                  <p class="location">
-                    <strong style="color: rgb(188, 65, 86)"
-                      >Місцезнаходження:</strong
-                    >
-                    м. Дніпро, пл. Успенська, 7
-                  </p>
-                </center>
+        <h2 class="gradient-header" data-i18n="contactSectionTitle">
+          Контактна інформація
+        </h2>
 
-                <div class="map-container">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2645.5454204153966!2d35.053274275976605!3d48.46525092829316!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40dbe3b39bd471c3%3A0x1387a933ad72e5fb!2sUspens%CA%B9ka%20Ploshcha!5e0!3m2!1sru!2sua!4v1761128370767!5m2!1sru!2sua"
-                    width="100%"
-                    height="250"
-                    style="border: 0"
-                    allowfullscreen
-                    loading="lazy"
-                  ></iframe>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!--ChatBot!-->
-        </main>
-
-        <footer class="site-footer">
-          <div class="footer-container">
-            <div class="footer-about">
-              <h3 data-i18n="footerAboutTitle">Whisper of Flower</h3>
-              <p data-i18n="footerAboutDesc">
-                Магазин квітів, де кожен букет створюється з любов’ю та
-                ніжністю. Подаруйте емоції у кожній пелюстці!
-              </p>
-              <p id="p-animated" data-i18n="footerCopyright">
-                &copy; <span id="year"></span> Whisper of Flower
-              </p>
+        <div class="contact-content">
+          <div class="contact-left">
+            <div class="contact-icons">
+              <a href="https://www.facebook.com" target="_blank"
+                ><img src="img/svg-pictures/facebook.svg" alt="Facebook"
+              /></a>
+              <a href="https://www.instagram.com" target="_blank"
+                ><img src="img/svg-pictures/instagram.svg" alt="Instagram"
+              /></a>
+              <a href="https://telegram.org" target="_blank"
+                ><img src="img/svg-pictures/telegram.svg" alt="Telegram"
+              /></a>
             </div>
 
-            <div class="footer-links">
-              <h3 data-i18n="footerNavTitle">Навігація</h3>
-              <ul>
-                <li><a href="#intro" data-i18n="navHome">Головна</a></li>
-                <li>
-                  <a href="#about-section" data-i18n="navAbout">Про нас</a>
-                </li>
-                <li>
-                  <a href="#bouquet-section" data-i18n="navCatalog">Каталог</a>
-                </li>
-                <li>
-                  <a href="#review-section" data-i18n="navReviews">Відгуки</a>
-                </li>
-                <li>
-                  <a href="#contact-section" data-i18n="navContact">Контакти</a>
-                </li>
-              </ul>
-            </div>
-
-            <div class="footer-contact">
-              <h3 data-i18n="footerContactTitle">Контакти</h3>
-              <p data-i18n="footerEmail">
-                Email:
-                <a href="mailto:info@whisperofflower.com"
+            <div class="contact-info">
+              <p>
+                <strong>Пошта:</strong>
+                <a href="mailto:whisperofflower@gmail.com"
                   >whisperofflower@gmail.com</a
                 >
               </p>
-              <p data-i18n="footerPhone">
-                Телефон:<br />
-                <a href="tel:+380503456789" data-i18n="footerPhoneNumber1"
-                  >+38 050 345 67 89</a
-                ><br />
-                <a href="tel:+380987654321" data-i18n="footerPhoneNumber2"
-                  >+38 098 345 67 89</a
-                ><br />
-                <a href="tel:+380993456789" data-i18n="footerPhoneNumber3"
-                  >+38 099 345 67 89</a
-                >
-              </p>
-              <div class="social-icons">
-                <a href="https://www.facebook.com/?locale=ru_RU" target="_blank"
-                  ><img src="img/svg-pictures/facebook.svg" alt="Facebook"
-                /></a>
-                <a href="https://www.instagram.com/" target="_blank"
-                  ><img src="img/svg-pictures/instagram.svg" alt="Instagram"
-                /></a>
-                <a href="https://telegram.org/android?setln=en" target="_blank"
-                  ><img src="img/svg-pictures/telegram.svg" alt="Telegram"
-                /></a>
-              </div>
+              <p><strong>Телефони:</strong></p>
+              <ul class="phone-list">
+                <li><a href="tel:+380503456789">+38 050 345 67 89</a></li>
+                <li><a href="tel:+380983456789">+38 098 345 67 89</a></li>
+                <li><a href="tel:+380993456789">+38 099 345 67 89</a></li>
+              </ul>
             </div>
           </div>
 
-          <div class="petal-layer">
-            <div class="petal p1"></div>
-            <div class="petal p2"></div>
-            <div class="petal p3"></div>
-            <div class="petal p4"></div>
+          <div class="contact-right">
+            <center>
+              <p class="location">
+                <strong style="color: rgb(188, 65, 86)"
+                  >Місцезнаходження:</strong
+                >
+                м. Дніпро, пл. Успенська, 7
+              </p>
+            </center>
+
+            <div class="map-container">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2645.5454204153966!2d35.053274275976605!3d48.46525092829316!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40dbe3b39bd471c3%3A0x1387a933ad72e5fb!2sUspens%CA%B9ka%20Ploshcha!5e0!3m2!1sru!2sua!4v1761128370767!5m2!1sru!2sua"
+                width="100%"
+                height="250"
+                style="border: 0"
+                allowfullscreen
+                loading="lazy"
+              ></iframe>
+            </div>
           </div>
-        </footer>
+        </div>
+      </section>
 
+      <!--ChatBot!-->
+    </main>
 
-      <!--  Mouse Cursor -->
-        <div class="mouse__cursor"></div> 
-     <!--  </div> -->
-   <!--  </div> -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <div class="footer-about">
+          <h3 data-i18n="footerAboutTitle">Whisper of Flower</h3>
+          <p data-i18n="footerAboutDesc">
+            Магазин квітів, де кожен букет створюється з любов’ю та ніжністю.
+            Подаруйте емоції у кожній пелюстці!
+          </p>
+          <p id="p-animated" data-i18n="footerCopyright">
+            &copy; <span id="year"></span> Whisper of Flower
+          </p>
+        </div>
+
+        <div class="footer-links">
+          <h3 data-i18n="footerNavTitle">Навігація</h3>
+          <ul>
+            <li><a href="#intro" data-i18n="navHome">Головна</a></li>
+            <li>
+              <a href="#about-section" data-i18n="navAbout">Про нас</a>
+            </li>
+            <li>
+              <a href="#bouquet-section" data-i18n="navCatalog">Каталог</a>
+            </li>
+            <li>
+              <a href="#review-section" data-i18n="navReviews">Відгуки</a>
+            </li>
+            <li>
+              <a href="#contact-section" data-i18n="navContact">Контакти</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-contact">
+          <h3 data-i18n="footerContactTitle">Контакти</h3>
+          <p data-i18n="footerEmail">
+            Email:
+            <a href="mailto:info@whisperofflower.com"
+              >whisperofflower@gmail.com</a
+            >
+          </p>
+          <p data-i18n="footerPhone">
+            Телефон:<br />
+            <a href="tel:+380503456789" data-i18n="footerPhoneNumber1"
+              >+38 050 345 67 89</a
+            ><br />
+            <a href="tel:+380987654321" data-i18n="footerPhoneNumber2"
+              >+38 098 345 67 89</a
+            ><br />
+            <a href="tel:+380993456789" data-i18n="footerPhoneNumber3"
+              >+38 099 345 67 89</a
+            >
+          </p>
+          <div class="social-icons">
+            <a href="https://www.facebook.com/?locale=ru_RU" target="_blank"
+              ><img src="img/svg-pictures/facebook.svg" alt="Facebook"
+            /></a>
+            <a href="https://www.instagram.com/" target="_blank"
+              ><img src="img/svg-pictures/instagram.svg" alt="Instagram"
+            /></a>
+            <a href="https://telegram.org/android?setln=en" target="_blank"
+              ><img src="img/svg-pictures/telegram.svg" alt="Telegram"
+            /></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="petal-layer">
+        <div class="petal p1"></div>
+        <div class="petal p2"></div>
+        <div class="petal p3"></div>
+        <div class="petal p4"></div>
+      </div>
+    </footer>
+
+    <!--  Mouse Cursor -->
+    <div class="mouse__cursor"></div>
+    <!--  </div> -->
+    <!--  </div> -->
 
     <!-- SCRIPTS -->
     <script>
