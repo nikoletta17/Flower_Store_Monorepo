@@ -70,6 +70,16 @@ function closeModal() {
     document.body.style.overflow = "";
   }
 }
+/* window.closeModal = closeModal; */
+
+function closeModal() {
+  const modal = document.getElementById("modal");
+  if (modal) {
+    modal.classList.remove("open");
+    document.body.style.overflow = ""; // Повертаємо прокрутку сайту
+  }
+}
+// Робимо її глобальною, щоб інші файли (як order-form.js) її бачили
 window.closeModal = closeModal;
 
 function initModalClosing() {
@@ -246,7 +256,7 @@ const observer = new IntersectionObserver(
       if (entry.isIntersecting) {
         entry.target.classList.add("show");
       } else {
-        entry.target.classList.remove("show"); // infinity effect
+        /* entry.target.classList.remove("show"); */ // infinity effect
       }
     });
   },
@@ -296,8 +306,15 @@ if (reviewSection) sectionObserver.observe(reviewSection);
 async function addToCart(bouquetId) {
   const token = localStorage.getItem("access_token");
   if (!token) {
-    alert("Будь ласка, увійдіть в акаунт, щоб зробити замовлення!");
-    window.location.href = "Login.html";
+    showNotification(
+      "Будь ласка, увійдіть в акаунт, щоб зробити замовлення!",
+      "error",
+    );
+
+    setTimeout(() => {
+      window.location.href = "Login.html";
+    }, 1800);
+
     return;
   }
 
@@ -312,14 +329,16 @@ async function addToCart(bouquetId) {
     });
 
     if (response.ok) {
-      alert("💐 Букет додано у кошик!");
-      // Можна оновити цифру на іконці кошика тут
+      // 1. Закриваємо модалку букета (щоб звільнити місце для тоста)
+      closeModal(); 
+      
+      // 2. Показуємо тост
+      showNotification("Букет додано у кошик! 🌸");
     } else {
       const error = await response.json();
-      alert(`Помилка: ${error.detail}`);
+      showNotification(`Помилка: ${error.detail}`, "error");
     }
   } catch (err) {
-    console.error("Cart error:", err);
-    alert("Помилка мережі при додаванні в кошик.");
+    showNotification("Помилка мережі", "error");
   }
 }

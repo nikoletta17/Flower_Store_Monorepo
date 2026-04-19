@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function checkAdmin() {
   const role = localStorage.getItem("user_role");
   if (!token || role !== "admin") {
-    alert("Доступ заборонено!");
+    showNotification("Доступ заборонено!", "error");
     window.location.href = "index.html";
   }
 }
@@ -25,9 +25,9 @@ function openTab(evt, tabName) {
   evt.currentTarget.classList.add("active");
 
   if (tabName === "bouquets") loadBouquets();
-   if (tabName === "reviews") loadReviews();
-   if (tabName === 'users') loadUsers();  
-   if (tabName === 'orders') loadOrders();
+  if (tabName === "reviews") loadReviews();
+  if (tabName === "users") loadUsers();
+  if (tabName === "orders") loadOrders();
 }
 
 // --- ЗАГРУЗКА СПИСКА ---
@@ -79,13 +79,13 @@ async function handleBouquetSubmit() {
     description_ua: document.getElementById("b-desc-ua").value.trim(),
     description_en: document.getElementById("b-desc-en").value.trim(),
     price: parseFloat(document.getElementById("b-price").value),
-    anchor_id: "flower_" + Date.now()
+    anchor_id: "flower_" + Date.now(),
   };
 
   try {
     let res;
 
-   if (id) {
+    if (id) {
       const bouquetIdElement = document.getElementById("bouquet-id");
       const bouquetData = {
         title_ua: document.getElementById("b-title-ua").value.trim(),
@@ -94,15 +94,15 @@ async function handleBouquetSubmit() {
         description_en: document.getElementById("b-desc-en").value.trim(),
         price: parseFloat(document.getElementById("b-price").value),
         // Берем сохраненное имя картинки, чтобы бэкенд не ругался
-        image_url: bouquetIdElement.dataset.currentImage || "default.jpg", 
-        anchor_id: "flower_" + Date.now()
+        image_url: bouquetIdElement.dataset.currentImage || "default.jpg",
+        anchor_id: "flower_" + Date.now(),
       };
 
       res = await fetch(`${API_URL}/bouquet/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${currentToken}`,
+          Authorization: `Bearer ${currentToken}`,
         },
         body: JSON.stringify(bouquetData),
       });
@@ -111,7 +111,7 @@ async function handleBouquetSubmit() {
       // Твой роутер POST ждет FormData с файлом
       const fileInput = document.getElementById("b-image-file");
       if (!fileInput.files[0]) {
-        alert("Будь ласка, виберіть фото для нового букета!");
+        showNotification("Будь ласка, оберіть фото для нового букета!");
         return;
       }
 
@@ -124,24 +124,32 @@ async function handleBouquetSubmit() {
       res = await fetch(`${API_URL}/bouquet/`, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${currentToken}`,
+          Authorization: `Bearer ${currentToken}`,
         },
         body: formData,
       });
     }
 
     if (res.ok) {
-      alert(id ? "Букет оновлено!" : "Букет створено!");
-      resetBouquetForm(); // Очищаем форму и ID
-      location.reload();
+      const successMsg = id
+        ? "Букет успішно оновлено!"
+        : "Новий букет створено! 💐";
+
+      showNotification(successMsg, "success");
+
+      resetBouquetForm();
+
+      setTimeout(() => {
+        location.reload();
+      }, 1500);
     } else {
       const err = await res.json();
       console.log("Деталі помилки:", err);
-      alert("Помилка при збереженні!");
+      showNotification("Помилка при збереженні!", "error");
     }
   } catch (e) {
     console.error(e);
-    alert("Помилка з'єднання з сервером");
+    showNotification("Помилка з'єднання з сервером", "error");
   }
 }
 
@@ -152,7 +160,7 @@ async function editBouquet(id) {
 
     document.getElementById("bouquet-id").value = b.id;
     // Сохраняем текущую картинку прямо в элемент, чтобы потом забрать
-    document.getElementById("bouquet-id").dataset.currentImage = b.image_url; 
+    document.getElementById("bouquet-id").dataset.currentImage = b.image_url;
 
     document.getElementById("b-title-ua").value = b.title_ua;
     document.getElementById("b-title-en").value = b.title_en;
@@ -163,7 +171,7 @@ async function editBouquet(id) {
     window.scrollTo({ top: 0, behavior: "smooth" });
     document.querySelector(".btn-save").innerText = "Оновити букет";
   } catch (err) {
-    alert("Не вдалося завантажити дані букета");
+    showNotification("Не вдалося завантажити дані букета", "error");
   }
 }
 
@@ -180,12 +188,34 @@ function resetBouquetForm() {
 }
 
 async function deleteItem(type, id) {
-  if (!confirm("Ви впевнені?")) return;
-  const res = await fetch(`${API_URL}/${type}/${id}`, {
-    method: "DELETE",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  if (res.ok) location.reload();
+  // 1. Спочатку показуємо діалог
+  showConfirmDialog("Ви впевнені, що хочете видалити цей елемент?", "Цю дію неможливо буде скасувати!")
+    .then(async (result) => {
+      // 2. Цей код виконається ТІЛЬКИ якщо натиснуто "Так"
+      if (result.isConfirmed) {
+        try {
+          const res = await fetch(`${API_URL}/${type}/${id}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          if (res.ok) {
+            // Показуємо успіх перед тим, як перезавантажити
+            showNotification("Видалено успішно! 🌸", "success");
+            
+            // Даємо 1.5 секунди, щоб побачити тост, і оновлюємо
+            setTimeout(() => {
+              location.reload();
+            }, 1500);
+          } else {
+            showNotification("Помилка при видаленні", "error");
+          }
+        } catch (error) {
+          console.error("Delete error:", error);
+          showNotification("Помилка мережі", "error");
+        }
+      }
+    });
 }
 
 // --- ВІДГУКИ ---
@@ -222,64 +252,73 @@ async function loadReviews() {
   }
 }
 
-
 // --- КОРИСТУВАЧІ ---
 async function loadUsers() {
-    try {
-        const res = await fetch(`${API_URL}/users/`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const users = await res.json();
-        
-        const tbody = document.querySelector("#users-table tbody");
-        if (!tbody) return;
+  try {
+    const res = await fetch(`${API_URL}/users/`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const users = await res.json();
 
-        if (users.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Користувачів поки немає</td></tr>';
-            return;
-        }
+    const tbody = document.querySelector("#users-table tbody");
+    if (!tbody) return;
 
-        // Получаем ID текущего админа из токена или localStorage, чтобы не удалить себя
-        // (Обычно ID зашито в токене, но для простоты просто сверим email, если нужно)
-        
-        tbody.innerHTML = users.map(u => `
+    if (users.length === 0) {
+      tbody.innerHTML =
+        '<tr><td colspan="3" style="text-align:center;">Користувачів поки немає</td></tr>';
+      return;
+    }
+
+    // Получаем ID текущего админа из токена или localStorage, чтобы не удалить себя
+    // (Обычно ID зашито в токене, но для простоты просто сверим email, если нужно)
+
+    tbody.innerHTML = users
+      .map(
+        (u) => `
             <tr>
                 <td>${u.email}</td>
                 <td><span class="status-badge" style="background: #eee; padding: 2px 8px; border-radius: 4px;">${u.role}</span></td>
                 <td>
-                    ${u.role !== 'admin' ? 
-                        `<button onclick="deleteItem('users', ${u.id})" class="delete-btn">🗑 Видалити</button>` : 
-                        `<small style="color: #999 italic">Адмін (неможливо видалити)</small>`
+                    ${
+                      u.role !== "admin"
+                        ? `<button onclick="deleteItem('users', ${u.id})" class="delete-btn">🗑 Видалити</button>`
+                        : `<small style="color: #999 italic">Адмін (неможливо видалити)</small>`
                     }
                 </td>
             </tr>
-        `).join('');
-    } catch (err) {
-        console.error("Помилка завантаження користувачів:", err);
-    }
+        `,
+      )
+      .join("");
+  } catch (err) {
+    console.error("Помилка завантаження користувачів:", err);
+  }
 }
 
 // --- ЗАМОВЛЕННЯ ---
 async function loadOrders() {
-    try {
-        const res = await fetch(`${API_URL}/orders/admin/all`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const orders = await res.json();
-        
-        const tbody = document.querySelector("#orders-table tbody");
-        if (!tbody) return;
+  try {
+    const res = await fetch(`${API_URL}/orders/admin/all`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const orders = await res.json();
 
-        if (orders.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Замовлень поки немає</td></tr>';
-            return;
-        }
+    const tbody = document.querySelector("#orders-table tbody");
+    if (!tbody) return;
 
-        tbody.innerHTML = orders.map(o => {
-            // Формируем список товаров в заказе
-            const itemsHtml = o.items.map(i => `${i.bouquet.title_ua} (x${i.quantity})`).join(', ');
-            
-            return `
+    if (orders.length === 0) {
+      tbody.innerHTML =
+        '<tr><td colspan="5" style="text-align:center;">Замовлень поки немає</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = orders
+      .map((o) => {
+        // Формируем список товаров в заказе
+        const itemsHtml = o.items
+          .map((i) => `${i.bouquet.title_ua} (x${i.quantity})`)
+          .join(", ");
+
+        return `
             <tr>
                 <td>#${o.id}</td>
                 <td>
@@ -291,39 +330,43 @@ async function loadOrders() {
                 <td><strong>${(o.total_price / 100).toFixed(2)} грн</strong></td>
                 <td>
                     <select onchange="updateOrderStatus(${o.id}, this.value)" style="padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
-                        <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>Очікується</option>
-                        <option value="processing" ${o.status === 'processing' ? 'selected' : ''}>Обробляється</option>
-                        <option value="shipped" ${o.status === 'shipped' ? 'selected' : ''}>Відправлено</option>
-                        <option value="delivered" ${o.status === 'delivered' ? 'selected' : ''}>Доставлено</option>
-                        <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>Скасовано</option>
+                        <option value="pending" ${o.status === "pending" ? "selected" : ""}>Очікується</option>
+                        <option value="processing" ${o.status === "processing" ? "selected" : ""}>Обробляється</option>
+                        <option value="shipped" ${o.status === "shipped" ? "selected" : ""}>Відправлено</option>
+                        <option value="delivered" ${o.status === "delivered" ? "selected" : ""}>Доставлено</option>
+                        <option value="cancelled" ${o.status === "cancelled" ? "selected" : ""}>Скасовано</option>
                     </select>
                 </td>
             </tr>`;
-        }).join('');
-    } catch (err) {
-        console.error("Помилка завантаження замовлень:", err);
-    }
+      })
+      .join("");
+  } catch (err) {
+    console.error("Помилка завантаження замовлень:", err);
+  }
 }
 
 async function updateOrderStatus(orderId, newStatus) {
-    try {
-        // Зверни увагу на назву параметра: new_status (як у твоїй функції Python)
-        const res = await fetch(`${API_URL}/orders/admin/${orderId}/status?new_status=${newStatus}`, {
-            method: 'PATCH',
-            headers: { 
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
+  try {
+    // Зверни увагу на назву параметра: new_status (як у твоїй функції Python)
+    const res = await fetch(
+      `${API_URL}/orders/admin/${orderId}/status?new_status=${newStatus}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
 
-        if (res.ok) {
-            alert("Статус замовлення змінено! Користувач побачить це у профілі.");
-        } else {
-            const err = await res.json();
-            console.error("Помилка:", err);
-            alert("Не вдалося змінити статус.");
-        }
-    } catch (err) {
-        console.error(err);
+    if (res.ok) {
+      showNotification("Статус замовлення змінено у профілі користувача!");
+    } else {
+      const err = await res.json();
+      console.error("Помилка:", err);
+      showNotification("Не вдалося змінити статус замовлення", "error");
     }
+  } catch (err) {
+    console.error(err);
+  }
 }

@@ -9,12 +9,12 @@ async function fetchUserData() {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
-      }
+      },
     });
 
     if (response.ok) {
       const user = await response.json();
-      
+
       // Зберігаємо ID, він нам знадобиться для оновлення!
       window.userId = user.id;
 
@@ -99,15 +99,24 @@ async function fetchOrders() {
 async function handleUpdateProfile(e) {
   e.preventDefault();
   const token = localStorage.getItem("access_token");
+
   const name = document.getElementById("nameInput").value;
   const email = document.getElementById("emailInput").value;
   const password = document.getElementById("passwordInput").value;
 
-  const updateData = { name, email };
-  if (password) updateData.password = password;
+  // 1. Формуємо базові дані
+  const updateData = {
+    name: name,
+    email: email,
+  };
+
+  // 2. Якщо поле пароля не порожнє, додаємо ОБИДВА поля
+  if (password && password.trim() !== "") {
+    updateData.password = password;
+    updateData.confirm_password = password; // Обов'язково для твоєї схеми!
+  }
 
   try {
-    // Використовуємо PUT та ID користувача
     const response = await fetch(`${API_BASE}/users/${window.userId}`, {
       method: "PUT",
       headers: {
@@ -118,16 +127,47 @@ async function handleUpdateProfile(e) {
     });
 
     if (response.ok) {
-      alert("Профіль успішно оновлено! ✨");
+      showNotification("Профіль успішно оновлено!");
       localStorage.setItem("user_name", name);
-      // Оновлюємо ім'я в навбарі (якщо функція доступна)
-      if (typeof updateAuthLinks === 'function') updateAuthLinks();
+      if (typeof updateAuthLinks === "function") updateAuthLinks();
+
+      // Очищуємо поле пароля після успішного збереження
+      document.getElementById("passwordInput").value = "";
     } else {
       const err = await response.json();
-      alert(`Помилка: ${err.detail}`);
+      // Виводимо конкретну помилку від валідатора (наприклад, "Паролі не збігаються")
+      const msg = err.detail?.[0]?.msg || err.detail || "Помилка оновлення";
+      showNotification(`Помилка: ${msg}`, "error");
     }
   } catch (err) {
     console.error("Помилка оновлення:", err);
+  }
+}
+
+async function requestPasswordReset() {
+  const email = document.getElementById("emailInput").value;
+
+  if (!email) {
+    showNotification("Будь ласка, введіть вашу електронну пошту.");
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE}/users/password-reset-request`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email }),
+    });
+
+    if (response.ok) {
+      showNotification("Інструкції надіслано на вашу пошту!");
+    } else {
+      const err = await response.json();
+      showNotification(`Помилка: ${err.detail}`, "error");
+    }
+  } catch (err) {
+    console.error("Помилка:", err);
+    showNotification("Не вдалося зв'язатися з сервером.", "error");
   }
 }
 

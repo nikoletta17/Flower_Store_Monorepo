@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title data-i18n="indexTitle">Квіткова лавка - Whisper of Flower</title>
+    <!-- Aletrs -->
+    <link rel="stylesheet" href="css/notifications.css" />
+    <script src="js/notifications.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap"
       rel="stylesheet"
@@ -11,7 +16,7 @@
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/flag-icons@6.7.0/css/flag-icons.min.css"
-    /> 
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -34,7 +39,7 @@
     <div class="sidebar" id="sidebar">
       <iframe class="chat-frame" src="AiChatBot/chat/chat.html"></iframe>
     </div>
- 
+
     <!--  <div class="main" id="main-content-wrapper"> -->
     <header>
       <nav class="nav">
@@ -281,13 +286,14 @@
             <p id="modalDesc"></p>
             <div id="modalPrice"></div>
             <div class="modal-header-actions">
-              <a
-                href="cart.html"
+              <button
+                type="button"
                 class="primary-cta"
                 id="orderBtn"
                 data-i18n="modalOrderBtn"
-                >Замовити</a
               >
+                Замовити
+              </button>
               <button class="close-btn" onclick="closeModal()">✕</button>
             </div>
           </div>

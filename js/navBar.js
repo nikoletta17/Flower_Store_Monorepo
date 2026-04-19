@@ -1,26 +1,38 @@
+/* Mobile menu */
 document.addEventListener("DOMContentLoaded", () => {
+  const hamburger = document.getElementById("hamburger");
+  const mobileMenu = document.getElementById("mobileMenu");
+
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener("click", () => {
+      hamburger.classList.toggle("active");
+      mobileMenu.classList.toggle("show");
+    });
+
+    // Close during the click 
+    const navLinks = document.querySelectorAll(".mobile-menu a");
+    navLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        hamburger.classList.remove("active");
+        mobileMenu.classList.remove("show");
+      });
+    });
+  }
+
+  // AI-bot (Sidebar) 
   const sidebar = document.getElementById("sidebar");
-  const hambtn = document.getElementById("toggleBtn"); // Це твоя кнопка-кружечок
-  const main = document.querySelector(".main");
+  const hambtn = document.getElementById("toggleBtn"); 
+  const mainContent = document.querySelector("main"); 
 
-  hambtn.addEventListener("click", () => {
-    const isOpen = sidebar.classList.toggle("open");
-    main.classList.toggle("shift");
+  if (hambtn && sidebar) {
+    hambtn.addEventListener("click", () => {
+      const isOpen = sidebar.classList.toggle("open");
+      if (mainContent) mainContent.classList.toggle("shift");
 
-    // ЯКЩО ЧАТ ВІДКРИТО — ХОВАЄМО КНОПКУ, ЩОБ НЕ ЗАВАЖАЛА
-    if (isOpen) {
-      hambtn.style.opacity = "0";
-      hambtn.style.pointerEvents = "none";
-    }
-  });
-
-  // Закриття при кліку поза сайдбаром
-  document.addEventListener("click", (e) => {
-    if (!sidebar.contains(e.target) && !hambtn.contains(e.target) && sidebar.classList.contains("open")) {
-      sidebar.classList.remove("open");
-      main.classList.remove("shift");
-      hambtn.style.opacity = "1";
-      hambtn.style.pointerEvents = "auto";
-    }
-  });
+      if (isOpen) {
+        hambtn.style.opacity = "0";
+        hambtn.style.pointerEvents = "none";
+      }
+    });
+  }
 });

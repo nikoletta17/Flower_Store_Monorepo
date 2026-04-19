@@ -18,7 +18,7 @@ const translations = {
     introTitle: "Whisper of Flower",
     introDesc: "Every bouquet is like a confession of love",
     introBtn: "Go to catalog",
-    reviewSubmitBtBackHome: "Return to home page",
+    reviewSubmitBtBackHome: "← Return to home page",
     // Секція About
     aboutTitle: "About us: flowers, emotions and special moments",
     aboutText1:
@@ -100,6 +100,12 @@ const translations = {
     logTitle: "Login",
     regTitle: "Register",
     reviewTitle: "Leave a Review",
+
+    resetPwTitle: "Reset Password",
+    resetPwNew: "New Password",
+    resetPwPlaceholder: "Min. 8 characters",
+    resetPwConfirmPlaceholder: "Confirm the new password",
+    resetPwBtn: "Update Password",
   },
 
   ua: {
@@ -126,7 +132,7 @@ const translations = {
       "Наш асортимент включає квіти для будь‑яких подій — від романтичних сюрпризів до урочистих заходів. Ми дбаємо про якість кожного букета та про ваші емоції, адже наша мета — робити світ яскравішим, ніжнішим та теплішим.",
     aboutText4:
       "Whisper of Flower — це більше ніж магазин квітів. Це місце, де квіти говорять, а шепіт пелюсток розповідає вашу історію.",
-    reviewSubmitBtBackHome: "Повернутися на головну",
+    reviewSubmitBtBackHome: "← Повернутися на головну",
 
     // Модальне вікно
     modalOrderBtn: "Замовити",
@@ -195,6 +201,12 @@ const translations = {
     logTitle: "Увійти",
     regTitle: "Зареєструватися",
     reviewTitle: "Залишити відгук",
+
+    resetPwTitle: "Оновити пароль",
+    resetPwNew: "Новий пароль",
+    resetPwPlaceholder: "Мін. 8 символів",
+    resetPwConfirmPlaceholder: "Повторіть новий пароль",
+    resetPwBtn: "Оновити пароль",
   },
 };
 

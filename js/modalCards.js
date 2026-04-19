@@ -1,11 +1,9 @@
-// modalCards.js
 document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('modal');
   const modalImg = document.getElementById('modalImg');
   const modalTitle = document.getElementById('modalTitle');
   const modalDesc = document.getElementById('modalDesc');
   const modalPrice = document.getElementById('modalPrice');
-  const orderBtn = document.getElementById('orderBtn');
 
   if (!modal) {
     console.warn('Modal element not found (#modal). Check your HTML.');

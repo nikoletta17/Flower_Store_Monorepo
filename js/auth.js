@@ -70,17 +70,17 @@ const updateAuthLinks = async () => {
 
   if (token) {
     let userName = localStorage.getItem("user_name");
-      let userRole = localStorage.getItem("user_role");
-      
-      const user = await fetchCurrentUser(token);
+    let userRole = localStorage.getItem("user_role");
+
+    const user = await fetchCurrentUser(token);
 
     if (user) {
       userName = user.name;
       userRole = user.role;
     } else {
-      // Якщо сервер повернув помилку (наприклад 401), 
+      // Якщо сервер повернув помилку (наприклад 401),
       // fetchCurrentUser вже викликав logoutUser, тому просто зупиняємо функцію
-      return; 
+      return;
     }
 
     if (userName) {
@@ -88,26 +88,31 @@ const updateAuthLinks = async () => {
       userDropdown.className = "user-dropdown-container";
 
       // 1. Кошик показуємо ТІЛЬКИ якщо це НЕ адмін
-      const cartIcon = userRole !== "admin" ? `
+      const cartIcon =
+        userRole !== "admin"
+          ? `
         <li class="cart-nav-item">
             <a href="cart.html" class="cart-icon-link">
                 <i class="fas fa-shopping-cart"></i>
             </a>
-        </li>` : "";
+        </li>`
+          : "";
 
       // 2. Посилання на адмінку (вже є)
-      const adminLink = userRole === "admin"
+      const adminLink =
+        userRole === "admin"
           ? `<li><a href="admin.html" style="color: #CB6D88; font-weight: bold;">Панель адміна</a></li>`
           : "";
 
       // 3. Посилання на профіль показуємо ТІЛЬКИ якщо це НЕ адмін
-      const profileLink = userRole !== "admin" 
-          ? `<li><a href="profile.html">Мій профіль</a></li>` 
+      const profileLink =
+        userRole !== "admin"
+          ? `<li><a href="profile.html">Мій профіль</a></li>`
           : "";
 
       // Вставляємо кошик (буде порожньо, якщо адмін)
       if (cartIcon) {
-          authLinksContainer.insertAdjacentHTML("beforeend", cartIcon);
+        authLinksContainer.insertAdjacentHTML("beforeend", cartIcon);
       }
 
       userDropdown.innerHTML = `
@@ -119,10 +124,10 @@ const updateAuthLinks = async () => {
         </ul>`;
 
       authLinksContainer.appendChild(userDropdown);
-      
+
       const logoutBtn = document.getElementById("logout-link");
       if (logoutBtn) {
-          logoutBtn.addEventListener("click", logoutUser);
+        logoutBtn.addEventListener("click", logoutUser);
       }
       return;
     }
@@ -137,7 +142,7 @@ const updateAuthLinks = async () => {
 // --- ВИХІД ---
 const logoutUser = (e, shouldRedirect = true) => {
   if (e) e.preventDefault();
-  
+
   localStorage.removeItem("access_token");
   localStorage.removeItem("user_name");
   localStorage.removeItem("user_role");
@@ -147,7 +152,7 @@ const logoutUser = (e, shouldRedirect = true) => {
   } else {
     // Якщо ми не перенаправляємо, то вручну викликаємо оновлення меню
     // Це прибере "Привіт, Ніколь" і покаже кнопки входу
-    updateAuthLinks(); 
+    updateAuthLinks();
   }
 };
 
@@ -175,7 +180,7 @@ async function handleLogin(e) {
       window.location.href = "index.html";
     } else {
       const error = await response.json();
-      alert(`Помилка: ${error.detail || "Невірні дані"}`);
+      showNotification(`Помилка: ${error.detail || "Невірні дані"}`, "error");
     }
   } catch (error) {
     console.error("Помилка:", error);
@@ -201,11 +206,13 @@ async function handleRegister(e) {
       }),
     });
     if (response.ok) {
-      alert("Успіх! Тепер увійдіть.");
-      window.location.href = "Login.html";
+      showNotification("Успіх! Тепер увійдіть 🌸", "success");
+      setTimeout(() => {
+        window.location.href = "Login.html";
+      }, 1500);
     } else {
       const err = await response.json();
-      alert(err.detail || "Помилка реєстрації");
+      showNotification(err.detail || "Помилка реєстрації", "error");
     }
   } catch (err) {
     console.error(err);

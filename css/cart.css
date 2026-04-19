@@ -56,7 +56,7 @@ body::after {
     padding-top: 20px;
     
     /* НОВІ ПАРАМЕТРИ ТУТ: */
-    max-height: 250px;    /* Встановіть висоту, яка вам подобається (наприклад, для 3-4 товарів) */
+    max-height: 170px;    /* Встановіть висоту, яка вам подобається (наприклад, для 3-4 товарів) */
     overflow-y: auto;     /* Додає вертикальну прокрутку, якщо товарів багато */
     overflow-x: hidden;   /* Ховаємо горизонтальну прокрутку про всяк випадок */
     padding-right: 10px;  /* Відступ справа, щоб скролбар не налізав на текст */
@@ -217,7 +217,13 @@ body::after {
 }
 
 /* Адаптивність */
-@media (max-width: 600px) {
+@media (max-width: 1060px) {
+    .cart-section {
+        margin-top: 180px; 
+        padding: 15px;     
+        width: 95%;        
+    }
+
     .cart-item {
         flex-wrap: wrap;
         padding-bottom: 20px;
