@@ -31,9 +31,33 @@ async def google_callback(request: Request, db: AsyncSession = Depends(get_db)):
     # 1. Находим или создаем пользователя в БД
     user = await repo.user.get_user_by_email(db, email=email)
 
+    # if not user:
+    #     import secrets
+    #     # Генерируем один случайный пароль
+    #     random_pass = secrets.token_urlsafe(16)
+    #     hashed_password = Hash.bcrypt(random_pass)
+    #
+    #     new_user_data = UserCreate(
+    #         email=email,
+    #         name=name,
+    #         password=random_pass,
+    #         confirm_password=random_pass
+    #     )
+    #
+    #     # Передаємо створений хеш у репозиторій
+    #     user = await repo.user.create_user(
+    #         db=db,
+    #         request=new_user_data,
+    #         hashed_password=hashed_password
+    #     )
+    #
+    #     # Якщо в самому репозиторії немає commit, додаємо його тут:
+    #     await db.commit()
+    #     await db.refresh(user)
+
     if not user:
         import secrets
-        # Генерируем один случайный пароль
+        # Генеруємо випадковий пароль, щоб поле в БД не було порожнім
         random_pass = secrets.token_urlsafe(16)
         hashed_password = Hash.bcrypt(random_pass)
 
@@ -44,16 +68,26 @@ async def google_callback(request: Request, db: AsyncSession = Depends(get_db)):
             confirm_password=random_pass
         )
 
-        # Передаємо створений хеш у репозиторій
+        # 1. Створюємо користувача через репозиторій
         user = await repo.user.create_user(
             db=db,
             request=new_user_data,
             hashed_password=hashed_password
         )
 
-        # Якщо в самому репозиторії немає commit, додаємо його тут:
+        # 2. ВАЖЛИВО: Одразу позначаємо його як верифікованого
+        user.is_verified = True
+
+        # Якщо ви хочете, щоб він міг зайти через форму навіть БЕЗ зміни пароля,
+        # ви можете вивести цей random_pass кудись (але це небезпечно),
+        # тому краще просто дати йому можливість зробити "Reset Password" пізніше.
+
         await db.commit()
         await db.refresh(user)
+
+    if not user.is_verified:
+        user.is_verified = True
+        await db.commit()
 
     # 2. Генерируем JWT токен
     access_token = create_access_token(data={"user_id": user.id})

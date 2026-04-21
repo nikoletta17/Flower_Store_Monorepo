@@ -1,12 +1,68 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Welcome</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>Вітаємо у Whisper of Flower!</h1>-->
+<!--    <p>Будь ласка, підтвердіть ваш email, натиснувши на посилання нижче:</p>-->
+<!--    <a href="{{ link }}">Підтвердити реєстрацію</a>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.6; background-color: #f9f9f9; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border: 1px solid #eee; padding: 30px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .header { text-align: center; border-bottom: 2px solid #ffb6c1; padding-bottom: 20px; margin-bottom: 25px; }
+        .content { text-align: center; }
+        h1 { color: #d81b60; margin-bottom: 10px; }
+        p { font-size: 16px; color: #555; }
+
+        /* Стиль кнопки */
+        .button {
+            display: inline-block;
+            background-color: #d81b60;
+            color: #ffffff !important;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover { background-color: #ad144b; }
+
+        .footer { text-align: center; margin-top: 40px; font-size: 12px; color: #999; border-top: 1px dashed #ffb6c1; padding-top: 20px; }
+        .flower-icon { font-size: 24px; margin-bottom: 10px; }
+    </style>
 </head>
 <body>
-    <h1>Вітаємо у Whisper of Flower!</h1>
-    <p>Будь ласка, підтвердіть ваш email, натиснувши на посилання нижче:</p>
-    <a href="{{ link }}">Підтвердити реєстрацію</a>
+    <div class="container">
+        <div class="header">
+            <div class="flower-icon">🌸</div>
+            <h1>Вітаємо у Whisper of Flower!</h1>
+        </div>
+
+        <div class="content">
+            <p>Дякуємо, що приєдналися до нашої квіткової родини.</p>
+            <p>Щоб завершити реєстрацію та отримати доступ до особистого кабінету, будь ласка, підтвердіть свій email:</p>
+
+            <a href="{{ link }}" class="button">Підтвердити реєстрацію</a>
+
+            <p style="margin-top: 25px; font-size: 14px; color: #888;">
+                Якщо ви не реєструвалися на нашому сайті, просто проігноруйте цей лист.
+            </p>
+        </div>
+
+        <div class="footer">
+            <p>&copy; {{ year }} Whisper of Flower. Всі права захищені.</p>
+            <p>Краса в кожній пелюстці ✨</p>
+        </div>
+    </div>
 </body>
 </html>

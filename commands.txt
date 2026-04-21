@@ -45,11 +45,11 @@ git add .
 
 # 2. Робимо коміт (опис того, що ти зробила)
 
-git commit -m "Fix: Error pages styled"
+git commit -m "Added OR-Code mailing to orders"
 
 
 # 3. Пушимо САМЕ в гілку db-features
-git push origin languages
+git push origin main
 
 Перейти на main
 git checkout main

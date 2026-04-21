@@ -10,17 +10,21 @@ from app.utils.pagination import paginate_response
 from app.utils.image_handler import generate_unique_filename, get_full_path, get_display_path
 
 
-async def get_all_bouquets(db: AsyncSession, skip: int = 0, limit: int = 8):
-    # 1. ОСЬ ЦЕЙ РЯДОК МАЄ БУТИ ТУТ (отримуємо дані з бази):
-    db_bouquets = await repo.bouquet.get_all(db, skip, limit)
+async def get_all_bouquets(
+        db: AsyncSession,
+        skip: int = 0,
+        limit: int = 8,
+        min_price: float = None,
+        max_price: float = None,
+):
+    db_bouquets = await repo.bouquet.get_all(db, skip, limit, min_price, max_price)
 
-    # 2. Отримуємо загальну кількість:
-    total_count = await repo.bouquet.get_count(db)
+    # Get total amount
+    total_count = await repo.bouquet.get_count(db, min_price, max_price)
 
-    # 3. Тепер цей цикл спрацює, бо db_bouquets вже існує:
     items_read = [BouquetRead.model_validate(b) for b in db_bouquets]
 
-    # 4. Повертаємо через хелпер:
+    # return through pagination utils file
     return paginate_response(
         items=items_read,
         skip=skip,

@@ -64,6 +64,7 @@ async def prepare_password_reset(
 
 
 #for passwords resets
+# for passwords resets
 async def reset_user_password(
         db: AsyncSession,
         token: str,
@@ -81,10 +82,35 @@ async def reset_user_password(
 
     hashed_password = Hash.bcrypt(new_password)
 
-    await repo.user.update_user(db, user, {"password": hashed_password})
+    # ОСЬ ТУТ ЗМІНА: додаємо "is_verified": True
+    await repo.user.update_user(db, user, {
+        "password": hashed_password,
+        "is_verified": True
+    })
+
     await db.commit()
     return user
-
+# async def reset_user_password(
+#         db: AsyncSession,
+#         token: str,
+#         new_password: str
+# ):
+#     token_data = decode_url_safe_token(token)
+#     if not token_data:
+#         raise FlowerAppException("Токен недійсний або протермінований")
+#
+#     email = token_data.get("email")
+#     user = await repo.user.get_user_by_email(db, email)
+#
+#     if not user:
+#         raise NotFoundException(entity="User", identifier=email)
+#
+#     hashed_password = Hash.bcrypt(new_password)
+#
+#     await repo.user.update_user(db, user, {"password": hashed_password})
+#     await db.commit()
+#     return user
+#
 
 
 

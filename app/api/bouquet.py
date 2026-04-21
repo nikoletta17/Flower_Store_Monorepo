@@ -20,9 +20,11 @@ router = APIRouter(
 async def get_all_bouquets(
         db: AsyncSession = Depends(get_db),
         skip: int = 0,
-        limit: int = 8
+        limit: int = 8,
+        min_price: float = None,
+        max_price: float = None
 ):
-    return await service.bouquet_service.get_all_bouquets(db, skip, limit)
+    return await service.bouquet_service.get_all_bouquets(db, skip, limit, min_price, max_price)
 
 
 

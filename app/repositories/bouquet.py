@@ -13,20 +13,43 @@ from ..core.exceptions import NotFoundException
 async def get_all(
         db: AsyncSession,
         skip: int = 0,
-        limit: int = 8
+        limit: int = 8,
+        min_price: float = None,
+        max_price: float = None,
 ) -> List[models.Bouquet]:
-   result = await db.execute(
-       select(models.Bouquet).offset(skip).limit(limit)
-   )
-   return result.scalars().all()
+    query = select(models.Bouquet)
+
+    # Price Filtration
+    if min_price is not None:
+        query = query.where(models.Bouquet.price >= int(min_price * 100))
+
+    if max_price is not None:
+        query = query.where(models.Bouquet.price <= int(max_price * 100))
+
+    result = await db.execute(
+        query.offset(skip).limit(limit).order_by(models.Bouquet.price.asc())
+    )
+    return result.scalars().all()
 
 
 
-async def get_count(db: AsyncSession) -> int:
-   result = await db.execute(
-       select(func.count(models.Bouquet.id))
-   )
-   return result.scalar() or 0
+async def get_count(
+        db: AsyncSession,
+        min_price: float = None,
+        max_price: float = None
+) -> int:
+    query = select(func.count(models.Bouquet.id))
+
+    # Count an amount considering previous filtration
+    if min_price is not None:
+        query = query.where(models.Bouquet.price >= int(min_price * 100))
+
+    if max_price is not None:
+        query = query.where(models.Bouquet.price <= int(max_price * 100))
+
+    result = await db.execute(query)
+    return result.scalar() or 0
+
 
 async def get_bouquet_by_id(
         bouquet_id: int,
@@ -39,6 +62,7 @@ async def get_bouquet_by_id(
     if not bouquet:
         raise NotFoundException("Bouquet", bouquet_id)
     return bouquet
+
 
 
 
