@@ -157,7 +157,7 @@ const logoutUser = (e, shouldRedirect = true) => {
 };
 
 // --- ЛОГІН ---
-async function handleLogin(e) {
+/* async function handleLogin(e) {
   e.preventDefault();
   const emailInput = document.getElementById("user");
   const passwordInput = document.getElementById("password");
@@ -184,6 +184,52 @@ async function handleLogin(e) {
     }
   } catch (error) {
     console.error("Помилка:", error);
+  }
+} */
+
+ // --- ЛОГІН (ПОВНІСТЮ ВИПРАВЛЕНО) ---
+async function handleLogin(e) {
+  e.preventDefault();
+  const emailInput = document.getElementById("user");
+  const passwordInput = document.getElementById("password");
+
+  const formData = new URLSearchParams();
+  formData.append("username", emailInput.value);
+  formData.append("password", passwordInput.value);
+
+  try {
+    const response = await fetch(`${BASE_URL}/auth/token`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: formData.toString(),
+    });
+
+    if (response.ok) {
+      const tokenData = await response.json();
+      localStorage.setItem("access_token", tokenData.access_token);
+      await fetchCurrentUser(tokenData.access_token);
+      window.location.href = "index.html";
+    } else {
+      // 1. Отримуємо JSON від сервера
+      const errorData = await response.json();
+      console.log("Повна помилка від сервера:", errorData);
+
+      // 2. Отримуємо текст помилки. 
+      // Твій бекенд шле його в полі 'message', а стандартний FastAPI в 'detail'.
+      // Тому ми перевіряємо обидва варіанти:
+      const errorMessage = errorData.message || errorData.detail || "Невірний email або пароль";
+      
+      // 3. Показуємо сповіщення
+      showNotification(errorMessage, "error");
+      
+      // Якщо в тексті є слово про блокування — очищуємо пароль
+      if (errorMessage.includes("заблоковано")) {
+          passwordInput.value = "";
+      }
+    }
+  } catch (error) {
+    console.error("Помилка мережі:", error);
+    showNotification("Помилка з'єднання з сервером", "error");
   }
 }
 

@@ -43,23 +43,26 @@ async function loadBouquets() {
     tbody.innerHTML = bouquets
       .map((b) => {
         let imgName = b.image_url || "default.jpg";
-        // Логика путей, которую мы вывели раньше
         let finalSrc = imgName.includes("/")
           ? `${API_URL}/static/${imgName}`
           : `${API_URL}/static/img/${imgName}`;
         finalSrc = finalSrc.replace(/([^:]\/)\/+/g, "$1");
 
         return `
-            <tr>
-                <td><img src="${finalSrc}" width="50" height="50" style="object-fit: cover; border-radius: 4px;" 
-                     onerror="this.onerror=null; this.src='${API_URL}/static/img/default.jpg';"></td>
-                <td><strong>${b.title_ua}</strong></td>
-                <td>${(b.price / 100).toFixed(2)} грн</td>
-                <td>
-                   <button onclick="editBouquet(${b.id})" style="color: blue; cursor:pointer; margin-right: 10px;">✏️ Ред.</button>
-                   <button onclick="deleteItem('bouquet', ${b.id})" class="delete-btn">🗑 Видалити</button>
-                </td>
-            </tr>`;
+          <tr>
+              <td><img src="${finalSrc}" width="50" height="50" style="object-fit: cover; border-radius: 8px;" 
+                  onerror="this.onerror=null; this.src='${API_URL}/static/img/default.jpg';"></td>
+              <td><strong>${b.title_ua}</strong></td>
+              <td>${(b.price / 100).toFixed(2)} грн</td>
+              <td>
+                <button onclick="editBouquet(${b.id})" class="edit-btn">
+                  <i class="fas fa-edit"></i> Ред.
+                </button>
+                <button onclick="deleteItem('bouquet', ${b.id})" class="delete-btn">
+                  <i class="fas fa-trash-alt"></i> Видалити
+                </button>
+              </td>
+          </tr>`;
       })
       .join("");
   } catch (err) {
@@ -67,9 +70,9 @@ async function loadBouquets() {
   }
 }
 
-// --- ОТПРАВКА НОВОГО БУКЕТА (С ФАЙЛОМ) ---
+
 async function handleBouquetSubmit() {
-  const id = document.getElementById("bouquet-id").value; // Проверяем, есть ли ID
+  const id = document.getElementById("bouquet-id").value; 
   const currentToken = localStorage.getItem("access_token");
 
   // Собираем данные в объект
@@ -93,7 +96,6 @@ async function handleBouquetSubmit() {
         description_ua: document.getElementById("b-desc-ua").value.trim(),
         description_en: document.getElementById("b-desc-en").value.trim(),
         price: parseFloat(document.getElementById("b-price").value),
-        // Берем сохраненное имя картинки, чтобы бэкенд не ругался
         image_url: bouquetIdElement.dataset.currentImage || "default.jpg",
         anchor_id: "flower_" + Date.now(),
       };
@@ -108,7 +110,6 @@ async function handleBouquetSubmit() {
       });
     } else {
       // --- РЕЖИМ СОЗДАНИЯ (POST) ---
-      // Твой роутер POST ждет FormData с файлом
       const fileInput = document.getElementById("b-image-file");
       if (!fileInput.files[0]) {
         showNotification("Будь ласка, оберіть фото для нового букета!");
@@ -189,33 +190,35 @@ function resetBouquetForm() {
 
 async function deleteItem(type, id) {
   // 1. Спочатку показуємо діалог
-  showConfirmDialog("Ви впевнені, що хочете видалити цей елемент?", "Цю дію неможливо буде скасувати!")
-    .then(async (result) => {
-      // 2. Цей код виконається ТІЛЬКИ якщо натиснуто "Так"
-      if (result.isConfirmed) {
-        try {
-          const res = await fetch(`${API_URL}/${type}/${id}`, {
-            method: "DELETE",
-            headers: { Authorization: `Bearer ${token}` },
-          });
+  showConfirmDialog(
+    "Ви впевнені, що хочете видалити цей елемент?",
+    "Цю дію неможливо буде скасувати!",
+  ).then(async (result) => {
+    // 2. Цей код виконається ТІЛЬКИ якщо натиснуто "Так"
+    if (result.isConfirmed) {
+      try {
+        const res = await fetch(`${API_URL}/${type}/${id}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-          if (res.ok) {
-            // Показуємо успіх перед тим, як перезавантажити
-            showNotification("Видалено успішно! 🌸", "success");
-            
-            // Даємо 1.5 секунди, щоб побачити тост, і оновлюємо
-            setTimeout(() => {
-              location.reload();
-            }, 1500);
-          } else {
-            showNotification("Помилка при видаленні", "error");
-          }
-        } catch (error) {
-          console.error("Delete error:", error);
-          showNotification("Помилка мережі", "error");
+        if (res.ok) {
+          // Показуємо успіх перед тим, як перезавантажити
+          showNotification("Видалено успішно! 🌸", "success");
+
+          // Даємо 1.5 секунди, щоб побачити тост, і оновлюємо
+          setTimeout(() => {
+            location.reload();
+          }, 1500);
+        } else {
+          showNotification("Помилка при видаленні", "error");
         }
+      } catch (error) {
+        console.error("Delete error:", error);
+        showNotification("Помилка мережі", "error");
       }
-    });
+    }
+  });
 }
 
 // --- ВІДГУКИ ---
