@@ -1,4 +1,3 @@
-// 1. КОНСТАНТИ ТА НАЛАШТУВАННЯ
 const API_BASE_URL = "http://127.0.0.1:8000";
 const STATIC_BASE_URL = `${API_BASE_URL}/static/`;
 
@@ -14,6 +13,7 @@ const modalPrice = document.getElementById("modalPrice");
 const btnLeft = document.querySelector(".scroll-btn.left");
 const btnRight = document.querySelector(".scroll-btn.right");
 
+
 // Змінні стану пагінації (ТІЛЬКИ ОДИН РАЗ ТУТ)
 let currentSkip = 0;
 const limit = 8;
@@ -21,6 +21,17 @@ let hasMore = true;
 let isLoading = false;
 
 let allBouquets = [];
+
+
+//Фільтрація
+function getFilters() {
+    return {
+        min: document.getElementById("min-price"),
+        max: document.getElementById("max-price"),
+        btn: document.getElementById("apply-filter")
+    };
+}
+
 
 // 2. ДОПОМІЖНІ ФУНКЦІЇ (Ціна, Модалки)
 function getDisplayPrice(bouquet) {
@@ -145,36 +156,77 @@ function renderBouquets() {
     }, index * 100);
   });
 }
-// Зробимо функцію глобальною, щоб файл транслейшн її бачив
 window.renderBouquets = renderBouquets;
 
-// 4. ЗАВАНТАЖЕННЯ ДАНИХ (API)
 async function loadBouquets() {
+    if (!bouquetGrid || isLoading) return;
+    isLoading = true;
+
+    // Отримуємо значення фільтрів безпечно
+    const filterEls = getFilters();
+    const minVal = filterEls.min ? filterEls.min.value : "";
+    const maxVal = filterEls.max ? filterEls.max.value : "";
+
+    let url = `${API_BASE_URL}/bouquet/?skip=${currentSkip}&limit=${limit}`;
+    if (minVal) url += `&min_price=${minVal}`;
+    if (maxVal) url += `&max_price=${maxVal}`;
+
+    console.log("Запит до API:", url);
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        // Враховуємо формат {items: [], total: ...} або просто []
+        const items = data.items ? data.items : data;
+
+        if (currentSkip === 0) {
+            allBouquets = items;
+        } else {
+            allBouquets = [...allBouquets, ...items];
+        }
+
+        renderBouquets();
+        hasMore = data.has_more !== undefined ? data.has_more : false;
+    } catch (error) {
+        console.error("Помилка завантаження:", error);
+    } finally {
+        isLoading = false;
+    }
+}
+
+/* async function loadBouquets() {
   if (!bouquetGrid || isLoading) return;
   isLoading = true;
 
+  // Отримуємо значення фільтрів
+  const minPrice = minPriceInput.value;
+  const maxPrice = maxPriceInput.value;
+
+  // Формуємо параметри запиту
+  let url = `${API_BASE_URL}/bouquet/?skip=${currentSkip}&limit=${limit}`;
+  if (minPrice) url += `&min_price=${minPrice}`;
+  if (maxPrice) url += `&max_price=${maxPrice}`;
+
   try {
-    const response = await fetch(
-      `${API_BASE_URL}/bouquet/?skip=${currentSkip}&limit=${limit}`,
-    );
+    const response = await fetch(url);
     const data = await response.json();
     const items = data.items ? data.items : data;
 
     if (currentSkip === 0) {
-      allBouquets = items; // Зберігаємо нові дані
+      allBouquets = items;
     } else {
-      allBouquets = [...allBouquets, ...items]; // Додаємо до існуючих
+      allBouquets = [...allBouquets, ...items];
     }
 
-    renderBouquets(); // Викликаємо рендер
-
+    renderBouquets();
     hasMore = data.has_more !== undefined ? data.has_more : false;
   } catch (error) {
-    console.error("Помилка:", error);
+    console.error("Помилка завантаження букетів:", error);
   } finally {
     isLoading = false;
   }
-}
+} */
 
 async function fetchMoreBouquets() {
   if (!hasMore || isLoading) return;
@@ -243,11 +295,20 @@ async function loadReviews() {
   }
 }
 
-// 7. ІНІЦІАЛІЗАЦІЯ
 document.addEventListener("DOMContentLoaded", () => {
-  /* loadBouquets();
-  loadReviews(); */
-  initModalClosing();
+    initModalClosing();
+
+    // Слухаємо кнопку фільтра тільки якщо вона існує
+    const filters = getFilters();
+    if (filters.btn) {
+        filters.btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            currentSkip = 0;
+            allBouquets = [];
+            if (bouquetGrid) bouquetGrid.innerHTML = ""; // Очищуємо перед новим завантаженням
+            loadBouquets();
+        });
+    }
 });
 
 const observer = new IntersectionObserver(
@@ -256,7 +317,8 @@ const observer = new IntersectionObserver(
       if (entry.isIntersecting) {
         entry.target.classList.add("show");
       } else {
-        /* entry.target.classList.remove("show"); */ // infinity effect
+        /* entry.target.classList.remove("show"); */
+        // infinity effect
       }
     });
   },
@@ -330,8 +392,8 @@ async function addToCart(bouquetId) {
 
     if (response.ok) {
       // 1. Закриваємо модалку букета (щоб звільнити місце для тоста)
-      closeModal(); 
-      
+      closeModal();
+
       // 2. Показуємо тост
       showNotification("Букет додано у кошик! 🌸");
     } else {

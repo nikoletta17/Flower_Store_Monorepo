@@ -35,8 +35,10 @@ body {
   line-height: 1.45;
 }
 
-
-a, button, [role="button"], .selected-lang {
+a,
+button,
+[role="button"],
+.selected-lang {
   cursor: pointer;
 }
 
@@ -46,60 +48,114 @@ a, button, [role="button"], .selected-lang {
   transform: translate(-50%, -50%) scale(0); /* Эффект уменьшения при исчезновении */
 }
 
-
 /* Mouse cursor */
 .mouse__cursor {
-    position: fixed;
-    pointer-events: none; 
-    z-index: 10000;
-    background: rgba(209, 55, 137, 0.784);
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    box-shadow: 0 0 5px rgb(214, 123, 171),
-                0 0 15px rgb(214, 123, 171);
-    
-    /* Начальное состояние: невидим и уменьшен */
-    opacity: 0; 
-    transform: translate(-50%, -50%) scale(0);
-    
-    animation: cursorColors 4s infinite;
-    /* Плавность появления и исчезновения */
-    transition: opacity 0.3s ease, transform 0.3s ease; 
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+  background: rgba(209, 55, 137, 0.784);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow:
+    0 0 5px rgb(214, 123, 171),
+    0 0 15px rgb(214, 123, 171);
+
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+
+  animation: cursorColors 4s infinite;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
-/* Класс, который JS будет добавлять при движении */
 .mouse__cursor.visible {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 /* Ободок при клике */
 .mouse__cursor::before {
-    content: "";
-    position: absolute;
-    background: rgb(214, 123, 171);
-    height: 30px;
-    width: 30px;
-    opacity: 0;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.5);
-    border-radius: 50%;
-    transition: all 0.2s ease;
+  content: "";
+  position: absolute;
+  background: rgb(214, 123, 171);
+  height: 30px;
+  width: 30px;
+  opacity: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  border-radius: 50%;
+  transition: all 0.2s ease;
 }
 
 .mouse__cursor.active::before {
-    opacity: 0.3;
-    transform: translate(-50%, -50%) scale(1);
+  opacity: 0.3;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 @keyframes cursorColors {
-   0% { filter: hue-rotate(0deg); }
-   100% { filter: hue-rotate(360deg); }
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
 }
 
+/* Filtration */
+.filter-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
 
+.filter-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.filter-group input {
+  width: 100px;
+  padding: 10px 15px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  font-family: "Inter", sans-serif;
+  outline: none;
+  transition: 0.3s;
+}
+
+.filter-group input:focus {
+  border-color: rgb(var(--accent-1));
+}
+
+.filter-btn {
+  background: linear-gradient(
+    135deg,
+    rgb(var(--accent-1)),
+    rgb(var(--accent-2))
+  );
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-btn:hover {
+  transform: scale(1.1);
+}
 
 /* Scroll animation */
 .animate {
@@ -112,7 +168,6 @@ a, button, [role="button"], .selected-lang {
   opacity: 1;
   transform: translateY(0);
 }
-
 
 .bouquet-card,
 .review-card {
@@ -128,7 +183,6 @@ a, button, [role="button"], .selected-lang {
   transform: translateY(0) scale(1);
   filter: blur(0);
 }
-
 
 :is(h1, h2) {
   font-size: 3.5rem;
@@ -340,7 +394,6 @@ header {
     transform: rotate(-45deg) translate(8px, -8px);
   }
 }
-
 
 .preview-greeting {
   display: flex;
@@ -727,13 +780,14 @@ header {
 
 /* Картка букета */
 .bouquet-card {
+  scroll-snap-align: start;
   border-radius: 1.125rem;
   padding: 0.875rem;
   background-color: var(--bg-color);
   backdrop-filter: blur(6px) saturate(120%);
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition:
-    transform 0.35s cubic-bezier(0.2, 0.9, 0.2, 1),
+    transform 0.15s cubic-bezier(0.2, 0.9, 0.2, 1),
     box-shadow 0.35s;
   cursor: pointer;
   position: relative;
@@ -742,7 +796,6 @@ header {
   color: rgb(var(--text));
   display: flex;
   flex-direction: column;
-  scroll-snap-align: end;
 }
 
 /* Контейнер для картинки */
@@ -962,15 +1015,15 @@ header {
 .bouquet-grid {
   display: grid;
   grid-auto-flow: column;
-  grid-template-rows: repeat(2, auto); /* два рядки */
-  grid-auto-columns: 16.25rem; /* ширина кожної картки */
+  grid-template-rows: repeat(2, auto); 
+  grid-auto-columns: 16.25rem; 
   gap: 1.75rem;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-behavior: smooth;
   scrollbar-width: none;
   padding: 0.625rem;
-  scroll-snap-type: x mandatory; 
+  scroll-snap-type: x mandatory;
 }
 
 .bouquet-grid::-webkit-scrollbar {
@@ -1123,9 +1176,9 @@ header {
   max-width: 69.375rem;
   margin: 0 auto;
 
-  -webkit-overflow-scrolling: touch; 
-  scroll-snap-type: x mandatory;    
-  touch-action: pan-x;  
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  touch-action: pan-x;
 }
 
 .review-grid-content {
@@ -1592,14 +1645,14 @@ header {
 .footer-container a {
   padding: 5px 10px; /* Резерв места заранее */
   border-radius: 10px;
-  transition: background 0.3s ease; 
-  display: inline-block; 
+  transition: background 0.3s ease;
+  display: inline-block;
 }
 
 .footer-container a:hover {
   background: rgba(var(--accent-1) / 0.2);
   color: rgb(var(--accent-1));
-  transform: none; 
+  transform: none;
 }
 
 .footer-links ul {
@@ -1859,7 +1912,7 @@ header {
   padding: 5px 0;
   list-style: none;
   min-width: 150px;
-  z-index: 10; 
+  z-index: 10;
   visibility: hidden;
   opacity: 0;
   transform: translateY(10px);
