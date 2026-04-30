@@ -296,7 +296,12 @@ async function loadReviews() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    initModalClosing();
+  initModalClosing();
+  
+  const savedLang = localStorage.getItem("selectedLang") || "ua";
+    if (typeof applyTranslation === "function") {
+        applyTranslation(savedLang);
+    }
 
     // Слухаємо кнопку фільтра тільки якщо вона існує
     const filters = getFilters();

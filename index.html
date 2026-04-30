@@ -41,7 +41,7 @@
     </div>
 
     <!--  <div class="main" id="main-content-wrapper"> -->
-    <header>
+    <!-- <header>
       <nav class="nav">
         <div class="logo">W&F</div>
 
@@ -81,7 +81,60 @@
         </div>
       </nav>
     </header>
+ -->
 
+    <header>
+      <nav class="nav">
+        <div class="logo">W&F</div>
+
+        <!-- Меню вибору мови -->
+        <div class="lang-menu">
+          <div class="selected-lang" data-lang="ua">
+            <span class="fi fi-ua"></span> UA
+          </div>
+          <ul>
+            <li>
+              <a href="#" data-lang="en"><span class="fi fi-us"></span> EN</a>
+            </li>
+            <li>
+              <a href="#" data-lang="ua"><span class="fi fi-ua"></span> UA</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Основне меню (включаючи мобільне) -->
+        <div class="mobile-menu" id="mobileMenu">
+          <ul class="nav-links">
+            <li><a href="#intro" data-i18n="navHome">Головна</a></li>
+            <li><a href="#about-section" data-i18n="navAbout">Про нас</a></li>
+            <li>
+              <a href="#bouquet-section" data-i18n="navCatalog">Каталог</a>
+            </li>
+            <li>
+              <a href="#review-section" data-i18n="navReviews">Відгуки</a>
+            </li>
+            <li>
+              <a href="#contact-section" data-i18n="navContact">Зв'язатися</a>
+            </li>
+          </ul>
+
+          <!-- Блок авторизації (виправлено вкладеність) -->
+          <ul class="auth-links" id="auth-links-container">
+            <li><a href="Login.html" data-i18n="authLogin">Увійти</a></li>
+            <li>
+              <a href="Register.html" data-i18n="authRegister">Реєстрація</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Гамбургер-меню для мобільних пристроїв -->
+        <div class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </nav>
+    </header>
     <main>
       <section class="intro" id="intro">
         <div class="intro-slides">

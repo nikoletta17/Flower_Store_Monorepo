@@ -1,72 +1,70 @@
 /* AiChatBot/sidebar.css (ФІНАЛЬНА ВЕРСІЯ: КНОПКА СПРАВА ВНИЗУ + ПЛАВНИЙ ЗСУВ) */
 
-:root{
+:root {
   --accent-1: 233 135 175; /* Рожевий */
   --accent-2: 143 198 169; /* Пастельно-зелений */
   --text: 28 18 20;
   --sidebar-width: 560px; /* Можна зменшити, якщо 560px забагато для чату */
 }
 
-
-
 /* SIDEBAR - БІЧНА ПАНЕЛЬ */
 .sidebar {
-  width: 0; 
+  width: 0;
   overflow: hidden;
 
   /* Кольори та Градієнт */
-  background: linear-gradient(180deg, 
-              rgba(var(--accent-2), 0.3), 
-              rgba(var(--accent-1), 0.2)
-             ); 
+  background: linear-gradient(
+    180deg,
+    rgba(var(--accent-2), 0.3),
+    rgba(var(--accent-1), 0.2)
+  );
   position: fixed;
   top: 0;
-  right: auto; 
-  left: 0; 
+  right: auto;
+  left: 0;
   height: 100%;
-  padding: 25px 0; 
+  padding: 25px 0;
   box-sizing: border-box;
-  box-shadow: 3px 0 15px rgba(0,0,0,0.15);
+  box-shadow: 3px 0 15px rgba(0, 0, 0, 0.15);
   border-radius: 0; /* Немає заокруглення, бо прилипає до краю */
-  color: rgb(var(--text)); 
+  color: rgb(var(--text));
   font-weight: 600;
   transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translateX(-100%);
-  z-index: 1000; 
+  z-index: 1000;
 }
 
 /* Відкритий стан */
 .sidebar.open {
-  width: var(--sidebar-width); 
-  padding: 25px; 
+  width: var(--sidebar-width);
+  padding: 25px;
   overflow: hidden;
   transform: translateX(0);
 }
 
-
 .hambtn {
   position: fixed;
-  left: 30px; 
-  bottom: 30px; 
-  right: auto; 
-  top: auto; 
-  
-  z-index: 999;
+  left: 30px;
+  bottom: 30px;
+  right: auto;
+  top: auto;
 
-  width: 55px; 
+  z-index: 9999 !important;
+
+  width: 55px;
   height: 55px;
-  display: flex;
+  display: flex !important;
   justify-content: center;
   align-items: center;
-  border-radius: 50%; 
+  border-radius: 50%;
   font-size: 24px;
-  
-  background: rgba(var(--accent-1), 0.95); 
-  color: white; 
+
+  background: rgba(var(--accent-1), 0.95);
+  color: white;
   border: none;
   cursor: pointer;
   transition: all 0.25s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 .hambtn:hover {
@@ -77,7 +75,7 @@
 /* iframe всередині sidebar */
 .chat-frame {
   width: 100%;
-  height: calc(100vh - 50px); 
+  height: calc(100vh - 50px);
   border: none;
   overflow: hidden;
 }

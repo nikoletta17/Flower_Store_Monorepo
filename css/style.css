@@ -51,7 +51,7 @@ button,
 /* Mouse cursor */
 .mouse__cursor {
   position: fixed;
-  pointer-events: none;
+  pointer-events: none !important;
   z-index: 10000;
   background: rgba(209, 55, 137, 0.784);
   width: 12px;

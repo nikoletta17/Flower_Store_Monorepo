@@ -61,7 +61,7 @@ async function fetchCurrentUser(token) {
 }
 
 // --- ОНОВЛЕННЯ МЕНЮ ---
-const updateAuthLinks = async () => {
+/* const updateAuthLinks = async () => {
   const authLinksContainer = document.getElementById("auth-links-container");
   const token = localStorage.getItem("access_token");
   if (!authLinksContainer) return;
@@ -137,8 +137,84 @@ const updateAuthLinks = async () => {
   authLinksContainer.innerHTML = `
         <li><a href="Login.html">Увійти</a></li>
         <li><a href="Register.html">Зареєструватися</a></li>`;
-};
+}; */
 
+const updateAuthLinks = async () => {
+  const authLinksContainer = document.getElementById("auth-links-container");
+  const token = localStorage.getItem("access_token");
+  if (!authLinksContainer) return;
+
+  authLinksContainer.innerHTML = "";
+
+  if (token) {
+    let userName = localStorage.getItem("user_name");
+    let userRole = localStorage.getItem("user_role");
+
+    const user = await fetchCurrentUser(token);
+
+    if (user) {
+      userName = user.name;
+      userRole = user.role;
+    } else {
+      return;
+    }
+
+    if (userName) {
+      const userDropdown = document.createElement("li");
+      userDropdown.className = "user-dropdown-container";
+
+      const cartIcon = userRole !== "admin" 
+        ? `<li class="cart-nav-item">
+            <a href="cart.html" class="cart-icon-link">
+                <i class="fas fa-shopping-cart"></i>
+            </a>
+           </li>` 
+        : "";
+
+      const adminLink = userRole === "admin"
+        ? `<li><a href="admin.html" style="color: #CB6D88; font-weight: bold;">Панель адміна</a></li>`
+        : "";
+
+      const profileLink = userRole !== "admin"
+        ? `<li><a href="profile.html">Мій профіль</a></li>`
+        : "";
+
+      if (cartIcon) {
+        authLinksContainer.insertAdjacentHTML("beforeend", cartIcon);
+      }
+
+      userDropdown.innerHTML = `
+        <span class="user-greeting" style="cursor:pointer">Привіт, ${userName}! <i class="fas fa-caret-down"></i></span>
+        <ul class="dropdown-menu">
+            ${adminLink}
+            ${profileLink}
+            <li><a href="#" id="logout-link">Вихід</a></li>
+        </ul>`;
+
+      authLinksContainer.appendChild(userDropdown);
+
+      const logoutBtn = document.getElementById("logout-link");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", logoutUser);
+      }
+      
+      // Викликаємо переклад (на випадок, якщо ви додали ключі для профілю/виходу)
+      applyTranslation(localStorage.getItem("selectedLang") || "ua");
+      return;
+    }
+  }
+
+  // --- ОСНОВНЕ ВИПРАВЛЕННЯ ТУТ ---
+  authLinksContainer.innerHTML = `
+        <li><a href="Login.html" data-i18n="authLogin">Увійти</a></li>
+        <li><a href="Register.html" data-i18n="authRegister">Зареєструватися</a></li>`;
+
+  // ПРИМУСОВИЙ ВИКЛИК ПЕРЕКЛАДУ
+  const savedLang = localStorage.getItem("selectedLang") || "ua";
+  if (typeof applyTranslation === "function") {
+      applyTranslation(savedLang);
+  }
+};
 // --- ВИХІД ---
 const logoutUser = (e, shouldRedirect = true) => {
   if (e) e.preventDefault();
@@ -234,7 +310,7 @@ async function handleLogin(e) {
 }
 
 // --- РЕЄСТРАЦІЯ ---
-async function handleRegister(e) {
+/* async function handleRegister(e) {
   e.preventDefault();
   const name = document.getElementById("name").value;
   const email = document.getElementById("user").value;
@@ -262,5 +338,47 @@ async function handleRegister(e) {
     }
   } catch (err) {
     console.error(err);
+  }
+}
+ */
+
+
+// --- РЕЄСТРАЦІЯ ---
+async function handleRegister(e) {
+  e.preventDefault();
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("user").value;
+  const password = document.getElementById("password").value;
+
+  try {
+    const response = await fetch(`${BASE_URL}/users/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+        confirm_password: password,
+      }),
+    });
+
+    if (response.ok) {
+      // МЕНЯЕМ ТУТ:
+      showNotification("На вашу пошту відправлено лист для верифікації! 📧", "success");
+      
+      // Можно очистить форму, чтобы пользователь понимал, что действие завершено
+     /*  e.target.reset();  */
+
+      // Увеличиваем задержку, чтобы пользователь успел прочитать сообщение
+      setTimeout(() => {
+        window.location.href = "Login.html";
+      }, 5000); 
+    } else {
+      const err = await response.json();
+      showNotification(err.detail || "Помилка реєстрації", "error");
+    }
+  } catch (err) {
+    console.error(err);
+    showNotification("Помилка з'єднання з сервером", "error");
   }
 }
