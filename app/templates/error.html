@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Упс! Сталася помилка</title>
+    <style>
+        :root {
+            --bg-color: #f1e6eb;
+            --accent-1: 233, 135, 175; /* Рожевий */
+            --accent-2: 143, 198, 169; /* М'ятний */
+            --text: 28, 18, 20;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: rgb(var(--text));
+            background-color: var(--bg-color);
+            /* Додав заглушку для фону, якщо зображення не завантажиться */
+            background-image: linear-gradient(rgba(233, 114, 162, 0.1), rgba(233, 114, 162, 0.1)),
+                              url("/static/img/error-page.jpeg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2.5rem 1.25rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Рожевий фільтр поверх фону */
+        body::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(233, 114, 162, 0.15);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 3rem 2rem;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(var(--text), 0.1);
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .icon {
+            font-size: 50px;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: rgb(var(--accent-1));
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        .error-box {
+            margin-bottom: 2rem;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.6;
+            color: rgba(var(--text), 0.9);
+        }
+
+        .error-details {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            font-style: italic;
+            margin-top: 1rem;
+            display: block;
+            border-top: 1px solid rgba(var(--accent-1), 0.2);
+            padding-top: 1rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.9rem 2.2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            text-decoration: none;
+            background: linear-gradient(
+                135deg,
+                rgb(var(--accent-1)),
+                rgb(var(--accent-2))
+            );
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(var(--accent-1), 0.3);
+        }
+
+        .back-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(var(--accent-1), 0.4);
+            opacity: 0.95;
+        }
+
+        strong {
+            color: rgb(var(--accent-1));
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="icon">🌸</span>
+        <h1>Упс! Сталася помилка</h1>
+
+        <div class="error-box">
+            <p>Наші флористи вже розбираються, чому цей запит не розквітнув.</p>
+            <p><strong>Повідомлення:</strong> {{message}}</p>
+
+            <span class="error-details">
+                Код помилки: {{status_code}}
+            </span>
+        </div>
+
+        <a href="/" class="back-link">На головну</a>
+    </div>
+</body>
+</html>
