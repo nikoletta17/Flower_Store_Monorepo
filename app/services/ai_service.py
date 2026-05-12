@@ -8,15 +8,16 @@ from app.core.exceptions import AIException
 from app.utils.ai_parser import extract_json_from_ai_response
 from .ai_tools import AI_TOOLS, search_flowers_by_price
 
-# 1. Завантажуємо .env
+# Завантажуємо .env
 load_dotenv()
 
-# 2. Ініціалізація Groq-клієнта
+# Ініціалізація Groq-клієнта
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
-# 3. Системна інструкція
+# Системна інструкція
 SYSTEM_INSTRUCTION = (
     "Ти — доброзичливий AI-асистент квіткового магазину 'Whisper of Flower'. "
+    "ОБОВ'ЯЗКОВО починай кожну відповідь з привітання та назви магазину. "
     "Відповідай українською. "
     "Якщо користувач питає про букети або бюджет, ТИ ОБОВ'ЯЗКОВО повинен викликати функцію 'search_flowers_by_price'. "
     "Отримавши дані від функції, просто перелічи ці букети користувачу у ввічливій формі. "
@@ -61,16 +62,16 @@ async def run_ai_assistant(prompt: str) -> str:
                     "content": tool_result_json,
                 })
 
-                # ВТОРОЙ ВЫЗОВ: убираем tools и tool_choice, чтобы ИИ просто ответил текстом
+
                 second_response = client.chat.completions.create(
                     model="llama-3.1-8b-instant",
                     messages=messages,
-                    temperature=0.7  # Повышаем для более живого ответа
+                    temperature=0.7
                 )
 
                 final_answer = second_response.choices[0].message.content
 
-                # Если ИИ почему-то вернул None, даем запасной ответ
+                # If  return was None
                 return final_answer if final_answer else "Ось список знайдених букетів за вашим запитом."
 
         return response_message.content

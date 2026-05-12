@@ -5,26 +5,22 @@ from fastapi_mail import MessageSchema, MessageType
 from app.core.mail import mail
 from datetime import datetime
 
-# Базовая директория проекта
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Пути
 LOGO_PATH = os.path.join(BASE_DIR, "QR-code", "flower.png")
 QR_SAVE_DIR = os.path.join(BASE_DIR, "temp_qr")
 
-# создаём папку если нет
 os.makedirs(QR_SAVE_DIR, exist_ok=True)
 
 
 async def send_order_confirmation(email: str, order_details: dict):
     """
-    Генерирует QR-код и отправляет письмо
+    Генерує QR-код та відправляє лист
     """
 
-    # 1. ССЫЛКА ДЛЯ QR
+    # Посилання для QR
     frontend_url = f"http://127.0.0.1:5500/profile.html?order_id={order_details['id']}"
 
-    # 2. ГЕНЕРАЦИЯ QR
+    # Генерація QR
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_H,
@@ -39,7 +35,7 @@ async def send_order_confirmation(email: str, order_details: dict):
         back_color="white"
     ).convert("RGBA")
 
-    # 3. ЛОГОТИП ПО ЦЕНТРУ
+    # Логотип
     if os.path.exists(LOGO_PATH):
         flower = Image.open(LOGO_PATH).convert("RGBA")
 
@@ -48,7 +44,7 @@ async def send_order_confirmation(email: str, order_details: dict):
 
         flower = flower.resize((logo_size, logo_size), Image.LANCZOS)
 
-        # фон под логотип
+        # фон під логотип
         radius = logo_size // 3
         bg_size = logo_size + 20
 
@@ -77,13 +73,13 @@ async def send_order_confirmation(email: str, order_details: dict):
 
         qr_img.alpha_composite(bg, dest=pos)
 
-    # 4. СОХРАНЯЕМ QR В ФАЙЛ
+    #  QR як файл
     file_name = f"qr_{order_details['id']}.png"
     file_path = os.path.join(QR_SAVE_DIR, file_name)
 
     qr_img.save(file_path)
 
-    # 5. ПИСЬМО
+    # Лист
     attachments = [
         {
             "file": file_path,
@@ -107,9 +103,9 @@ async def send_order_confirmation(email: str, order_details: dict):
     )
 
 
-    # 6. ОТПРАВКА
+    # Відправлення
     await mail.send_message(message, template_name="order_confirmation.html")
 
-    # (опционально) удалить файл после отправки
+    # Видалення файлу після відправлення
     if os.path.exists(file_path):
         os.remove(file_path)

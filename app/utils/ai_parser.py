@@ -11,15 +11,12 @@ def extract_json_from_ai_response(text: str) -> dict:
     Працює, навіть якщо ШІ додав зайвий текст навколо JSON.
     """
     try:
-        # Шукаємо все, що знаходиться між найпершою { та останньою }
-        # re.DOTALL дозволяє шукати через кілька рядків
         match = re.search(r'\{.*\}', text, re.DOTALL)
 
         if match:
             json_str = match.group()
             return json.loads(json_str)
 
-        # Якщо дужок не знайдено, пробуємо розпарсити текст як він є
         return json.loads(text)
 
     except(ValueError, json.JSONDecodeError) as e:

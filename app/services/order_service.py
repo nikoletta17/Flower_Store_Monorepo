@@ -26,7 +26,7 @@ async def place_order(
     4. Переносить товари.
     5. Очищує кошик.
     """
-    # 1. Отримуємо кошик та перевіряємо, чи він не порожній
+    # Отримуємо кошик та перевіряємо, чи він не порожній
     cart = await repo.cart.get_or_create_cart(user_id, db)
     cart_items = await repo.cart.get_all_items_from_cart(cart.id, db)
 
@@ -34,12 +34,12 @@ async def place_order(
         logger.warning("User %s tried to checkout with empty cart", user_id)
         raise EmptyCartException()
 
-    # 2. Рахуємо суму
+    # Рахуємо суму
     total_price_grn = sum(item.price_on_add * item.quantity for item in cart_items)
     total_price = int(round(total_price_grn * 100))
 
     try:
-        # 3. Створюємо головний запис замовлення
+        # Створюємо головний запис замовлення
         new_order = await repo.order.create_order(
             db=db,
             user_id=user_id,
@@ -47,38 +47,37 @@ async def place_order(
             order_data=order_data
         )
 
-        # 4. Додаємо товари до замовлення (копіюємо з кошика)
+        #  Додаємо товари до замовлення (копіюємо з кошика)
         await repo.order.add_order_items(
             db=db,
             order_id=new_order.id,
             cart_items=cart_items
         )
 
-        # 5. Очищуємо кошик користувача
+        # Очищуємо кошик користувача
         await repo.order.clear_user_cart(db, cart.id)
 
-        # 6. Фіксуємо транзакцію
+        # Фіксуємо транзакцію
         await db.commit()
 
-        # 7. Отримуємо свіже замовлення (вже зроблено)
+        #  Отримуємо свіже замовлення (вже зроблено)
         order_with_details = await repo.order.get_order_by_id(new_order.id, db)
 
-        # --- НОВИЙ БЛОК: Формуємо список товарів для листа ---
+        #  Формуємо список товарів для листа
         items_for_email = []
         for item in cart_items:
             items_for_email.append({
-                "title": item.bouquet.title_ua,  # Назва квітки
-                "quantity": item.quantity,  # Кількість
-                "price": item.price_on_add  # Ціна за одиницю
+                "title": item.bouquet.title_ua,
+                "quantity": item.quantity,
+                "price": item.price_on_add
             })
 
         order_info_for_email = {
             "id": order_with_details.id,
             "total_price": total_price_grn,
             "address": order_data.delivery_address,
-            "items": items_for_email  # Додаємо список товарів сюди
+            "items": items_for_email
         }
-        # ----------------------------------------------------
 
         background_tasks.add_task(
             send_order_confirmation,
@@ -118,7 +117,7 @@ async def admin_change_status(
         new_status: models.OrderStatus,
         db: AsyncSession
 ):
-    # 1. Оновлюємо статус (це вже працює)
+    #  Оновлюємо статус
     order = await repo.order.update_order_status_repo(order_id, new_status, db)
 
     if not order:

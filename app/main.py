@@ -61,6 +61,7 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
 templates = Jinja2Templates(directory="app/templates")
+
 #Global Exceptions
 @app.exception_handler(FlowerAppException)
 async def flower_app_exception_handler(request: Request, exc: FlowerAppException):
@@ -84,7 +85,6 @@ async def flower_app_exception_handler(request: Request, exc: FlowerAppException
     return JSONResponse(status_code=exc.status_code, content=error_content)
 
 
-# 3. ДОБАВЬ ТАКЖЕ ЭТО: для стандартных ошибок FastAPI (например, если просто вбили кривой URL)
 @app.exception_handler(StarletteHTTPException)
 async def http_exception_handler(request: Request, exc: StarletteHTTPException):
     if "text/html" in request.headers.get("accept", ""):

@@ -62,7 +62,7 @@ async def update_order_status(
         db: AsyncSession = Depends(get_db),
         current_user: UserModel = Depends(get_current_user)
 ):
-    # І ТУТ ТАКОЖ ЗАМІНИ:
+
     if current_user.role != "admin":
         raise InsufficientPermissionsException()
 

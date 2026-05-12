@@ -1,5 +1,7 @@
 import json
 from typing import List, Dict
+
+from ..core.logger import logger
 from ..database import AsyncSessionLocal
 from .. import repositories as repo
 

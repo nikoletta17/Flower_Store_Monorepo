@@ -16,7 +16,7 @@ async def get_full_cart_details(
     cart = await repo.cart.get_or_create_cart(user_id, db)
     cart_items = await repo.cart.get_all_items_from_cart(cart.id, db)
 
-    # Розрахунок робимо вже після закриття транзакції, це просто математика
+    # Розрахунок робимо вже після закриття транзакції
     total_price = sum(item.price_on_add * item.quantity for item in cart_items)
 
     return {
@@ -32,18 +32,18 @@ async def add_item_to_cart(
         item_data: CartItemCreate,
         db: AsyncSession
 ):
-    # 1. Отримуємо або створюємо кошик
+    # Отримуємо або створюємо кошик
     cart = await repo.cart.get_or_create_cart(user_id, db)
 
-    # 2. Отримуємо букет для актуальної ціни
+    # Отримуємо букет для актуальної ціни
     bouquet = await repo.bouquet.get_bouquet_by_id(item_data.bouquet_id, db)
     if not bouquet:
-        # Можна додати помилку, якщо букета не існує
+        # Якщо букета не існує
         return None
 
     price_in_uah = round(bouquet.price / 100.0, 2)
 
-    # 3. Шукаємо, чи є вже такий товар у кошику
+    # Шукаємо, чи є вже такий товар у кошику
     cart_item = await repo.cart.get_item_in_cart(cart.id, item_data.bouquet_id, db)
 
     if cart_item:
@@ -74,7 +74,7 @@ async def add_item_to_cart(
 
     await db.commit()
 
-    # Робимо refresh тільки якщо ми не видалили об'єкт
+    # refresh тільки якщо не видалили об'єкт
     if cart_item in db:
         await db.refresh(cart_item)
 

@@ -133,15 +133,13 @@ async def update_user_data(
     if user_id != current_user.id and current_user.role != "admin":
         raise FlowerAppException("Не дозволено оновлювати дані іншого користувача.")
 
-    # Оновлюємо дані
+
     updated_user = await service.user_service.update_user_info(db, user_id, request)
 
-    # Якщо пошта змінилася (і тепер вона не верифікована), надсилаємо новий лист
     if not updated_user.is_verified:
         token = create_url_safe_token({"email": updated_user.email})
         link = f"http://{Config.API_HOST}/users/verify/{token}"
 
-        # Використовуємо твій шаблон листа
         message = create_message(
             recipients=[updated_user.email],
             subject="Підтвердження нової пошти - Whisper of Flower",

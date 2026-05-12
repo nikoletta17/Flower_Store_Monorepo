@@ -29,7 +29,7 @@ async def create_superuser(db: AsyncSession):
         email=admin_email,
         password=hashed_password,
         role="admin",
-        is_verified=True, # Исправили с isVerified на is_verified (как в модели)
+        is_verified=True,
     )
     db.add(db_user)
     await db.commit()

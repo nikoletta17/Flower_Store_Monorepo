@@ -44,7 +44,6 @@ class OrderRead(BaseModel):
     phone_number: str
     total_price: int
     items: List[OrderItemRead]
-    # ДОДАЙ ЦЕЙ РЯДОК:
     user: UserForOrder
 
     @computed_field

@@ -49,7 +49,6 @@ async def create_bouquet(
         db: AsyncSession = Depends(get_db),
         current_user: UserModel = Depends(is_admin)
 ):
-    # Збираємо нову двомовну схему
     request = BouquetCreate(
         title_ua=title_ua,
         title_en=title_en,

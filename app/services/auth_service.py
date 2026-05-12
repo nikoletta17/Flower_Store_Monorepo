@@ -12,7 +12,7 @@ MAX_FAILED_ATTEMPTS = 5
 LOCK_TIME_MINUTES = 15
 
 async def login(form_data, db: AsyncSession):
-    # 1. Находим пользователя
+    # Знаходимо юзера
     user = await repo.user.get_user_by_email(db=db, email=form_data.username)
 
     if not user:
@@ -20,14 +20,14 @@ async def login(form_data, db: AsyncSession):
 
     now = datetime.utcnow()
 
-    #Проверка на бан
+    #Перевірка на бан
     if user.is_locked_until and user.is_locked_until > now:
         minutes_left = round((user.is_locked_until - now).total_seconds() / 60)
         raise FlowerAppException(
             message=f"Акаунт заблоковано. Спробуйте через {minutes_left} хв."
         )
 
-    # Проверка пароля
+    # Перевірка пароля
     if not Hash.verify(form_data.password, user.password):
         user.failed_login_attempts += 1
 
@@ -41,13 +41,13 @@ async def login(form_data, db: AsyncSession):
         await db.commit()
         raise FlowerAppException(message=message)
 
-    #Проверка верификации
+    #Перевірка верифікації
     if not user.is_verified:
         user.failed_login_attempts = 0
         await db.commit()
         raise AccountNotVerifiedException()
 
-    #Успех: сбрасываем счетчик неудач
+    #Усіх - скидаємо відлік невдалих спроб
     user.failed_login_attempts = 0
     user.is_locked_until = None
     await db.commit()

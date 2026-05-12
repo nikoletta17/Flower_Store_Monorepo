@@ -12,13 +12,13 @@ class CartItemCreate(BaseModel):
 #відобразити назву букета в кошику
 class BouquetBaseForCart(BaseModel):
     id: int
-    # Додаємо реальні поля з моделі
+    # Додає поля з моделі
     title_ua: str
     title_en: Optional[str] = None
     image_url: str
     price: int
 
-    # Це "віртуальне" поле, яке очікує твій фронтенд
+    # віртуальне поле, яке очікує фронтенд
     @computed_field
     @property
     def title(self) -> str:

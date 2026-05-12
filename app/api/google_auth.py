@@ -31,30 +31,6 @@ async def google_callback(request: Request, db: AsyncSession = Depends(get_db)):
     # 1. Находим или создаем пользователя в БД
     user = await repo.user.get_user_by_email(db, email=email)
 
-    # if not user:
-    #     import secrets
-    #     # Генерируем один случайный пароль
-    #     random_pass = secrets.token_urlsafe(16)
-    #     hashed_password = Hash.bcrypt(random_pass)
-    #
-    #     new_user_data = UserCreate(
-    #         email=email,
-    #         name=name,
-    #         password=random_pass,
-    #         confirm_password=random_pass
-    #     )
-    #
-    #     # Передаємо створений хеш у репозиторій
-    #     user = await repo.user.create_user(
-    #         db=db,
-    #         request=new_user_data,
-    #         hashed_password=hashed_password
-    #     )
-    #
-    #     # Якщо в самому репозиторії немає commit, додаємо його тут:
-    #     await db.commit()
-    #     await db.refresh(user)
-
     if not user:
         import secrets
         # Генеруємо випадковий пароль, щоб поле в БД не було порожнім

@@ -14,7 +14,7 @@ from .. import repositories as repo
 from ..models import User as UserModel
 
 
-# ---------------- JWT CREATE ----------------
+#  JWT CREATE
 
 def create_access_token(
     data: dict,
@@ -35,7 +35,7 @@ def create_access_token(
     return jwt.encode(to_encode, Config.SECRET_KEY, algorithm=Config.ALGORITHM)
 
 
-# ---------------- JWT VERIFY ----------------
+#  JWT VERIFY
 
 def verify_access_token(token: str) -> Optional[dict]:
     try:
@@ -45,10 +45,9 @@ def verify_access_token(token: str) -> Optional[dict]:
         return None
 
 
-# ---------------- DEPENDENCIES ----------------
+# DEPENDENCIES
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
-
 
 async def get_current_user(
     token: str = Depends(oauth2_scheme),
@@ -79,7 +78,8 @@ async def get_current_user(
 
     return user
 
-# ---------------- ADMIN ----------------
+
+#  ADMIN
 def is_admin(current_user: UserModel = Depends(get_current_user)):
 
     if current_user.role != "admin":
@@ -91,7 +91,7 @@ def is_admin(current_user: UserModel = Depends(get_current_user)):
     return current_user
 
 
-# ---------------- EMAIL ----------------
+#  EMAIL
 serializer = URLSafeTimedSerializer(
         secret_key = Config.SECRET_KEY,
         salt="email-configuration"

@@ -23,16 +23,6 @@ async def get_user_cart(
     return await service.cart_service.get_full_cart_details(current_user.id, db)
 
 
-# @router.post("/add", status_code=status.HTTP_200_OK)
-# async def add_item_to_cart(
-#         request: CartItemCreate,
-#         db: AsyncSession = Depends(get_db),
-#         current_user: UserModel = Depends(get_current_user)
-# ):
-#     cart_item = await service.cart_service.add_item_to_cart(current_user.id, request, db)
-#     return {"message": f"Товар додано. Кількість: {cart_item.quantity}"}
-
-
 @router.post("/add", status_code=status.HTTP_200_OK)
 async def add_item_to_cart(
         request: CartItemCreate,
