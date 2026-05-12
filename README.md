@@ -160,6 +160,133 @@ Flower_Store_Monorepo/
 * Async backend architecture
 * REST API integration
 
+## 🎥 Video Demonstration
+Нижче представлені детальні відеоогляди основних функцій системи. Натисніть на заголовок, щоб розгорнути відео.
+
+<details>
+<summary> Огляд застосунку </summary>
+<br>
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=FM2Yh-iRQpE">
+    <img src="https://img.youtube.com/vi/FM2Yh-iRQpE/maxresdefault.jpg" width="600">
+  </a>
+</p>
+</details>
+
+
+<details>
+<summary> Media </summary>
+<br>
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=H8DEF0EQ2EY">
+    <img src="https://img.youtube.com/vi/H8DEF0EQ2EY/maxresdefault.jpg" width="600">
+  </a>
+</p>
+</details>
+
+<details>
+<summary> Замовлення </summary>
+<br>
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=H-9FaiZ-fkY">
+    <img src="https://img.youtube.com/vi/H-9FaiZ-fkY/maxresdefault.jpg" width="600">
+  </a>
+</p>
+</details>
+
+
+<details>
+<summary> Відгуки </summary>
+<br>
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=iUCrYb21AUw">
+    <img src="https://img.youtube.com/vi/iUCrYb21AUw/maxresdefault.jpg" width="600">
+  </a>
+</p>
+</details>
+
+
+<details>
+<summary> Login / Register </summary>
+<br>
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=FODvLp6xJQg">
+    <img src="https://img.youtube.com/vi/FODvLp6xJQg/maxresdefault.jpg" width="600">
+  </a>
+</p>
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=T8lBPSFxB1o">
+    <img src="https://img.youtube.com/vi/T8lBPSFxB1o/maxresdefault.jpg" width="600">
+  </a>
+</p>
+</details>
+
+<details>
+<summary> Вхід через Google </summary>
+<br>
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=QLbBX88kuK4">
+    <img src="https://img.youtube.com/vi/QLbBX88kuK4/maxresdefault.jpg" width="600">
+  </a>
+</p>
+</details>
+
+<details>
+<summary> Обмежження кількості спроб входу </summary>
+<br>
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=8Mg8mME6pXY">
+    <img src="https://img.youtube.com/vi/8Mg8mME6pXY/maxresdefault.jpg" width="600">
+  </a>
+</p>
+
+</details>
+
+<details>
+<summary> Скидання пароля </summary>
+<br>
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=dUUI0u0Xm7A">
+    <img src="https://img.youtube.com/vi/dUUI0u0Xm7A/maxresdefault.jpg" width="600">
+  </a>
+</p>
+</details>
+
+<details>
+<summary> Двомовність </summary>
+<br>
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=ktGxZx8JFnk">
+    <img src="https://img.youtube.com/vi/ktGxZx8JFnk/maxresdefault.jpg" width="600">
+  </a>
+</p>
+</details>
+
+<details>
+<summary> Admin функціональність </summary>
+<br>
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=LeaPFmQLDIA">
+    <img src="https://img.youtube.com/vi/LeaPFmQLDIA/maxresdefault.jpg" width="600">
+  </a>
+</p>
+</details>
+
+<details>
+<summary> Сторінка помилок </summary>
+<br>
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=1NklDNl-z9c">
+    <img src="https://img.youtube.com/vi/1NklDNl-z9c/maxresdefault.jpg" width="600">
+  </a>
+</p>
+</details>
+
 
 ## ⚙️ Installation & Run
 git clone https://github.com/nikoletta17/Flower_Store_Monorepo.git
