@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Aletrs -->
+    <link rel="stylesheet" href="css/notifications.css" />
+    <script src="js/notifications.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/preloader.css" />
+    <link rel="stylesheet" href="css/profile.css" />
+    <script src="js/preloader.js" defer></script>
+    <title>Мій Кабінет | Whisper of Flower</title>
+  </head>
+  <body>
+    <header>
+      <nav class="nav">
+        <div class="logo">W&F</div>
+        <ul class="nav-links">
+          <li><a href="index.html#intro">Головна</a></li>
+          <li><a href="index.html#bouquet-section">Каталог</a></li>
+        </ul>
+        <ul class="auth-links" id="auth-links-container"></ul>
+      </nav>
+    </header>
+
+    <div class="container">
+      <div class="card animate show">
+        <h2>Мій Профіль</h2>
+        <form id="profileForm">
+          <div class="form-group">
+            <label>Ім'я</label>
+            <input type="text" id="nameInput" required />
+          </div>
+          <div class="form-group">
+            <label>Електронна пошта</label>
+            <input type="email" id="emailInput" required />
+          </div>
+          <p
+            style="
+              font-size: 12px;
+              color: rgba(var(--text) / 0.5);
+              margin: 15px 0 10px;
+            "
+          >
+            Для зміни пароля:
+          </p>
+          <div class="form-group">
+            <input
+              type="password"
+              id="passwordInput"
+              placeholder="Новий пароль"
+            />
+          </div>
+          <button type="submit" id="saveBtn">Зберегти зміни</button>
+        </form>
+        <button
+          onclick="requestPasswordReset()"
+          style="
+            margin-top: 15px;
+            background: none;
+            border: none;
+            color: rgb(var(--accent-2)); /* Тот самый мятный цвет */
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: underline;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+          "
+          onmouseover="this.style.color = 'rgb(var(--accent-1))'"
+          onmouseout="this.style.color = 'rgb(var(--accent-2))'"
+        >
+          Забули пароль?
+        </button>
+      </div>
+
+      <div class="card animate show" style="transition-delay: 0.2s">
+        <h2>Історія замовлень</h2>
+        <div id="ordersContainer" class="orders-wrapper">Завантаження...</div>
+      </div>
+    </div>
+
+    <!--  Mouse Cursor -->
+    <div class="mouse__cursor"></div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/mouseCursor.js"></script>
+  </body>
+</html>

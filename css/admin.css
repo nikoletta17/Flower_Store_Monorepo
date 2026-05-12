@@ -1,0 +1,277 @@
+:root {
+  --bg-color: #f1e6eb; /* ніжно-рожевий фон */
+  --accent-1: 233, 135, 175; /* рожевий */
+  --accent-2: 143, 198, 169; /* пастельно-зелений */
+  --sidebar-bg: #2d1b20; /* темний вишневий для бокового меню */
+  --text-dark: #1c1214;
+}
+
+body {
+  font-family: "Inter", "Segoe UI", sans-serif;
+  margin: 0;
+  display: flex;
+  background: var(--bg-color);
+  height: 100vh;
+  overflow: hidden; 
+}
+
+/* Tab logic */
+.tab-content {
+  display: none; 
+}
+.tab-content.active {
+  display: block; 
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 250px;
+  background: var(--sidebar-bg);
+  color: white;
+  height: 100vh;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+  padding: 25px 20px;
+  font-size: 1.1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 0;
+  color: rgb(var(--accent-1));
+  text-align: center;
+}
+
+.sidebar button {
+  width: 100%;
+  padding: 15px 25px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: left;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 0.95rem;
+}
+
+.sidebar button:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+.sidebar button.active {
+  background: rgba(var(--accent-1), 0.2);
+  color: white;
+  border-left: 4px solid rgb(var(--accent-1));
+}
+
+/*  MAIN CONTENT AREA */
+.main-content {
+  margin-left: 250px;
+  padding: 40px;
+  width: calc(100% - 250px);
+  height: 100vh;
+  overflow-y: auto; 
+  box-sizing: border-box;
+}
+
+h1 {
+  color: var(--text-dark);
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* 5. Images and tables */
+.card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  max-height: 500px;
+  overflow-y: auto;
+  position: relative;
+  scroll-behavior: smooth;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+input, textarea, select {
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: rgb(var(--accent-1));
+}
+
+button.btn-save {
+  background: linear-gradient(135deg, rgb(var(--accent-1)), #c45b7d);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+
+button.btn-save:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(var(--accent-1), 0.3);
+}
+
+/* Tables styling */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+  margin-top: 10px;
+}
+
+th {
+  color: #777;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 12px;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  background-color: var(--bg-color); 
+  z-index: 10;
+  border-bottom: 2px solid rgba(var(--accent-1), 0.2);
+}
+
+/* th::before {
+  display: none; 
+} */
+
+td {
+  padding: 15px;
+  background: white;
+}
+
+td:first-child { border-radius: 8px 0 0 8px; }
+td:last-child { border-radius: 0 8px 8px 0; }
+
+.delete-btn {
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+  background: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.delete-btn:hover {
+  background: #e74c3c;
+  color: white;
+}
+
+
+#bouquets-table img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.mouse__cursor {
+  pointer-events: none;
+  position: fixed;
+  z-index: 9999;
+  mix-blend-mode: difference;
+}
+
+
+/* Scroll */
+.main-content::-webkit-scrollbar,
+.card::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main-content::-webkit-scrollbar-track,
+.card::-webkit-scrollbar-track {
+  background: rgba(var(--accent-1), 0.05); 
+  border-radius: 10px;
+}
+
+
+.main-content::-webkit-scrollbar-thumb,
+.card::-webkit-scrollbar-thumb {
+  background: rgba(var(--accent-1), 0.4); 
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover,
+.card::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--accent-1)); 
+}
+
+/* Firefox  */
+.main-content, .card {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--accent-1), 0.6) rgba(var(--accent-1), 0.1);
+}
+
+
+/* Edit button */
+.edit-btn {
+  color: rgb(var(--accent-2));
+  border: 1px solid rgb(var(--accent-2));
+  background: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-right: 8px;
+  transition: all 0.2s ease;
+}
+
+.edit-btn:hover {
+  background: rgb(var(--accent-2));
+  color: white;
+  box-shadow: 0 2px 8px rgba(var(--accent-2), 0.3);
+}
+
+/* Delete button */
+.delete-btn {
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+  background: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+  background: #e74c3c;
+  color: white;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+}
+
+/* Icons inside buttons */
+.edit-btn i, .delete-btn i {
+  margin-right: 4px;
+}

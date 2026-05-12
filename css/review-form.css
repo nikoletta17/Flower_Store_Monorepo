@@ -1,0 +1,190 @@
+
+    :root {
+      --bg-color: #f1e6eb;
+      --accent-1: 233 135 175;
+      --accent-2: 143 198 169;
+      --text: 28 18 20;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+      color: rgb(var(--text));
+      background-color: var(--bg-color);
+      background-image: url(../img/bg/add-review.jpeg);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2.5rem 1.25rem;
+      /* Напилення - spraying */
+      position: relative;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(233, 114, 162, 0.1);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .review-form-container {
+      position: relative;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px) saturate(120%);
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      max-width: 37.5rem;
+      width: 100%;
+      padding: 2.5rem;
+      text-align: center;
+    }
+
+    .review-form-container h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      margin-bottom: 1.25rem;
+      color: rgb(160, 79, 92);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      text-align: left;
+    }
+
+    label {
+      font-weight: 500;
+      color: rgba(var(--text), 0.9);
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem 0.875rem;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      font-size: 1rem;
+      font-family: inherit;
+      resize: none;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: rgba(var(--accent-1), 0.8);
+      box-shadow: 0 0 6px rgba(var(--accent-1), 0.4);
+    }
+
+    .submit-btn {
+      align-self: center;
+      margin-top: 0.625rem;
+      padding: 0.75rem 1.625rem;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.125rem;
+      color: white;
+      background: linear-gradient(135deg, rgb(var(--accent-1)), rgb(var(--accent-2)));
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    ::-webkit-scrollbar {
+      width: 0.8vw; 
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(225, 115, 159, 0.5); 
+      border-radius: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(225, 115, 159, 0.7); 
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-color); 
+    }
+
+
+.lang-menu {
+   position: absolute; 
+   top: 25px;           
+   right: 35px;          
+   z-index: 1000;       
+}
+
+.selected-lang {
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   padding: 5px 12px;
+   border: 1px solid #ccc;
+   border-radius: 6px;
+   background: #fff;
+   font-size: 0.9rem;
+}
+
+.lang-menu ul {
+   display: none;
+   position: absolute;
+   top: 35px;  
+   left: 0;    
+   margin: 0;
+   padding: 0;
+   background: #fff;
+   border: 1px solid #ddd;
+   border-radius: 6px;
+   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+   list-style-type: none;
+  
+}
+
+.lang-menu.show ul {
+   display: block;
+}
+
+.lang-menu ul li a {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   padding: 6px 12px;
+   text-decoration: none;
+   color: #333;
+   width: auto;
+}
+
+.lang-menu ul li a:hover {
+   background: #f2f2f2;
+   transition: 0.2s;
+}
+
+/* Styling for the preloader */
+input::placeholder,
+textarea::placeholder {
+    color: rgba(var(--text), 0.5); 
+    opacity: 1; 
+}
+
+input:focus::placeholder,
+textarea:focus::placeholder {
+    color: rgba(var(--accent-1), 0.6);
+}

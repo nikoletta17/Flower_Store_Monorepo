@@ -1,0 +1,156 @@
+html {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background-color: var(--bg-color);
+  padding-top: 100px;
+  cursor: none;
+  min-height: 100vh;
+  background-image: 
+    linear-gradient(rgba(255, 230, 238, 0.5), rgba(255, 230, 238, 0.5)), 
+    url(../img/bg/profile-img.jpg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: relative;
+}
+
+body::after {
+  display: none;
+}
+
+.container {
+   position: relative;
+   z-index: 2;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  padding: 20px;
+  cursor: none;
+  align-items: stretch;  /* For both columns to be the same height */
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 10px 30px rgba(var(--accent-1) / 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  font-size: 2rem !important;
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center; 
+  width: 100%;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--gr-color-pink)),
+    rgb(var(--gr-color-green))
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  flex-shrink: 0;
+}
+
+/* he same hight during scrolling */
+.orders-wrapper {
+  flex-grow: 1; /* Takes up all available space in the container */
+  overflow-y: auto; /* Enables scrolling only here */
+  padding-right: 10px;
+  max-height: 450px; /* Limits the height to match the profile card */
+}
+
+/* Scrollbar styling */
+.orders-wrapper::-webkit-scrollbar {
+  width: 5px;
+   position: relative;
+  z-index: 3;
+}
+.orders-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(var(--accent-1), 0.5);
+  border-radius: 10px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgb(var(--text) / 0.7);
+  margin-bottom: 8px;
+  display: block;
+}
+
+input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid rgba(var(--accent-1) / 0.3);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+input:focus {
+  outline: 1px solid rgb(var(--accent-1)); 
+}
+
+
+button#saveBtn {
+  display: block;       
+  margin: 1.5rem auto 0; 
+  text-align: center;
+  cursor: pointer;
+  padding: 0.8rem 2rem;
+  font-family: "Playfair Display", serif;
+  font-size: 1rem;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--accent-1)),
+    rgb(var(--accent-2))
+  );
+  color: white;
+  border-radius: 12px;
+  border: none;         
+  text-decoration: none;
+  transition: 0.3s;
+  box-shadow: 0 4px 15px rgba(var(--accent-1) / 0.2);
+}
+
+
+button#saveBtn:focus {
+  outline: none;
+}
+
+
+button#saveBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(var(--accent-1) / 0.3);
+}
+
+.order-item {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 15px;
+  border-radius: 15px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 850px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+  .orders-wrapper {
+    max-height: 400px;
+  }
+}

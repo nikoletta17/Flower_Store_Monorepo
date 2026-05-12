@@ -1,0 +1,57 @@
+:root {
+  --bg-color: rgb(255, 255, 255); /* ніжно-рожевий фон */
+  --accent-1: 233 135 175; /* рожевий */
+  --accent-2: 143 198 169; /* пастельно-зелений */
+  --text: 28, 18, 20;
+  --gr-color-pink: 202, 95, 113;
+  --gr-color-green: 10, 95, 48;
+
+  --font-main:
+    "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Custom alerts */
+.custom__toast {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 200;
+  top: 25px;
+  right: 25px;
+  min-width: 280px;
+  padding: 16px 24px;
+  background-color: var(--bg-color);
+  color: var(--text);
+  font-family: var(--font-main);
+  font-weight: 400;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(var(--gr-color-pink), 0.15);
+  transform: translateX(150%);
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid rgba(var(--accent-1), 0.3);
+}
+
+.custom__toast.show {
+   transform: translateX(0);
+}
+
+.toast-success-line {
+  border-left: 5px solid rgb(var(--accent-2));
+}
+
+.toast-error-line {
+  border-left: 5px solid rgb(var(--gr-color-pink));
+}
+
+/* SweetAlert2 */
+.swal2-popup {
+  font-family: var(--font-main);
+  border-radius: 25px;
+  background: var(--bg-color);
+}
+
+.swal2-styled.swal2-confirm {
+  background-color: rgb(var(--gr-color-pink));
+  border-radius: 50px;
+}

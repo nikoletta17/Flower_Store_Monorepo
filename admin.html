@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Адмін-панель | Whisper of Flower</title>
+    <!-- Alerts -->
+    <link rel="stylesheet" href="css/notifications.css" />
+    <script src="js/notifications.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="css/admin.css">
+  </head>
+  <body>
+    <div class="sidebar">
+      <h2>Whisper of Flower Admin</h2>
+      <button onclick="openTab(event, 'bouquets')" class="tab-btn active">
+        💐 Букети
+      </button>
+      <button onclick="openTab(event, 'orders')" class="tab-btn">
+        📦 Замовлення
+      </button>
+      <button onclick="openTab(event, 'reviews')" class="tab-btn">
+        ⭐ Відгуки
+      </button>
+      <button onclick="openTab(event, 'users')" class="tab-btn">
+        👥 Користувачі
+      </button>
+      <button
+        onclick="window.location.href = 'index.html'"
+        style="margin-top: 50px; color: #ccc; border-top: 1px solid #444"
+      >
+        ← На сайт
+      </button>
+    </div>
+
+    <div class="main-content">
+      <div id="bouquets" class="tab-content active">
+        <h1>Керування букетами</h1>
+        <div class="card">
+          <h3>Додати новий букет</h3>
+          <input type="hidden" id="bouquet-id" />
+          <div class="form-grid">
+            <input type="text" id="b-title-ua" placeholder="Назва (UA)" />
+            <input type="text" id="b-title-en" placeholder="Назва (EN)" />
+            <textarea id="b-desc-ua" placeholder="Опис (UA)"></textarea>
+            <textarea id="b-desc-en" placeholder="Опис (EN)"></textarea>
+            <input type="number" id="b-price" placeholder="Ціна (напр. 550)" />
+            <div style="display: flex; flex-direction: column; gap: 5px">
+              <label style="font-size: 0.8rem; color: #666"
+                >Виберіть фото букета:</label
+              >
+              <input type="file" id="b-image-file" accept="image/*" />
+            </div>
+          </div>
+          <button class="btn-save" onclick="handleBouquetSubmit()">
+            Зберегти букет
+          </button>
+          <button
+            onclick="location.reload()"
+            style="
+              background: #ccc;
+              border: none;
+              padding: 10px;
+              cursor: pointer;
+              border-radius: 4px;
+            "
+          >
+            Скасувати
+          </button>
+        </div>
+
+        <div class="card">
+          <table id="bouquets-table">
+            <thead>
+              <tr>
+                <th>Фото</th>
+                <th>Назва (UA)</th>
+                <th>Ціна</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="orders" class="tab-content">
+        <h1>Керування замовленнями</h1>
+        <div class="card">
+          <table id="orders-table">
+            <thead>
+              <tr>
+                <th>№</th>
+                <th>Клієнт / Контакти</th>
+                <th>Склад замовлення</th>
+                <th>Сума</th>
+                <th>Змінити статус</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="reviews" class="tab-content">
+        <h1>Відгуки</h1>
+        <div class="card">
+          <table id="reviews-table">
+            <thead>
+              <tr>
+                <th>Автор</th>
+                <th>Текст</th>
+                <th>Рейтинг</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="users" class="tab-content">
+        <h1>Користувачі</h1>
+        <div class="card">
+          <table id="users-table">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Роль</th>
+                <th>Статус</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!--  Mouse Cursor -->
+    <div class="mouse__cursor"></div>
+
+    <script src="js/mouseCursor.js"></script>
+    <script src="js/admin.js"></script>
+  </body>
+</html>

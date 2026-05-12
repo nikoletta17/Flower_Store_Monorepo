@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ua">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Кошик | Whisper of Flower</title>
+    <!-- Alerts -->
+    <link rel="stylesheet" href="css/notifications.css" />
+    <script src="js/notifications.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/cart.css" />
+
+    <link rel="stylesheet" href="css/preloader.css" />
+    <script src="js/preloader.js" defer></script>
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <nav class="nav">
+          <div class="logo">W&F</div>
+          <ul class="nav-links">
+            <li><a href="index.html#intro">Головна</a></li>
+            <li><a href="index.html#bouquet-section">Каталог</a></li>
+          </ul>
+          <ul class="auth-links" id="auth-links-container"></ul>
+        </nav>
+      </header>
+
+      <main>
+        <section class="cart-section container">
+          <h1 class="gradient-header">Ваш Кошик</h1>
+
+          <div class="cart-items-list" id="cart-items-container">
+            <p id="loading-message">Кошик порожній, час робити покупки!</p>
+          </div>
+
+          <div class="cart-summary-wrapper">
+            <div class="cart-summary">
+              <p class="summary-total-label">Загальна сума:</p>
+              <p class="summary-total-price" id="total-price">0.00 ₴</p>
+            </div>
+
+            <button class="primary-cta" id="checkout-btn" disabled>
+              Оформити замовлення
+            </button>
+
+            <a href="index.html#bouquet-section" class="continue-shopping">
+              Продовжити покупки
+            </a>
+          </div>
+        </section>
+      </main>
+
+      <footer></footer>
+    </div>
+
+    <!--  Mouse Cursor -->
+    <div class="mouse__cursor"></div>
+
+    <!-- Order does matter! -->
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/mouseCursor.js"></script>
+  </body>
+</html>

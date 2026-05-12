@@ -1,0 +1,77 @@
+:root {
+  --accent-1: 233 135 175; /* Рожевий */
+  --accent-2: 143 198 169; /* Пастельно-зелений */
+  --text: 28 18 20;
+  --sidebar-width: 560px; 
+}
+
+/* SIDEBAR - БІЧНА ПАНЕЛЬ */
+.sidebar {
+  width: 0;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    rgba(var(--accent-2), 0.3),
+    rgba(var(--accent-1), 0.2)
+  );
+  position: fixed;
+  top: 0;
+  right: auto;
+  left: 0;
+  height: 100%;
+  padding: 25px 0;
+  box-sizing: border-box;
+  box-shadow: 3px 0 15px rgba(0, 0, 0, 0.15);
+  border-radius: 0; 
+  color: rgb(var(--text));
+  font-weight: 600;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(-100%);
+  z-index: 1000;
+}
+
+/* While open */
+.sidebar.open {
+  width: var(--sidebar-width);
+  padding: 25px;
+  overflow: hidden;
+  transform: translateX(0);
+}
+
+.hambtn {
+  position: fixed;
+  left: 30px;
+  bottom: 30px;
+  right: auto;
+  top: auto;
+
+  z-index: 9999 !important;
+
+  width: 55px;
+  height: 55px;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 24px;
+
+  background: rgba(var(--accent-1), 0.95);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.hambtn:hover {
+  background: rgb(var(--accent-1));
+  transform: scale(1.1);
+}
+
+/* iframe inside sidebar */
+.chat-frame {
+  width: 100%;
+  height: calc(100vh - 50px);
+  border: none;
+  overflow: hidden;
+}

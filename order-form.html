@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Оформлення замовлення | Whisper of Flower</title>
+    <!-- Aletrs -->
+    <link rel="stylesheet" href="css/notifications.css" />
+    <script src="js/notifications.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/order-form.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/preloader.css" />
+    <script src="js/preloader.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <nav class="nav">
+        <div class="logo">W&F</div>
+        <ul class="nav-links">
+          <li><a href="cart.html">← Назад</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="container">
+      <div class="order-form-container animate show">
+        <h2
+          class="gradient-header"
+          style="font-size: 2rem; margin-bottom: 25px"
+        >
+          Оформлення
+        </h2>
+
+        <form id="final-order-form">
+          <div class="form-group">
+            <label>Спосіб отримання</label>
+            <div class="delivery-options">
+              <input
+                type="radio"
+                name="delivery_type"
+                value="pickup"
+                id="type-pickup"
+                checked
+              />
+              <label for="type-pickup" class="delivery-label">
+                <i class="fas fa-store"></i> Самовивіз
+              </label>
+
+              <input
+                type="radio"
+                name="delivery_type"
+                value="courier"
+                id="type-courier"
+              />
+              <label for="type-courier" class="delivery-label">
+                <i class="fas fa-truck"></i> Доставка
+              </label>
+            </div>
+          </div>
+
+          <div id="address-section" class="hidden">
+            <div class="form-group">
+              <label>Місто</label>
+              <select id="city-select">
+                <option value="Дніпро">Дніпро</option>
+                <option value="Київ">Київ</option>
+                <option value="Львів">Львів</option>
+                <option value="Одеса">Одеса</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Вулиця та будинок</label>
+              <input
+                type="text"
+                id="street-address"
+                placeholder="Наприклад: вул. Садова, 12"
+              />
+            </div>
+          </div>
+
+          <div class="form-group" id="pickup-info">
+            <i
+              class="fas fa-location-dot"
+              style="color: rgb(var(--accent-1))"
+            ></i>
+            м. Дніпро, пл. Успенська, 7. Пн-Нд 09:00-21:00
+          </div>
+
+          <div class="form-group">
+            <label>Ваш телефон</label>
+            <input
+              type="tel"
+              id="delivery-phone"
+              placeholder="+380..."
+              required
+            />
+          </div>
+
+          <button type="submit" class="primary-cta order-confirm-btn">
+            Підтвердити замовлення
+          </button>
+        </form>
+      </div>
+    </main>
+
+    <!--  Mouse Cursor -->
+    <div class="mouse__cursor"></div>
+
+    <script src="js/mouseCursor.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/order-form.js"></script>
+  </body>
+</html>
