@@ -3,46 +3,41 @@
 Платформа поєднує високопродуктивний бекенд на FastAPI та інтерактивний клієнтський інтерфейс з інтегрованим AI-асистентом.
 
 ## 🧠 Backend (Core & Framework Layer)
-
 У backend-частині використано сучасний асинхронний Python-стек:
 
-FastAPI — основний REST API фреймворк
-Uvicorn — ASGI сервер для запуску застосунку
-Starlette — базовий ASGI рівень FastAPI
-Pydantic — валідація та типізація даних (v2)
-Python-dotenv — конфігурація середовища
-
+* FastAPI — основний REST API фреймворк
+* Uvicorn — ASGI сервер для запуску застосунку
+* Starlette — базовий ASGI рівень FastAPI
+* Pydantic — валідація та типізація даних (v2)
+* Python-dotenv — конфігурація середовища
 REST API архітектура з підтримкою middleware-логіки та асинхронної обробки запитів.
 
 ## 🗄️ База даних та ORM Layer
-
 Реалізовано багаторівневу систему роботи з даними:
 
-SQLAlchemy (v2) — основний ORM
-SQLModel — типізовані моделі даних
-aiosqlite — асинхронна база даних
-Alembic — міграції схеми БД
-
+* SQLAlchemy (v2) — основний ORM
+* SQLModel — типізовані моделі даних
+* aiosqlite — асинхронна база даних
+* Alembic — міграції схеми БД
 Архітектура: асинхронна ORM + міграції + типізовані моделі + структурований data-layer
 
 ## 🔐 Автентифікація та безпека (Security Layer)
-
 Реалізовано багаторівневу систему захисту користувачів:
 
 Механізми безпеки:
-JWT Access Token
-JWT Refresh Token
-OAuth 2.0 Google Login
-Email Verification Flow
-Reset Password Flow
-Protected Routes (middleware guard)
+* JWT Access Token
+* JWT Refresh Token
+* OAuth 2.0 Google Login
+* Email Verification Flow
+* Reset Password Flow
+* Protected Routes (middleware guard)
+  
 Бібліотеки:
-python-jose — JWT токени
-Authlib — OAuth 2.0
-Passlib — хешування паролів
-argon2-cffi — сучасний алгоритм безпеки
-itsdangerous — одноразові токени
-
+* python-jose — JWT токени
+* Authlib — OAuth 2.0
+* Passlib — хешування паролів
+* argon2-cffi — сучасний алгоритм безпеки
+* itsdangerous — одноразові токени
 Security-архітектура з 6 рівнями захисту
 
 ## 📧 Email система (Communication Layer)
@@ -50,75 +45,74 @@ Security-архітектура з 6 рівнями захисту
 Реалізовано автоматизовану email-інфраструктуру:
 
 Сценарії:
-реєстрація користувача (verification email)
-відновлення пароля
-системні повідомлення про замовлення
+* реєстрація користувача (verification email)
+* відновлення пароля
+* системні повідомлення про замовлення
+  
 Технології:
-FastAPI Mail — email сервіс
-SMTP протокол
-HTML email templates
-
+* FastAPI Mail — email сервіс
+* SMTP протокол
+* HTML email templates
 3 автоматизовані сценарії комунікації
 
 ## 🤖 AI інтеграція (Intelligent Layer)
-
 Інтегровано кілька AI-рішень:
 
-Google Generative AI — генеративний AI
-Groq — швидка AI інференс платформа
-OpenAI API — опційна розширювана інтеграція
+* Google Generative AI — генеративний AI
+* Groq — швидка AI інференс платформа
+* OpenAI API — опційна розширювана інтеграція
+  
 Функціонал:
-AI-пошук товарів
-рекомендації букетів
-обробка природної мови
-структуризація відповідей
-
+* AI-пошук товарів
+* рекомендації букетів
+* обробка природної мови
+* структуризація відповідей
 AI інтеграція
 
 ## 🔳 QR-коди
 Генерація через qrcode
+
 Використання:
-підтвердження замовлення
-швидка перевірка статусу
+* підтвердження замовлення
+* швидка перевірка статусу
 
 ## 📦 Файли та утиліти (Utility Layer)
-UUID генерація для файлів
-Pillow — робота із зображеннями
-qrcode — генерація QR-кодів
-requests — HTTP запити
+* UUID генерація для файлів
+* Pillow — робота із зображеннями
+* qrcode — генерація QR-кодів
+* requests — HTTP запити
 
 
 ## 🌐 Frontend (Client Layer)
-HTML5 — структура сторінок
-CSS3 — стилізація та адаптивність
-Vanilla JavaScript (ES6+) — логіка клієнта
-SweetAlert2 — інтерактивні повідомлення
-Figma — UI/UX дизайн
+* HTML5 - структура сторінок
+* CSS3 - стилізація та адаптивність
+* Vanilla JavaScript (ES6+) - логіка клієнта
+* SweetAlert2 - інтерактивні повідомлення
+* Figma - UI/UX дизайн
 
 
 ## 📡 API та інфраструктура
-REST API архітектура
-HTTP / HTTPS комунікація
-CORS політики
-Middleware pipeline (FastAPI)
-JSON-based data exchange
+* REST API архітектура
+* HTTP / HTTPS комунікація
+* CORS політики
+* Middleware pipeline (FastAPI)
+* JSON-based data exchange
 
 
 ## ⚙️ Додаткові backend бібліотеки
-
 Використано розширений набір залежностей:
 
-httpx — асинхронні HTTP запити
-anyio — async runtime
-click — CLI інструменти
-cryptography — криптографія
-email-validator — валідація email
-python-multipart — обробка форм
-tenacity — retry механізми
+* httpx — асинхронні HTTP запити
+* anyio — async runtime
+* click — CLI інструменти
+* cryptography — криптографія
+* email-validator — валідація email
+* python-multipart — обробка форм
+* tenacity — retry механізми
 
 ## 🏗 Структура проєкту (Layered Architecture)
-
 Проєкт організований за принципом розділення відповідальності (Separation of Concerns).
+```
 Flower_Store_Monorepo/
 ├── backend/                  # Серверний шар (FastAPI)
 │   ├── alembic/              # Керування версіями бази даних (міграції)
@@ -144,26 +138,27 @@ Flower_Store_Monorepo/
 │   ├── admin.html            # Панель адміністратора
 │   ├── index.html            # Головна вітрина магазину
 │   └── cart.html             # Кошик та оформлення замовлень
+```
 
 🛠 Опис архітектурних шарів
-API Layer (app/api): Приймає HTTP-запити, перевіряє права доступу та передає дані далі. Не містить бізнес-логіки.
+* API Layer (app/api): Приймає HTTP-запити, перевіряє права доступу та передає дані далі. Не містить бізнес-логіки.
 
-Service Layer (app/services): "Мозок" застосунку. Тут відбувається інтеграція з AI, генерація QR-кодів, формування листів та координація між базою даних і зовнішніми сервісами.
+* Service Layer (app/services): "Мозок" застосунку. Тут відбувається інтеграція з AI, генерація QR-кодів, формування листів та координація між базою даних і зовнішніми сервісами.
 
-Repository Layer (app/repositories): Відповідає за збереження даних. Це дозволяє легко замінити базу даних у майбутньому без зміни логіки сервісів.
+* Repository Layer (app/repositories): Відповідає за збереження даних. Це дозволяє легко замінити базу даних у майбутньому без зміни логіки сервісів.
 
-Schema Layer (app/schemas): Гарантує, що дані, які надходять від клієнта, є коректними та безпечними (Data Transfer Objects).
+* Schema Layer (app/schemas): Гарантує, що дані, які надходять від клієнта, є коректними та безпечними (Data Transfer Objects).
 
 ## 🚀 Key Features
 
-Full JWT + OAuth2 authentication
-AI-powered product search
-Email verification system
-Password reset flow
-QR code order tracking
-Admin dashboard
-Async backend architecture
-REST API integration
+* Full JWT + OAuth2 authentication
+* AI-powered product search
+* Email verification system
+* Password reset flow
+* QR code order tracking
+* Admin dashboard
+* Async backend architecture
+* REST API integration
 
 
 ## ⚙️ Installation & Run
