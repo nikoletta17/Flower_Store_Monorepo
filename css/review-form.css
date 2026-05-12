@@ -24,7 +24,7 @@
       justify-content: center;
       align-items: center;
       padding: 2.5rem 1.25rem;
-      /* НАПИЛЕННЯ */
+      /* Напилення - spraying */
       position: relative;
       overflow-x: hidden;
       overflow-y: auto;
@@ -177,16 +177,14 @@
    transition: 0.2s;
 }
 
-/* Стилізація тексту-підказки */
+/* Styling for the preloader */
 input::placeholder,
 textarea::placeholder {
-    /* Використовуємо прозорий сірий колір, щоб зробити його напівпрозорим */
-    color: rgba(var(--text), 0.5); /* ⬅️ Напівпрозорий сірий */
-    opacity: 1; /* Важливо: Firefox іноді потребує, щоб opacity був 1 */
+    color: rgba(var(--text), 0.5); 
+    opacity: 1; 
 }
 
-/* Приклад, як можна зробити стилізацію більш м'якою при фокусі */
 input:focus::placeholder,
 textarea:focus::placeholder {
-    color: rgba(var(--accent-1), 0.6); /* Змінюємо колір при фокусі */
+    color: rgba(var(--accent-1), 0.6);
 }

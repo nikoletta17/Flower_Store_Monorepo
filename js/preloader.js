@@ -13,28 +13,28 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
     </div>`;
 
-    // Вставляем прелоадер в самое начало body
+    // Putting preloader to the very beginning of body, so it will be on top of everything
     document.body.insertAdjacentHTML('afterbegin', preloaderHtml);
 
     const transitionLayer = document.getElementById("page-transition");
 
-    // --- ЛОГИКА ВХОДА ---
+    // Input
     if (transitionLayer) {
         setTimeout(() => {
             transitionLayer.classList.add("is-hidden");
-        }, 1500); // Немного увеличил, чтобы успела прорисоваться роза
+        }, 1500);
     }
 
-    // --- ЛОГИКА ВЫХОДА ---
+    // Output
     document.addEventListener('click', (e) => {
-        const link = e.target.closest('a'); // Ищем ближайшую ссылку от места клика
+        const link = e.target.closest('a'); 
         if (!link) return;
 
         const destination = link.href;
 
         if (destination && destination.includes(window.location.hostname) && 
             !destination.includes('#') && 
-            link.target !== "_blank") { // Не анимируем, если открываем в новом окне
+            link.target !== "_blank") { 
             
             e.preventDefault();
             transitionLayer.classList.remove("is-hidden");

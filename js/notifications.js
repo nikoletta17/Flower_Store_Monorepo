@@ -66,12 +66,10 @@ function showConfirmDialog(title, text) {
     text: text,
     icon: 'warning',
     showCancelButton: true,
-    confirmButtonColor: 'rgb(var(--accent-2))', // Твій рожевий колір
+    confirmButtonColor: 'rgb(var(--accent-2))',
     cancelButtonColor: '#aaa',
     confirmButtonText: 'Так, видалити!',
     cancelButtonText: 'Ні, скасувати',
-    
-    // Твій фірмовий фон
     backdrop: `
             linear-gradient(
                 rgba(255, 230, 238, 0.4),

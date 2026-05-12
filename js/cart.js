@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Елементи DOM
   const cartContainer = document.getElementById("cart-items-container");
   const totalPriceElement = document.getElementById("total-price");
   const checkoutButton = document.getElementById("checkout-btn");
@@ -15,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const renderCartItem = (item) => {
-    // Міняємо item.bouquet_id на item.bouquet.id
     const bId = item.bouquet.id; 
 
     const itemHtml = `
@@ -50,8 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!token) return;
 
     try {
-      // Ми використовуємо твій ендпоінт додавання,
-      // просто передаємо дельту (1 або -1)
       const response = await fetch(`${BASE_URL}/cart/add`, {
         method: "POST",
         headers: {
@@ -134,26 +130,41 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function handleRemoveItem(e) {
-    const item_id = e.currentTarget.dataset.itemId;
-    const token = getAuthToken();
-    if (!token || !confirm("Ви впевнені?")) return;
+  const item_id = e.currentTarget.dataset.itemId;
+  const token = getAuthToken();
 
-    try {
-      const response = await fetch(`${BASE_URL}/cart/remove/${item_id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (response.ok) loadCartContent();
-    } catch (error) {
-      console.error("Error removing item:", error);
+  // Перевірка токена 
+  if (!token) return;
+
+  // Викликаємо  кастомний діалог і чекаємо на результат
+  const result = await showConfirmDialog(
+    "Ви впевнені?",
+    "Ви впевнені що хочете видалити цей товар?"
+  );
+
+  // Якщо користувач натиснув "Скасувати" або закрив вікно — зупиняємо виконання
+  if (!result.isConfirmed) return;
+
+  try {
+    const response = await fetch(`${BASE_URL}/cart/remove/${item_id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    
+    if (response.ok) {
+      loadCartContent();
     }
+  } catch (error) {
+    console.error("Error removing item:", error);
   }
+  }
+  
 
   checkoutButton.addEventListener("click", () => {
     const token = getAuthToken();
     if (!token) return;
 
-    // Просто перенаправляємо на сторінку з формою
+    // Перенаправляємо на сторінку з формою
     window.location.href = "order-form.html";
   });
 

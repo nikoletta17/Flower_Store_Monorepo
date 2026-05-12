@@ -6,34 +6,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!sidebar || !hambtn) return;
 
-    // ФУНКЦИЯ ОТКРЫТИЯ
+    // Open chat function
     const openChat = () => {
         sidebar.classList.add("open");
         console.log("Чат открыт (класс добавлен)");
         
-        // Скрываем иконку: делаем прозрачной и отключаем клики по ней
+        // Hide the button: make it invisible and non-interactive
         hambtn.style.opacity = "0";
         hambtn.style.pointerEvents = "none";
         hambtn.style.visibility = "hidden";
     };
 
-    // ФУНКЦИЯ ЗАКРЫТИЯ
+    // Close chat function
     const closeChat = () => {
         sidebar.classList.remove("open");
         console.log("Чат закрыт (класс удален)");
         
-        // Возвращаем иконку: восстанавливаем видимость и кликабельность
+        // Return the button: restore visibility and interactivity
         hambtn.style.cssText = "display: flex !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important;";
     };
 
-    // ГЛАВНЫЙ ОБРАБОТЧИК КНОПКИ
+    // MAIN BUTTON HANDLER
     hambtn.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation(); 
         
         console.log("Нажата кнопка чата");
 
-        // Используем таймаут для обхода конфликтов с другими скриптами
         setTimeout(() => {
             if (sidebar.classList.contains("open")) {
                 closeChat();
@@ -41,9 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 openChat();
             }
         }, 10); 
-    }, true); // Фаза перехвата (capture phase)
+    }, true);
 
-    // ГЛОБАЛЬНЫЙ КЛИК (ЗАКРЫТИЕ ПРИ КЛИКЕ МИМО)
+    // GLOBAL CLICK HANDLER FOR OUTSIDE CLICKS
     document.addEventListener("click", (e) => {
         if (!sidebar.classList.contains("open")) return;
 
@@ -57,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // ЗАКРЫТИЕ ПО ESCAPE
+    // Close chat on Escape key press
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && sidebar.classList.contains("open")) {
             closeChat();

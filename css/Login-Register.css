@@ -354,23 +354,19 @@ a:hover {
     border-radius: 50%;
     box-shadow: 0 0 5px rgb(214, 123, 171),
                 0 0 15px rgb(214, 123, 171);
-    
-    /* Начальное состояние: невидим и уменьшен */
     opacity: 0; 
     transform: translate(-50%, -50%) scale(0);
     
     animation: cursorColors 4s infinite;
-    /* Плавность появления и исчезновения */
     transition: opacity 0.3s ease, transform 0.3s ease; 
 }
 
-/* Класс, который JS будет добавлять при движении */
+
 .mouse__cursor.visible {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
 }
 
-/* Ободок при клике */
 .mouse__cursor::before {
     content: "";
     position: absolute;

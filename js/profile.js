@@ -1,6 +1,6 @@
 const API_BASE = "http://127.0.0.1:8000";
 
-// 1. Функція завантаження даних профілю
+// Функція завантаження даних профілю
 async function fetchUserData() {
   const token = localStorage.getItem("access_token");
   try {
@@ -35,7 +35,7 @@ async function fetchUserData() {
   }
 }
 
-// 2. Функція завантаження замовлень (з кольоровими статусами та форматуванням)
+// Функція завантаження замовлень (з кольоровими статусами та форматуванням)
 async function fetchOrders() {
   const token = localStorage.getItem("access_token");
   const container = document.getElementById("ordersContainer");
@@ -95,7 +95,7 @@ async function fetchOrders() {
   }
 }
 
-// 3. Функція оновлення профілю (Збереження змін)
+//  Функція оновлення профілю (Збереження змін)
 async function handleUpdateProfile(e) {
   e.preventDefault();
   const token = localStorage.getItem("access_token");
@@ -104,16 +104,16 @@ async function handleUpdateProfile(e) {
   const email = document.getElementById("emailInput").value;
   const password = document.getElementById("passwordInput").value;
 
-  // 1. Формуємо базові дані
+  // Базові дані
   const updateData = {
     name: name,
     email: email,
   };
 
-  // 2. Якщо поле пароля не порожнє, додаємо ОБИДВА поля
+  // Якщо поле пароля не порожнє, додаємо ОБИДВА поля
   if (password && password.trim() !== "") {
     updateData.password = password;
-    updateData.confirm_password = password; // Обов'язково для твоєї схеми!
+    updateData.confirm_password = password; 
   }
 
   try {

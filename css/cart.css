@@ -54,14 +54,13 @@ body::after {
 .cart-items-list {
     border-top: 2px solid rgba(var(--accent-2), 0.3);
     padding-top: 20px;
-    
-    /* НОВІ ПАРАМЕТРИ ТУТ: */
-    max-height: 170px;    /* Встановіть висоту, яка вам подобається (наприклад, для 3-4 товарів) */
-    overflow-y: auto;     /* Додає вертикальну прокрутку, якщо товарів багато */
-    overflow-x: hidden;   /* Ховаємо горизонтальну прокрутку про всяк випадок */
-    padding-right: 10px;  /* Відступ справа, щоб скролбар не налізав на текст */
+    max-height: 170px;   
+    overflow-y: auto;    
+    overflow-x: hidden;   
+    padding-right: 10px;  
 }
-/* Стилі для окремого елемента кошика */
+
+/* Styles for individual cart items */
 .cart-item {
     display: flex;
     align-items: center;
@@ -111,7 +110,7 @@ body::after {
     white-space: nowrap;
 }
 
-/* Кнопка "Видалити" (іконка кошика) */
+/* Delete button */
 .remove-btn {
     background: none;
     color: rgb(var(--gr-color-pink)); 
@@ -128,7 +127,7 @@ body::after {
     transform: scale(1.1);
 }
 
-/* Підсумок */
+/* Summary */
 .cart-summary-wrapper {
     margin-top: 30px;
     display: flex;
@@ -216,7 +215,7 @@ body::after {
     text-align: center;
 }
 
-/* Адаптивність */
+/* Adaptive */
 @media (max-width: 1060px) {
     .cart-section {
         margin-top: 180px; 

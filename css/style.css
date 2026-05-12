@@ -45,7 +45,7 @@ button,
 /* Mouse cursor */
 .mouse__cursor.hidden {
   opacity: 0;
-  transform: translate(-50%, -50%) scale(0); /* Эффект уменьшения при исчезновении */
+  transform: translate(-50%, -50%) scale(0); /* Effect of shrinking when disappearing */
 }
 
 /* Mouse cursor */
@@ -75,7 +75,7 @@ button,
   transform: translate(-50%, -50%) scale(1);
 }
 
-/* Ободок при клике */
+/* Halo effect */
 .mouse__cursor::before {
   content: "";
   position: absolute;
@@ -196,7 +196,7 @@ button,
   -webkit-text-fill-color: transparent;
 }
 
-/* --- HEADER & NAV (DESKTOP) --- */
+/* HEADER & NAV  */
 header {
   position: fixed;
   left: 0;
@@ -243,11 +243,10 @@ header {
   flex-shrink: 0;
 }
 
-/* Контейнер меню на десктопі */
 .mobile-menu {
   display: flex;
   align-items: center;
-  flex-grow: 1; /* Займає вільний простір */
+  flex-grow: 1; 
 }
 
 .nav-links {
@@ -286,7 +285,7 @@ header {
   color: rgb(var(--accent-1));
 }
 
-/* --- HAMBURGER --- */
+/*  HAMBURGER */
 .hamburger {
   display: none;
   cursor: pointer;
@@ -303,7 +302,7 @@ header {
   transition: 0.3s;
 }
 
-/* --- RESPONSIVE (MOBILE) --- */
+/*  RESPONSIVE  */
 @media (max-width: 1064px) {
   .nav {
     display: flex;
@@ -311,26 +310,25 @@ header {
     align-items: center;
   }
 
-  /* Лого зліва */
+  /* Logo on the left side */
   .logo {
     order: 1;
   }
 
-  /* Прапор тепер справа, перед гамбургером */
+  /* Flag is on the right, before the hamburger */
   .lang-menu {
     order: 2;
-    margin-left: auto; /* Штовхає мову вправо до гамбургера */
-    margin-right: 1rem; /* Відступ між прапором та хрестиком */
+    margin-left: auto; /* Pushes the language menu to the right */
+    margin-right: 1rem; /* Spacing between the flag and the hamburger */
   }
 
-  /* Гамбургер крайній справа */
+  /* Hamburger on the far right */
   .hamburger {
     display: flex;
     order: 3;
     z-index: 100;
   }
 
-  /* Єдиний блок мобільного меню */
   .mobile-menu {
     display: none;
     position: absolute;
@@ -345,7 +343,6 @@ header {
     border-radius: 0 0 16px 16px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     z-index: 90;
-    /* Центрування всього контенту всередині меню */
     text-align: center;
   }
 
@@ -353,7 +350,7 @@ header {
     display: flex;
   }
 
-  /* Внутрішні списки */
+
   .nav-links,
   .auth-links {
     flex-direction: column;
@@ -362,7 +359,7 @@ header {
     padding: 0;
     margin: 0;
     list-style: none;
-    align-items: center; /* Центрує li по горизонталі */
+    align-items: center; 
   }
 
   .nav-links {
@@ -376,14 +373,14 @@ header {
     gap: 1rem;
   }
 
-  /* Центрування посилань */
+
   :is(.nav-links, .auth-links) li {
     width: 100%;
     display: flex;
     justify-content: center;
   }
 
-  /* Анімація іконки */
+
   .hamburger.active span:nth-child(1) {
     transform: rotate(45deg) translate(5px, 6px);
   }
@@ -419,7 +416,6 @@ header {
   padding-bottom: 5rem;
 }
 
-/* Прибираємо старий .intro::after, щоб не було блимання на всьому екрані */
 .intro::after {
   display: none;
 }
@@ -440,7 +436,6 @@ header {
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  /* Плавний перехід лише для opacity, щоб уникнути сіпання */
   transition:
     opacity 1s ease-in-out,
     visibility 1s;
@@ -453,30 +448,28 @@ header {
   z-index: 2;
 }
 
-/* ✅ ФОН КАРТИНКИ */
+
 .intro__bg {
   position: absolute;
   inset: 0;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  z-index: -2; /* Найнижчий рівень */
+  z-index: -2; 
 }
 
-/* ✅ РОЖЕВЕ НАПИЛЕННЯ ТІЛЬКИ ДЛЯ КАРТИНКИ */
+/* Напилення */
 .intro__overlay {
   position: absolute;
   inset: 0;
-  /* Ніжний рожевий фільтр */
   background: rgba(255, 230, 238, 0.5);
-  z-index: -1; /* Вище за картинку, але нижче за текст */
+  z-index: -1; 
   pointer-events: none;
 }
 
-/* --- КОНТЕНТ (ТЕКСТ) --- */
 .container-content {
   position: relative;
-  z-index: 10; /* Завжди зверху */
+  z-index: 10; 
   width: min(1100px, 94%);
   margin: 0 auto;
 }
@@ -492,7 +485,7 @@ header {
   font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(2.5rem, 5.5vw, 3.375rem);
   margin: 0;
-  color: #4a4448; /* Темно-сірий з фіолетовим відтінком */
+  color: #4a4448;
   line-height: 1.1;
 }
 
@@ -502,7 +495,6 @@ header {
   color: #5c555b;
 }
 
-/* КНОПКА */
 .intro-btn {
   display: inline-block;
   cursor: pointer;
@@ -532,8 +524,6 @@ header {
   top: 50%;
   transform: translateY(-50%);
   z-index: 20;
-
-  /* Початковий вигляд */
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(5px);
   border: none;
@@ -544,7 +534,7 @@ header {
   border-radius: 50%;
   cursor: pointer;
 
-  font-size: 1.5rem; /* розмір  стрілки всередині */
+  font-size: 1.5rem; 
   font-weight: bold;
 
   display: flex;
@@ -561,7 +551,7 @@ header {
   box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3);
 }
 
-/* Відступи для стрілок */
+/* Відступ для стрілок */
 .intro-arrow--prev {
   left: 2rem;
 }
@@ -593,7 +583,7 @@ header {
   transform: scale(1.3);
 }
 
-/* ПЕЛЮСТКИ */
+/* Petrals */
 .petal-layer {
   position: absolute;
   inset: 0;
@@ -601,7 +591,7 @@ header {
   z-index: 5;
 }
 
-/* АНІМАЦІЯ FLOAT ТА ІНШЕ (без змін) */
+
 @keyframes float {
   0% {
     transform: translateY(0) rotate(0);
@@ -614,7 +604,6 @@ header {
   }
 }
 
-/* АДАПТИВНІСТЬ */
 @media (max-width: 992px) {
   .intro-arrow {
     width: 45px;
@@ -644,7 +633,6 @@ header {
 }
 
 /* ABOUT SECTION */
-
 .about-section {
   position: relative;
   min-height: 100vh;
@@ -691,7 +679,7 @@ header {
   line-height: 1.6;
 }
 
-/* Планшети та великі мобільні екрани */
+
 @media (max-width: 1100px) {
   .about-section {
     justify-content: center;
@@ -719,7 +707,7 @@ header {
   }
 }
 
-/* Смартфони */
+
 @media (max-width: 600px) {
   .about-section {
     padding: 4rem 1rem 2rem 1rem;
@@ -1063,7 +1051,7 @@ header {
   right: 0px;
 }
 
-/* === АДАПТИВНІСТЬ ДЛЯ ПЛАНШЕТІВ === */
+
 @media (max-width: 700px) {
   .bouquet-grid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -1093,7 +1081,7 @@ header {
   }
 }
 
-/* === АДАПТИВНІСТЬ ДЛЯ ТЕЛЕФОНІВ === */
+
 @media (max-width: 475px) {
   .bouquet-section {
     padding: 3rem 1rem;
@@ -1140,7 +1128,6 @@ header {
 }
 
 /* review-section */
-
 .review-section {
   position: relative;
   padding: 6.25rem 12.5rem;
@@ -1250,7 +1237,7 @@ header {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Планшети (до 1024px) */
+
 @media (max-width: 1024px) {
   .review-section {
     padding: 4rem 4rem;
@@ -1265,7 +1252,7 @@ header {
   }
 }
 
-/* Телефони (до 768px) */
+
 @media (max-width: 768px) {
   .review-section {
     padding: 3rem 1.5rem;
@@ -1297,7 +1284,6 @@ header {
     width: 100%;
   }
 
-  /* 3. Картки */
   .review-card {
     flex: 1 1 auto;
     width: 90%;
@@ -1315,7 +1301,7 @@ header {
     font-size: 1.1rem;
   }
 
-  /* 4. Кнопка */
+
   .review-btn-container {
     margin-top: 2rem;
     position: relative;
@@ -1328,7 +1314,7 @@ header {
   }
 }
 
-/* маленькі екрани (до 480px) */
+
 @media (max-width: 480px) {
   .review-section {
     padding: 2.5rem 1rem;
@@ -1644,7 +1630,7 @@ header {
 }
 
 .footer-container a {
-  padding: 5px 10px; /* Резерв места заранее */
+  padding: 5px 10px; /* Резерв місця передчасно */
   border-radius: 10px;
   transition: background 0.3s ease;
   display: inline-block;
@@ -1698,7 +1684,7 @@ header {
   color: rgb(var(--gr-color-pink));
 }
 
-/* Лепестки */
+/* Пелюстки */
 .site-footer .petal-layer {
   position: absolute;
   inset: 0;
@@ -1818,7 +1804,7 @@ header {
   transition: 0.2s;
 }
 
-/* style.css (КОРЕКЦІЯ ДЛЯ ГАРАНТОВАНОГО ВІДОБРАЖЕННЯ) */
+
 .auth-links li {
   display: list-item;
   margin: 0;
@@ -1837,9 +1823,8 @@ header {
   font-weight: 600;
 }
 
-/* Додатковий стиль, якщо ви використовуєте клас .nav-item у JS */
+
 .auth-links .nav-item a {
-  /* Використовуємо існуючі стилі для посилань */
   text-decoration: none;
   color: var(--text);
   font-weight: 500;
@@ -1853,37 +1838,32 @@ header {
   color: rgb(var(--accent-1));
 }
 
-/* Якщо ви хочете, щоб "Привіт, [Ім'я]!" також виглядало як посилання */
+/* Hello, name! */
 .auth-links .user-greeting span {
   padding: 0.5rem 0.75rem;
   border-radius: 8px;
-  /* Це імітує відступи посилання, щоб не ламати верстку */
 }
 
-/* ==================================== */
-/* === СТИЛІ ДЛЯ DROPDOWN ТА ІКОНОК === */
-/* ==================================== */
 
-/* 1. Стилі для іконки Кошика */
+/* DROPDOWN ТА ІКОНКИ  */
 .auth-links .cart-icon-link {
-  /* Перевизначаємо відступи для іконки, щоб вона була компактнішою */
   padding: 0.6rem 0.6rem !important;
-  font-size: 1.25rem; /* Збільшуємо розмір самої іконки */
+  font-size: 1.25rem; 
 }
 .auth-links .cart-icon-link i {
   color: var(--text);
   transition: color 0.3s;
 }
 .auth-links .cart-icon-link:hover i {
-  color: rgb(var(--accent-1)); /* Колір при наведенні */
+  color: rgb(var(--accent-1)); 
 }
 
-/* 2. Стилі для Dropdown (Привіт, [Ім'я]! + Замовлення) */
+/*  Стилі для Dropdown (Привіт, [Ім'я]! + Замовлення) */
 
 .user-dropdown-container {
   position: relative;
   cursor: pointer;
-  /* Стилізуємо видимий елемент "Привіт, [Ім'я]!" як кнопку */
+  /*  Видимий елемент "Привіт, [Ім'я]!" як кнопку */
   padding: 0.6rem 0.8rem;
   border-radius: 8px;
   transition: background-color 0.3s;
@@ -1902,7 +1882,7 @@ header {
 /* Стилі для випадаючого меню */
 .dropdown-menu {
   position: absolute;
-  top: 100%; /* Розміщуємо під елементом "Привіт" */
+  top: 100%; /* Під елементом "Привіт" */
   right: 0;
   margin-top: 5px;
 

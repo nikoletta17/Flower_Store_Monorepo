@@ -1,13 +1,11 @@
-/* AiChatBot/chat/chat.js */
-
 const inputMessage = document.getElementById("inputMessage");
 const sendBtn = document.getElementById("sendBtn");
 const chatbox = document.getElementById("chatbox");
 
 /**
- * Додає повідомлення в чат
- * @param {string} text - Текст повідомлення
- * @param {string} sender - 'user' або 'bot'
+ * Add message to the chatbox
+ * @param {string} text - The text of the message
+ * @param {string} sender - 'user' or 'bot'
  */
 function appendMessage(text, sender) {
     if (!text) return;
@@ -15,7 +13,7 @@ function appendMessage(text, sender) {
     const msgDiv = document.createElement("div");
     msgDiv.classList.add("message", sender);
 
-    // Створення аватарки для бота
+    // Bot's image logo
     if (sender === "bot") {
         const iconImg = document.createElement("img");
         iconImg.src = "logo.jpg";
@@ -31,7 +29,7 @@ function appendMessage(text, sender) {
     msgDiv.appendChild(textBubble);
     chatbox.appendChild(msgDiv);
 
-    // Плавний скрол до останнього повідомлення
+    // Smooth scroll to the latest message
     chatbox.scrollTo({
         top: chatbox.scrollHeight,
         behavior: 'smooth'
@@ -39,19 +37,19 @@ function appendMessage(text, sender) {
 }
 
 /**
- * Відправка повідомлення на сервер
+ * Send message to the server
  */
 async function sendMessage() {
     const message = inputMessage.value.trim();
 
-    // Перевірка на порожнє повідомлення
+    // Check for empty message
     if (!message) return;
 
-    // Відображаємо повідомлення користувача
+    // Display user's message in the chatbox
     appendMessage(message, "user");
     inputMessage.value = "";
     
-    // Блокуємо кнопку на час очікування відповіді
+    // Block the button while waiting for a response
     sendBtn.disabled = true;
 
     try {
@@ -68,8 +66,7 @@ async function sendMessage() {
         }
 
         const data = await response.json();
-        
-        // Використовуємо data.response, як ти вказала
+   
         if (data && data.response) {
             appendMessage(data.response, "bot");
         } else {
@@ -80,13 +77,12 @@ async function sendMessage() {
         console.error("Chat Error:", error);
         appendMessage("Помилка: Не вдалося зв'язатися з сервером!", "bot");
     } finally {
-        // Розблоковуємо кнопку та повертаємо фокус на інпут
         sendBtn.disabled = false;
         inputMessage.focus();
     }
 }
 
-// Слухачі подій
+
 sendBtn.addEventListener("click", sendMessage);
 
 inputMessage.addEventListener("keypress", (e) => {
@@ -95,5 +91,5 @@ inputMessage.addEventListener("keypress", (e) => {
     }
 });
 
-// Фокусуємося на полі вводу при завантаженні сторінки
+// Focus the input field when the page loads
 window.onload = () => inputMessage.focus();

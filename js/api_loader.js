@@ -33,7 +33,6 @@ function getFilters() {
 }
 
 
-// 2. ДОПОМІЖНІ ФУНКЦІЇ (Ціна, Модалки)
 function getDisplayPrice(bouquet) {
   let priceValue = bouquet.price_uah;
   if (typeof priceValue !== "number" && typeof bouquet.price === "number") {
@@ -58,7 +57,7 @@ function openModal(bouquetData) {
   modalTitle.innerText = title;
   modalDesc.innerText = desc;
 
-  // ОНОВЛЕННЯ: Прив'язуємо ID до кнопки "Замовити" в модалці
+  
   const orderBtn = document.getElementById("orderBtn");
   if (orderBtn) {
     // Очищаємо старі обробники, щоб не додавалося по 10 разів
@@ -90,7 +89,6 @@ function closeModal() {
     document.body.style.overflow = ""; // Повертаємо прокрутку сайту
   }
 }
-// Робимо її глобальною, щоб інші файли (як order-form.js) її бачили
 window.closeModal = closeModal;
 
 function initModalClosing() {
@@ -106,7 +104,6 @@ function initModalClosing() {
 function createBouquetCard(bouquet) {
   const lang = localStorage.getItem("selectedLang") || "ua";
 
-  // Вибираємо правильні поля
   const title = lang === "en" ? bouquet.title_en : bouquet.title_ua;
   const description =
     lang === "en" ? bouquet.description_en : bouquet.description_ua;
@@ -195,46 +192,13 @@ async function loadBouquets() {
     }
 }
 
-/* async function loadBouquets() {
-  if (!bouquetGrid || isLoading) return;
-  isLoading = true;
-
-  // Отримуємо значення фільтрів
-  const minPrice = minPriceInput.value;
-  const maxPrice = maxPriceInput.value;
-
-  // Формуємо параметри запиту
-  let url = `${API_BASE_URL}/bouquet/?skip=${currentSkip}&limit=${limit}`;
-  if (minPrice) url += `&min_price=${minPrice}`;
-  if (maxPrice) url += `&max_price=${maxPrice}`;
-
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    const items = data.items ? data.items : data;
-
-    if (currentSkip === 0) {
-      allBouquets = items;
-    } else {
-      allBouquets = [...allBouquets, ...items];
-    }
-
-    renderBouquets();
-    hasMore = data.has_more !== undefined ? data.has_more : false;
-  } catch (error) {
-    console.error("Помилка завантаження букетів:", error);
-  } finally {
-    isLoading = false;
-  }
-} */
-
 async function fetchMoreBouquets() {
   if (!hasMore || isLoading) return;
   currentSkip += limit;
   await loadBouquets();
 }
 
-// 5. ЛОГІКА СКРОЛУ (Твої кнопки)
+// ЛОГІКА СКРОЛУ 
 function getScrollStep() {
   const firstCard =
     bouquetGrid.querySelector("article") ||
@@ -264,7 +228,7 @@ if (btnLeft) {
   });
 }
 
-// 6. ВІДГУКИ
+//  ВІДГУКИ
 async function loadReviews() {
   if (!reviewGridContainer) return;
   try {
@@ -276,7 +240,7 @@ async function loadReviews() {
       const card = document.createElement("div");
       card.className = "review-card";
 
-      // 👉 начальное состояние
+      // Початковий стан
       card.style.opacity = "0";
       card.style.transform = "translateY(40px)";
       card.style.transition = "all 0.6s ease";
@@ -284,7 +248,7 @@ async function loadReviews() {
       card.innerHTML = `<p>“${review.text}”</p><h4>— ${review.author} ${stars}</h4>`;
       reviewGridContainer.appendChild(card);
 
-      // ✨ анимация
+      // Анімація появи з затримкою
       setTimeout(() => {
         card.style.opacity = "1";
         card.style.transform = "translateY(0)";
@@ -303,7 +267,6 @@ document.addEventListener("DOMContentLoaded", () => {
         applyTranslation(savedLang);
     }
 
-    // Слухаємо кнопку фільтра тільки якщо вона існує
     const filters = getFilters();
     if (filters.btn) {
         filters.btn.addEventListener("click", (e) => {
@@ -332,7 +295,7 @@ const observer = new IntersectionObserver(
   },
 );
 
-// все обычные блоки
+
 document
   .querySelectorAll(
     ".preview-greeting, .about-content, .contact-content, .gradient-header",
@@ -396,10 +359,10 @@ async function addToCart(bouquetId) {
     });
 
     if (response.ok) {
-      // 1. Закриваємо модалку букета (щоб звільнити місце для тоста)
+      // Закриваємо модалку букета (щоб звільнити місце для тоста)
       closeModal();
 
-      // 2. Показуємо тост
+      // Показуємо тост
       showNotification("Букет додано у кошик! 🌸");
     } else {
       const error = await response.json();

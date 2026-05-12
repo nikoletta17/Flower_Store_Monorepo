@@ -1,6 +1,5 @@
-/* 1. КОЛЬОРИ ТА ОСНОВНІ НАЛАШТУВАННЯ */
 :root {
-  --bg-color: #f1e6eb; /* твій ніжно-рожевий фон */
+  --bg-color: #f1e6eb; /* ніжно-рожевий фон */
   --accent-1: 233, 135, 175; /* рожевий */
   --accent-2: 143, 198, 169; /* пастельно-зелений */
   --sidebar-bg: #2d1b20; /* темний вишневий для бокового меню */
@@ -13,18 +12,18 @@ body {
   display: flex;
   background: var(--bg-color);
   height: 100vh;
-  overflow: hidden; /* Фіксуємо екран, щоб не було подвійного скролу */
+  overflow: hidden; 
 }
 
-/* 2. ЛОГІКА ТАБІВ (КРИТИЧНО) */
+/* Tab logic */
 .tab-content {
-  display: none; /* Ховаємо всі за замовчуванням */
+  display: none; 
 }
 .tab-content.active {
-  display: block; /* Показуємо лише активну */
+  display: block; 
 }
 
-/* 3. SIDEBAR */
+/* SIDEBAR */
 .sidebar {
   width: 250px;
   background: var(--sidebar-bg);
@@ -68,13 +67,13 @@ body {
   border-left: 4px solid rgb(var(--accent-1));
 }
 
-/* 4. MAIN CONTENT AREA */
+/*  MAIN CONTENT AREA */
 .main-content {
   margin-left: 250px;
   padding: 40px;
   width: calc(100% - 250px);
   height: 100vh;
-  overflow-y: auto; /* Дозволяємо прокрутку тільки для контенту */
+  overflow-y: auto; 
   box-sizing: border-box;
 }
 
@@ -85,7 +84,7 @@ h1 {
   text-align: center;
 }
 
-/* 5. КАРТКИ ТА ТАБЛИЦІ */
+/* 5. Images and tables */
 .card {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(8px);
@@ -137,7 +136,7 @@ button.btn-save:hover {
   box-shadow: 0 4px 12px rgba(var(--accent-1), 0.3);
 }
 
-/* СТИЛІЗАЦІЯ ТАБЛИЦЬ */
+/* Tables styling */
 table {
   width: 100%;
   border-collapse: separate;
@@ -146,34 +145,22 @@ table {
 }
 
 th {
-  /* Твої поточні стилі (колір тексту, шрифти, відступи) залишаються: */
   color: #777;
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 1px;
   padding: 12px;
   text-align: left;
-  
-  /* --- ГОЛОВНІ ЗМІНИ ТУТ --- */
-  
-  /* 1. Робимо заголовок липким */
   position: sticky;
   top: 0;
-  
-  /* 2. Зафарбовуємо суцільним рожевим фоном твого сайту */
-  background-color: var(--bg-color); /* Це прибере ефект просвічування */
-  
-  /* 3. Піднімаємо заголовок над текстом, що скролиться */
+  background-color: var(--bg-color); 
   z-index: 10;
-  
-  /* Додатково: додамо легку лінію знизу, щоб заголовок відділявся */
   border-bottom: 2px solid rgba(var(--accent-1), 0.2);
 }
 
-/* Цей старий костиль з ::before нам більше не потрібен, видали його: */
-th::before {
+/* th::before {
   display: none; 
-}
+} */
 
 td {
   padding: 15px;
@@ -198,7 +185,7 @@ td:last-child { border-radius: 0 8px 8px 0; }
   color: white;
 }
 
-/* 6. ІНШІ ДЕТАЛІ */
+
 #bouquets-table img {
   width: 50px;
   height: 50px;
@@ -247,7 +234,7 @@ td:last-child { border-radius: 0 8px 8px 0; }
 }
 
 
-/* Кнопка Редагувати (Зелена) */
+/* Edit button */
 .edit-btn {
   color: rgb(var(--accent-2));
   border: 1px solid rgb(var(--accent-2));
@@ -266,7 +253,7 @@ td:last-child { border-radius: 0 8px 8px 0; }
   box-shadow: 0 2px 8px rgba(var(--accent-2), 0.3);
 }
 
-/* Кнопка Видалити (Рожева/Червона) */
+/* Delete button */
 .delete-btn {
   color: #e74c3c;
   border: 1px solid #e74c3c;
@@ -284,7 +271,7 @@ td:last-child { border-radius: 0 8px 8px 0; }
   box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
 }
 
-/* Стилі для іконок всередині кнопок */
+/* Icons inside buttons */
 .edit-btn i, .delete-btn i {
   margin-right: 4px;
 }

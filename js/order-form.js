@@ -4,12 +4,11 @@ const addressSection = document.getElementById("address-section");
 const pickupInfo = document.getElementById("pickup-info");
 const streetInput = document.getElementById("street-address");
 
-// Оновлена функція перемикання
 const toggleDelivery = () => {
   console.log("Перемикаю режим. Кур'єр обрано:", courierRadio.checked); // Для перевірки в консолі
 
   if (courierRadio.checked) {
-    addressSection.style.display = "block"; // Пряме керування замість класу
+    addressSection.style.display = "block";
     pickupInfo.style.display = "none";
     streetInput.setAttribute("required", "true");
   } else {
@@ -20,14 +19,13 @@ const toggleDelivery = () => {
   }
 };
 
-// Додаємо слухачі на обидва варіанти
 pickupRadio.addEventListener("click", toggleDelivery);
 courierRadio.addEventListener("click", toggleDelivery);
 
 // Викликаємо один раз при завантаженні, щоб встановити початковий стан
 toggleDelivery();
 
-// Відправка замовлення (залишається як була)
+// Відправка замовлення 
 document
   .getElementById("final-order-form")
   .addEventListener("submit", async (e) => {
@@ -72,19 +70,18 @@ document
       if (response.ok) {
         const order = await response.json();
 
-        // 1. ЗАКРИВАЄМО КАРТКУ БУКЕТА (через твою глобальну функцію)
+        // ЗАКРИВАЄМО КАРТКУ БУКЕТА 
         if (window.closeModal) {
           window.closeModal();
         }
 
-        // 2. СХОВАЄМО САМУ ФОРМУ ОФОРМЛЕННЯ (щоб не було "кнопки під кнопкою")
-        // Ми просто знайдемо контейнер твоєї форми і вимкнемо його
+        // СХОВАЄМО САМУ ФОРМУ ОФОРМЛЕННЯ 
         const finalFormContainer = document.querySelector('.order-form-container') || document.getElementById('final-order-form');
         if (finalFormContainer) {
           finalFormContainer.style.display = 'none'; 
         }
 
-        // 3. ПОКАЗУЄМО УСПІХ
+        // УСПІХ
         showNotificationWindow(
           "Замовлення оформлено! 💐",
           `Ваш номер замовлення: №${order.id}. Дякуємо, що обрали Whisper of Flower!`,

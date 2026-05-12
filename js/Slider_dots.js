@@ -10,8 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateSlider(index) {
         if (isTransitioning) return;
         isTransitioning = true;
-
-        // Зміна класів
         slides.forEach(s => s.classList.remove('active'));
         dots.forEach(d => d.classList.remove('active'));
 
@@ -45,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Автопрокрутка: викликаємо функцію НАПРЯМУ, а не через імітацію кліку
     setInterval(() => {
         let next = (currentIndex + 1) % slides.length;
         updateSlider(next);

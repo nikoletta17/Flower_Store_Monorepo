@@ -1,37 +1,28 @@
-// js/review.js (ПОВНА ВЕРСІЯ З ЛОГІКОЮ ПІДКАЗКИ)
-
 const BASE_URL = "http://127.0.0.1:8000";
 const DEFAULT_MESSAGE = "Поділіться вашими враженнями...";
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Важливо: переконайтеся, що reviewForm має id="reviewForm"
   const reviewForm = document.getElementById("reviewForm");
   if (reviewForm) {
     reviewForm.addEventListener("submit", handleReviewSubmit);
   }
 });
 
-// ----------------------------------------------------
-// A. ФУНКЦІЇ ДЛЯ ОБРОБКИ ФІЗИЧНОГО ТЕКСТУ-ПІДКАЗКИ
-// ----------------------------------------------------
-
-// 1. ВИДАЛЕННЯ ТЕКСТУ ПРИ ФОКУСІ (натисканні)
+// ВИДАЛЕННЯ ТЕКСТУ ПРИ ФОКУСІ (натисканні)
 window.handleTextareaFocus = function (element) {
   if (element.value === DEFAULT_MESSAGE) {
     element.value = ""; // Очищуємо поле
   }
 };
 
-// 2. ПОВЕРНЕННЯ ТЕКСТУ ПРИ ВТРАТІ ФОКУСУ
+// ПОВЕРНЕННЯ ТЕКСТУ ПРИ ВТРАТІ ФОКУСУ
 window.handleTextareaBlur = function (element) {
   if (element.value.trim() === "") {
     element.value = DEFAULT_MESSAGE; // Повертаємо текст підказки
   }
 };
 
-// ----------------------------------------------------
-// B. ЛОГІКА ВІДПРАВКИ ВІДГУКУ (ОНОВЛЕНО)
-// ----------------------------------------------------
+
 async function handleReviewSubmit(e) {
   e.preventDefault();
 
@@ -49,7 +40,6 @@ async function handleReviewSubmit(e) {
   const ratingElement = document.getElementById("rating");
   const messageElement = document.getElementById("message");
 
-  // 🛑 КРИТИЧНО: Перевірка та очищення тексту перед відправкою
   let messageText = messageElement.value.trim();
   if (messageText === DEFAULT_MESSAGE || messageText === "") {
     showNotification("Будь ласка, введіть текст відгуку", "error");
@@ -57,7 +47,6 @@ async function handleReviewSubmit(e) {
   }
 
   const reviewData = {
-    // Назва поля 'text' має збігатися зі схемою FastAPI
     text: messageText,
     rating: parseInt(ratingElement.value),
   };
@@ -75,7 +64,6 @@ async function handleReviewSubmit(e) {
     if (response.status === 201) {
       const newReview = await response.json();
 
-      // Викликаємо велике вікно
       showNotificationWindow(
         "Відгук надіслано!",
         `Дякуємо, ${newReview.author}! Ваш рейтинг: ${newReview.rating} ⭐`,

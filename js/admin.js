@@ -30,7 +30,6 @@ function openTab(evt, tabName) {
   if (tabName === "orders") loadOrders();
 }
 
-// --- ЗАГРУЗКА СПИСКА ---
 async function loadBouquets() {
   try {
     const res = await fetch(`${API_URL}/bouquet/?limit=100`);
@@ -75,7 +74,7 @@ async function handleBouquetSubmit() {
   const id = document.getElementById("bouquet-id").value; 
   const currentToken = localStorage.getItem("access_token");
 
-  // Собираем данные в объект
+ 
   const bouquetData = {
     title_ua: document.getElementById("b-title-ua").value.trim(),
     title_en: document.getElementById("b-title-en").value.trim(),
@@ -109,7 +108,7 @@ async function handleBouquetSubmit() {
         body: JSON.stringify(bouquetData),
       });
     } else {
-      // --- РЕЖИМ СОЗДАНИЯ (POST) ---
+      // (POST) 
       const fileInput = document.getElementById("b-image-file");
       if (!fileInput.files[0]) {
         showNotification("Будь ласка, оберіть фото для нового букета!");
@@ -160,7 +159,7 @@ async function editBouquet(id) {
     const b = await res.json();
 
     document.getElementById("bouquet-id").value = b.id;
-    // Сохраняем текущую картинку прямо в элемент, чтобы потом забрать
+    
     document.getElementById("bouquet-id").dataset.currentImage = b.image_url;
 
     document.getElementById("b-title-ua").value = b.title_ua;
@@ -176,7 +175,6 @@ async function editBouquet(id) {
   }
 }
 
-// Сброс формы (чтобы выйти из режима редактирования)
 function resetBouquetForm() {
   document.getElementById("bouquet-id").value = "";
   document.getElementById("b-title-ua").value = "";
@@ -189,12 +187,12 @@ function resetBouquetForm() {
 }
 
 async function deleteItem(type, id) {
-  // 1. Спочатку показуємо діалог
+  
   showConfirmDialog(
     "Ви впевнені, що хочете видалити цей елемент?",
     "Цю дію неможливо буде скасувати!",
   ).then(async (result) => {
-    // 2. Цей код виконається ТІЛЬКИ якщо натиснуто "Так"
+   
     if (result.isConfirmed) {
       try {
         const res = await fetch(`${API_URL}/${type}/${id}`, {
@@ -206,7 +204,7 @@ async function deleteItem(type, id) {
           // Показуємо успіх перед тим, як перезавантажити
           showNotification("Видалено успішно! 🌸", "success");
 
-          // Даємо 1.5 секунди, щоб побачити тост, і оновлюємо
+          //  1.5 секунди, щоб побачити тост, і оновлюємо
           setTimeout(() => {
             location.reload();
           }, 1500);
@@ -221,7 +219,7 @@ async function deleteItem(type, id) {
   });
 }
 
-// --- ВІДГУКИ ---
+//  ВІДГУКИ 
 async function loadReviews() {
   try {
     const res = await fetch(`${API_URL}/review/?limit=100`);
@@ -255,7 +253,7 @@ async function loadReviews() {
   }
 }
 
-// --- КОРИСТУВАЧІ ---
+// КОРИСТУВАЧІ 
 async function loadUsers() {
   try {
     const res = await fetch(`${API_URL}/users/`, {
@@ -272,8 +270,6 @@ async function loadUsers() {
       return;
     }
 
-    // Получаем ID текущего админа из токена или localStorage, чтобы не удалить себя
-    // (Обычно ID зашито в токене, но для простоты просто сверим email, если нужно)
 
     tbody.innerHTML = users
       .map(
@@ -297,7 +293,7 @@ async function loadUsers() {
   }
 }
 
-// --- ЗАМОВЛЕННЯ ---
+//  ЗАМОВЛЕННЯ 
 async function loadOrders() {
   try {
     const res = await fetch(`${API_URL}/orders/admin/all`, {
@@ -316,7 +312,6 @@ async function loadOrders() {
 
     tbody.innerHTML = orders
       .map((o) => {
-        // Формируем список товаров в заказе
         const itemsHtml = o.items
           .map((i) => `${i.bouquet.title_ua} (x${i.quantity})`)
           .join(", ");
@@ -350,7 +345,6 @@ async function loadOrders() {
 
 async function updateOrderStatus(orderId, newStatus) {
   try {
-    // Зверни увагу на назву параметра: new_status (як у твоїй функції Python)
     const res = await fetch(
       `${API_URL}/orders/admin/${orderId}/status?new_status=${newStatus}`,
       {

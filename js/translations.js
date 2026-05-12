@@ -210,9 +210,7 @@ const translations = {
   },
 };
 
-/**
- * ОНОВЛЕНА ФУНКЦІЯ ПЕРЕКЛАДУ СТАТИЧНИХ ЕЛЕМЕНТІВ
- */
+
 function applyTranslation(lang) {
   // Переклад елементів з атрибутом data-i18n
   document.querySelectorAll("[data-i18n]").forEach((el) => {
@@ -248,11 +246,8 @@ function applyTranslation(lang) {
   }
 }
 
-/**
- * ВСТАНОВЛЕННЯ МОВИ ТА ОНОВЛЕННЯ КОНТЕНТУ
- */
+
 function setLanguage(lang) {
-  // 1. Оновлюємо вигляд перемикача мов
   const option = document.querySelector(`a[data-lang="${lang}"]`);
   if (!option) return;
 
@@ -263,22 +258,16 @@ function setLanguage(lang) {
   selected.innerHTML = `<span class="${flagClass}"></span> ${languageText}`;
   selected.setAttribute("data-lang", lang);
 
-  // 2. Зберігаємо вибір у браузері
   localStorage.setItem("selectedLang", lang);
 
-  // 3. Перекладаємо статичні елементи (меню, футер тощо)
+  // Перекладаємо статичні елементи (меню, футер тощо)
   applyTranslation(lang);
 
-  // 4. ОНОВЛЮЄМО ДИНАМІЧНИЙ КАТАЛОГ (Букети з бази)
-  // Якщо у тебе функція рендеру називається інакше, заміни назву тут
+  // ОНОВЛЮЄМО ДИНАМІЧНИЙ КАТАЛОГ (Букети з бази)
   if (typeof renderBouquets === "function") {
     renderBouquets();
   }
 }
-
-/**
- * ПОДІЇ ТА СЛУХАЧІ
- */
 
 // Завантаження сторінки
 window.addEventListener("DOMContentLoaded", () => {

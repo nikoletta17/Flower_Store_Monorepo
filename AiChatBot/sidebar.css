@@ -1,18 +1,14 @@
-/* AiChatBot/sidebar.css (ФІНАЛЬНА ВЕРСІЯ: КНОПКА СПРАВА ВНИЗУ + ПЛАВНИЙ ЗСУВ) */
-
 :root {
   --accent-1: 233 135 175; /* Рожевий */
   --accent-2: 143 198 169; /* Пастельно-зелений */
   --text: 28 18 20;
-  --sidebar-width: 560px; /* Можна зменшити, якщо 560px забагато для чату */
+  --sidebar-width: 560px; 
 }
 
 /* SIDEBAR - БІЧНА ПАНЕЛЬ */
 .sidebar {
   width: 0;
   overflow: hidden;
-
-  /* Кольори та Градієнт */
   background: linear-gradient(
     180deg,
     rgba(var(--accent-2), 0.3),
@@ -26,7 +22,7 @@
   padding: 25px 0;
   box-sizing: border-box;
   box-shadow: 3px 0 15px rgba(0, 0, 0, 0.15);
-  border-radius: 0; /* Немає заокруглення, бо прилипає до краю */
+  border-radius: 0; 
   color: rgb(var(--text));
   font-weight: 600;
   transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
@@ -34,7 +30,7 @@
   z-index: 1000;
 }
 
-/* Відкритий стан */
+/* While open */
 .sidebar.open {
   width: var(--sidebar-width);
   padding: 25px;
@@ -72,7 +68,7 @@
   transform: scale(1.1);
 }
 
-/* iframe всередині sidebar */
+/* iframe inside sidebar */
 .chat-frame {
   width: 100%;
   height: calc(100vh - 50px);
