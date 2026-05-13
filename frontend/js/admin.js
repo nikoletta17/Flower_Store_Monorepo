@@ -1,9 +1,34 @@
 const API_URL = "http://127.0.0.1:8000";
 const token = localStorage.getItem("access_token");
 
+
+window.toggleSidebar = function () {
+  console.log("Бургер натиснуто!"); 
+  const sidebar = document.querySelector(".sidebar");
+  const overlay = document.querySelector(".overlay");
+
+  if (sidebar && overlay) {
+    sidebar.classList.toggle("active");
+    overlay.classList.toggle("active");
+  }
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   checkAdmin();
   loadBouquets();
+
+  const sidebar = document.querySelector(".sidebar");
+  const overlay = document.querySelector(".overlay");
+
+  
+  document.querySelectorAll(".sidebar button").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove("active");
+        overlay.classList.remove("active");
+      }
+    });
+  });
 });
 
 function checkAdmin() {
@@ -69,12 +94,10 @@ async function loadBouquets() {
   }
 }
 
-
 async function handleBouquetSubmit() {
-  const id = document.getElementById("bouquet-id").value; 
+  const id = document.getElementById("bouquet-id").value;
   const currentToken = localStorage.getItem("access_token");
 
- 
   const bouquetData = {
     title_ua: document.getElementById("b-title-ua").value.trim(),
     title_en: document.getElementById("b-title-en").value.trim(),
@@ -108,7 +131,7 @@ async function handleBouquetSubmit() {
         body: JSON.stringify(bouquetData),
       });
     } else {
-      // (POST) 
+      // (POST)
       const fileInput = document.getElementById("b-image-file");
       if (!fileInput.files[0]) {
         showNotification("Будь ласка, оберіть фото для нового букета!");
@@ -159,7 +182,7 @@ async function editBouquet(id) {
     const b = await res.json();
 
     document.getElementById("bouquet-id").value = b.id;
-    
+
     document.getElementById("bouquet-id").dataset.currentImage = b.image_url;
 
     document.getElementById("b-title-ua").value = b.title_ua;
@@ -187,12 +210,10 @@ function resetBouquetForm() {
 }
 
 async function deleteItem(type, id) {
-  
   showConfirmDialog(
     "Ви впевнені, що хочете видалити цей елемент?",
     "Цю дію неможливо буде скасувати!",
   ).then(async (result) => {
-   
     if (result.isConfirmed) {
       try {
         const res = await fetch(`${API_URL}/${type}/${id}`, {
@@ -219,7 +240,7 @@ async function deleteItem(type, id) {
   });
 }
 
-//  ВІДГУКИ 
+//  ВІДГУКИ
 async function loadReviews() {
   try {
     const res = await fetch(`${API_URL}/review/?limit=100`);
@@ -253,7 +274,7 @@ async function loadReviews() {
   }
 }
 
-// КОРИСТУВАЧІ 
+// КОРИСТУВАЧІ
 async function loadUsers() {
   try {
     const res = await fetch(`${API_URL}/users/`, {
@@ -269,7 +290,6 @@ async function loadUsers() {
         '<tr><td colspan="3" style="text-align:center;">Користувачів поки немає</td></tr>';
       return;
     }
-
 
     tbody.innerHTML = users
       .map(
@@ -293,7 +313,7 @@ async function loadUsers() {
   }
 }
 
-//  ЗАМОВЛЕННЯ 
+//  ЗАМОВЛЕННЯ
 async function loadOrders() {
   try {
     const res = await fetch(`${API_URL}/orders/admin/all`, {
