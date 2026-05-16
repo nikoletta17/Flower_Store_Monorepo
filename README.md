@@ -10,7 +10,7 @@
 * Starlette — базовий ASGI рівень FastAPI
 * Pydantic — валідація та типізація даних (v2)
 * Python-dotenv — конфігурація середовища
-REST API архітектура з підтримкою middleware-логіки та асинхронної обробки запитів.
+* REST API архітектура з підтримкою middleware-логіки та асинхронної обробки запитів.
 
 ## 🗄️ База даних та ORM Layer
 Реалізовано багаторівневу систему роботи з даними:
@@ -19,7 +19,7 @@ REST API архітектура з підтримкою middleware-логіки 
 * SQLModel — типізовані моделі даних
 * aiosqlite — асинхронна база даних
 * Alembic — міграції схеми БД
-Архітектура: асинхронна ORM + міграції + типізовані моделі + структурований data-layer
+* Архітектура: асинхронна ORM + міграції + типізовані моделі + структурований data-layer
 
 ## 🔐 Автентифікація та безпека (Security Layer)
 Реалізовано багаторівневу систему захисту користувачів:
@@ -38,11 +38,11 @@ REST API архітектура з підтримкою middleware-логіки 
 * Passlib — хешування паролів
 * argon2-cffi — сучасний алгоритм безпеки
 * itsdangerous — одноразові токени
-Security-архітектура з 6 рівнями захисту
+* Security-архітектура з 6 рівнями захисту
 
 ## 📧 Email система (Communication Layer)
 
-Реалізовано автоматизовану email-інфраструктуру:
+Реалізовано автоматизовану email-інфраструктуру.
 
 Сценарії:
 * реєстрація користувача (verification email)
@@ -53,7 +53,7 @@ Security-архітектура з 6 рівнями захисту
 * FastAPI Mail — email сервіс
 * SMTP протокол
 * HTML email templates
-3 автоматизовані сценарії комунікації
+* 3 автоматизовані сценарії комунікації
 
 ## 🤖 AI інтеграція (Intelligent Layer)
 Інтегровано кілька AI-рішень:
@@ -67,7 +67,7 @@ Security-архітектура з 6 рівнями захисту
 * рекомендації букетів
 * обробка природної мови
 * структуризація відповідей
-AI інтеграція
+* AI інтеграція
 
 ## 🔳 QR-коди
 Генерація через qrcode
@@ -192,6 +192,16 @@ Flower_Store_Monorepo/
 <p align="center">
   <a href="https://www.youtube.com/watch?v=H-9FaiZ-fkY">
     <img src="https://img.youtube.com/vi/H-9FaiZ-fkY/maxresdefault.jpg" width="600">
+  </a>
+</p>
+</details>
+
+<details>
+<summary> AI чат-бот </summary>
+<br>
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=dAFqixDzrys">
+    <img src="https://img.youtube.com/vi/dAFqixDzrys/maxresdefault.jpg" width="600">
   </a>
 </p>
 </details>
